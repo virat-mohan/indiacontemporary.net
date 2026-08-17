@@ -180,7 +180,7 @@ export default function ForArtistsPage() {
               </h3>
               <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
                 Your application has been recorded. Our team reviews every submission
-                personally and will be in touch at {form.email} if there's a fit.
+                personally and will be in touch if there's a fit.
               </p>
             </div>
           ) : (
