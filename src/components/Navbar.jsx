@@ -7,7 +7,6 @@ const navLinks = [
   { href: "/collection", label: "Collection" },
   { href: "/collections", label: "Collections" },
   { href: "/artists", label: "Artists" },
-  { href: "/for-artists", label: "For Artists" },
   { href: "/about", label: "About" },
 ];
 

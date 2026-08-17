@@ -18,6 +18,14 @@ import CheckoutSuccessPage from "@/pages/CheckoutSuccessPage";
 
 export default function App() {
   const location = useLocation();
+
+  // /for-artists is the only URL currently being shared (offline, direct link
+  // to potential artists) — it renders standalone with no nav/footer/splash
+  // and no links out to the rest of the site, which isn't live yet.
+  if (location.pathname === "/for-artists") {
+    return <ForArtistsPage />;
+  }
+
   return (
     <>
       {location.pathname === "/" && <SplashScreen />}
@@ -30,7 +38,6 @@ export default function App() {
           <Route path="/collections/:id" element={<CollectionDetailPage />} />
           <Route path="/artwork/:id" element={<ArtworkPage />} />
           <Route path="/artists" element={<ArtistsPage />} />
-          <Route path="/for-artists" element={<ForArtistsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage />} />
