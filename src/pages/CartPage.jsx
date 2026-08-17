@@ -11,13 +11,13 @@ export default function CartPage() {
       <div className="pt-40 pb-24 px-6 text-center">
         <h1 className="font-serif text-3xl font-light text-ink-primary mb-4">Your Cart Is Empty</h1>
         <p className="text-ink-secondary font-sans font-light mb-8">
-          Browse the collection to find a piece for your walls.
+          Browse the artworks to find a piece for your walls.
         </p>
         <Link
-          to="/collection"
+          to="/artworks"
           className="inline-flex items-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
         >
-          Explore The Collection <ArrowRight size={16} strokeWidth={1.5} />
+          Explore The Artworks <ArrowRight size={16} strokeWidth={1.5} />
         </Link>
       </div>
     );

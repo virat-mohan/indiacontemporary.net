@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -48,6 +50,21 @@ export default function AboutPage() {
             every EU destination.
           </p>
         </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto text-center mt-24 pt-16 border-t border-line/50">
+        <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
+          Founder
+        </p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-light text-ink-primary tracking-tight mb-6">
+          Meet Vijit Veer Hooda
+        </h2>
+        <Link
+          to="/founder"
+          className="inline-flex items-center gap-3 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
+        >
+          Read His Story <ArrowRight size={16} strokeWidth={1.5} />
+        </Link>
       </div>
     </div>
   );

@@ -18,8 +18,8 @@ export default function CheckoutSuccessPage() {
     return (
       <div className="pt-40 pb-24 px-6 text-center">
         <p className="font-sans text-ink-secondary mb-6">No recent order found.</p>
-        <Link to="/collection" className="text-accent underline font-sans">
-          Explore the collection
+        <Link to="/artworks" className="text-accent underline font-sans">
+          Explore the artworks
         </Link>
       </div>
     );
@@ -48,6 +48,9 @@ export default function CheckoutSuccessPage() {
               <div key={item.id} className="flex justify-between text-sm font-sans">
                 <span className="text-ink-secondary">
                   {item.title} {item.qty > 1 ? `x${item.qty}` : ""}
+                  {item.framing && (
+                    <span className="block text-xs text-ink-muted">{item.framing}</span>
+                  )}
                 </span>
                 <span className="text-ink-primary">
                   &euro;{(item.price * item.qty).toLocaleString()}
@@ -62,7 +65,7 @@ export default function CheckoutSuccessPage() {
         </div>
 
         <Link
-          to="/collection"
+          to="/artworks"
           className="inline-flex items-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
         >
           Continue Browsing <ArrowRight size={16} strokeWidth={1.5} />

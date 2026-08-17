@@ -21,8 +21,8 @@ export default function ArtworkPage() {
     return (
       <div className="pt-40 pb-24 px-6 text-center">
         <p className="font-sans text-ink-secondary">Artwork not found.</p>
-        <Link to="/collection" className="text-accent underline font-sans">
-          Back to collection
+        <Link to="/artworks" className="text-accent underline font-sans">
+          Back to artworks
         </Link>
       </div>
     );
@@ -32,14 +32,14 @@ export default function ArtworkPage() {
     <div className="pt-28 pb-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-[1400px] mx-auto">
         <Link
-          to="/collection"
+          to="/artworks"
           className="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans mb-10"
         >
-          <ArrowLeft size={14} /> Back to Collection
+          <ArrowLeft size={14} /> Back to Artworks
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          <div className="bg-[#EBE7DF] overflow-hidden aspect-[3/4]">
+          <div className="artwork-tilt bg-[#EBE7DF] overflow-hidden aspect-[3/4]">
             <img src={art.image} alt={art.title} className="w-full h-full object-cover" />
           </div>
 
@@ -131,9 +131,11 @@ export default function ArtworkPage() {
                 View Profile
               </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="flex gap-6 md:gap-8 overflow-x-auto pb-4 -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-24 lg:px-24 snap-x snap-mandatory scroll-smooth">
               {moreFromArtist.map((a, i) => (
-                <ArtworkCard art={a} key={a.id} index={i} />
+                <div key={a.id} className="w-[65vw] xs:w-[45vw] sm:w-64 flex-shrink-0 snap-start">
+                  <ArtworkCard art={a} index={i} />
+                </div>
               ))}
             </div>
           </div>

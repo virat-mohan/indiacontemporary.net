@@ -13,7 +13,7 @@ const mediumToFilter = (medium) => {
   return "All";
 };
 
-export default function CollectionPage() {
+export default function ArtworksPage() {
   const [filter, setFilter] = useState("All");
 
   const filtered = useMemo(() => {
@@ -26,7 +26,7 @@ export default function CollectionPage() {
       <div className="max-w-[1600px] mx-auto">
         <div className="mb-12">
           <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
-            The Full Collection
+            All Artworks
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-light text-ink-primary tracking-tight">
             Available Works

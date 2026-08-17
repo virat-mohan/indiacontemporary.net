@@ -6,6 +6,14 @@ import { ArrowRight } from "lucide-react";
 
 const SHIPPING_FLAT_FEE = 180;
 
+const FRAMING_OPTIONS = [
+  { id: "unframed", label: "Unframed", price: 0 },
+  { id: "oak", label: "Natural Oak Frame", price: 180 },
+  { id: "black", label: "Matte Black Frame", price: 180 },
+];
+
+const isCanvas = (art) => art.medium.toLowerCase().includes("canvas");
+
 const emptyForm = {
   fullName: "",
   email: "",
@@ -18,24 +26,39 @@ const emptyForm = {
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
   const [form, setForm] = useState(emptyForm);
+  const [framing, setFraming] = useState({});
   const navigate = useNavigate();
 
   if (items.length === 0) {
     return (
       <div className="pt-40 pb-24 px-6 text-center">
         <p className="font-sans text-ink-secondary mb-6">Your cart is empty.</p>
-        <Link to="/collection" className="text-accent underline font-sans">
-          Explore the collection
+        <Link to="/artworks" className="text-accent underline font-sans">
+          Explore the artworks
         </Link>
       </div>
     );
   }
 
+  const canvasItems = items.filter(({ art }) => isCanvas(art));
+
+  const getFraming = (artId) =>
+    FRAMING_OPTIONS.find((o) => o.id === (framing[artId] || "unframed"));
+
+  const framingCost = canvasItems.reduce(
+    (sum, { art, qty }) => sum + getFraming(art.id).price * qty,
+    0
+  );
+
   const shipping = SHIPPING_FLAT_FEE;
-  const total = subtotal + shipping;
+  const total = subtotal + shipping + framingCost;
 
   const handleChange = (e) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  };
+
+  const handleFramingChange = (artId, optionId) => {
+    setFraming((f) => ({ ...f, [artId]: optionId }));
   };
 
   const handleSubmit = (e) => {
@@ -50,9 +73,11 @@ export default function CheckoutPage() {
         artist: art.artist,
         price: art.price,
         qty,
+        framing: isCanvas(art) ? getFraming(art.id).label : null,
       })),
       subtotal,
       shipping,
+      framingCost,
       total,
     };
     localStorage.setItem("ic_last_order", JSON.stringify(order));
@@ -150,6 +175,37 @@ export default function CheckoutPage() {
               </select>
             </div>
 
+            {canvasItems.length > 0 && (
+              <div className="pt-2">
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-4">
+                  Framing
+                </p>
+                <div className="flex flex-col gap-5">
+                  {canvasItems.map(({ art }) => (
+                    <div key={art.id}>
+                      <p className="text-sm text-ink-primary font-sans mb-2">{art.title}</p>
+                      <select
+                        value={framing[art.id] || "unframed"}
+                        onChange={(e) => handleFramingChange(art.id, e.target.value)}
+                        className="w-full border border-line bg-bg px-4 py-3 font-sans text-ink-primary focus:outline-none focus:border-line-focus"
+                      >
+                        {FRAMING_OPTIONS.map((o) => (
+                          <option key={o.id} value={o.id}>
+                            {o.label}
+                            {o.price > 0 ? ` (+€${o.price})` : ""}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-ink-muted font-sans leading-relaxed mt-4">
+                  Framed pieces ship ready to hang. Unframed canvases arrive rolled in a
+                  protective tube.
+                </p>
+              </div>
+            )}
+
             <button
               type="submit"
               className="mt-4 inline-flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
@@ -171,6 +227,11 @@ export default function CheckoutPage() {
               <div key={art.id} className="flex justify-between gap-4 text-sm font-sans">
                 <span className="text-ink-secondary">
                   {art.title} {qty > 1 ? `x${qty}` : ""}
+                  {isCanvas(art) && (
+                    <span className="block text-xs text-ink-muted">
+                      {getFraming(art.id).label}
+                    </span>
+                  )}
                 </span>
                 <span className="text-ink-primary">&euro;{(art.price * qty).toLocaleString()}</span>
               </div>
@@ -181,6 +242,12 @@ export default function CheckoutPage() {
               <span>Subtotal</span>
               <span>&euro;{subtotal.toLocaleString()}</span>
             </div>
+            {framingCost > 0 && (
+              <div className="flex justify-between text-ink-secondary">
+                <span>Framing</span>
+                <span>&euro;{framingCost.toLocaleString()}</span>
+              </div>
+            )}
             <div className="flex justify-between text-ink-secondary">
               <span>Insured Shipping (EU)</span>
               <span>&euro;{shipping.toLocaleString()}</span>

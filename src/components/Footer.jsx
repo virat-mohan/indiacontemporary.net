@@ -21,9 +21,10 @@ export default function Footer() {
             Explore
           </p>
           <div className="flex flex-col gap-3 font-sans text-sm text-[#D3C5B3]">
-            <Link to="/collection" className="hover:text-white transition-colors">Collection</Link>
+            <Link to="/artworks" className="hover:text-white transition-colors">Artworks</Link>
             <Link to="/collections" className="hover:text-white transition-colors">Collections</Link>
             <Link to="/artists" className="hover:text-white transition-colors">Artists</Link>
+            <Link to="/for-artists" className="hover:text-white transition-colors">For Artists</Link>
           </div>
         </div>
 
@@ -33,6 +34,10 @@ export default function Footer() {
           </p>
           <div className="flex flex-col gap-3 font-sans text-sm text-[#D3C5B3]">
             <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
+            <Link to="/founder" className="hover:text-white transition-colors">Founder</Link>
+            <Link to="/blog" className="hover:text-white transition-colors">Journal</Link>
+            <Link to="/news" className="hover:text-white transition-colors">In The News</Link>
+            <Link to="/reviews" className="hover:text-white transition-colors">Artist Reviews</Link>
             <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
             <Link to="/shipping" className="hover:text-white transition-colors">Shipping to Europe</Link>
           </div>

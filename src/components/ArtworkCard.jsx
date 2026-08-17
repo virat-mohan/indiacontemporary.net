@@ -8,7 +8,7 @@ export default function ArtworkCard({ art, index = 0 }) {
       className="group opacity-0 animate-fade-up"
       style={{ animationDelay: `${index * 0.1}s`, animationFillMode: "forwards" }}
     >
-      <div className="overflow-hidden bg-[#EBE7DF] aspect-[3/4] mb-6 relative">
+      <div className="artwork-tilt overflow-hidden bg-[#EBE7DF] aspect-[3/4] mb-6 relative">
         <img
           src={art.image}
           alt={art.title}

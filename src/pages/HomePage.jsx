@@ -33,10 +33,10 @@ export default function HomePage() {
             intention and delivered to collectors across Europe.
           </p>
           <Link
-            to="/collection"
+            to="/artworks"
             className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm text-white border border-white/30 px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-white hover:text-accent transition-all duration-500"
           >
-            Explore The Collection <ArrowRight size={16} strokeWidth={1.5} />
+            Explore The Artworks <ArrowRight size={16} strokeWidth={1.5} />
           </Link>
         </div>
       </section>
@@ -54,7 +54,7 @@ export default function HomePage() {
               </h2>
             </div>
             <Link
-              to="/collection"
+              to="/artworks"
               className="hidden md:flex items-center gap-2 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
             >
               View All <ChevronRight size={14} />
@@ -190,10 +190,10 @@ export default function HomePage() {
             insured, to your door anywhere in Europe.
           </p>
           <Link
-            to="/collection"
+            to="/artworks"
             className="inline-flex items-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
           >
-            Browse Collection <ArrowRight size={16} strokeWidth={1.5} />
+            Browse Artworks <ArrowRight size={16} strokeWidth={1.5} />
           </Link>
         </div>
       </section>

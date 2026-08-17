@@ -4,9 +4,10 @@ import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 const navLinks = [
-  { href: "/collection", label: "Collection" },
+  { href: "/artworks", label: "Artworks" },
   { href: "/collections", label: "Collections" },
   { href: "/artists", label: "Artists" },
+  { href: "/for-artists", label: "For Artists" },
   { href: "/about", label: "About" },
 ];
 

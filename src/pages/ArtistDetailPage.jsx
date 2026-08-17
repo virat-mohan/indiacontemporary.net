@@ -33,7 +33,7 @@ export default function ArtistDetailPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-16 mb-20">
           <div>
-            <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
+            <div className="bevel-shadow aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
               <img
                 src={artist.image}
                 alt={artist.name}
@@ -58,27 +58,7 @@ export default function ArtistDetailPage() {
           </div>
         </div>
 
-        <div className="border-t border-line/50 pt-16">
-          <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
-            Available Now
-          </p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-light text-ink-primary tracking-tight mb-10">
-            Works By {artist.name}
-          </h2>
-          {works.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-              {works.map((art, i) => (
-                <ArtworkCard art={art} key={art.id} index={i} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-ink-muted font-sans">
-              No pieces currently listed &mdash; check back soon.
-            </p>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mt-20 pt-16 border-t border-line/50">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 pt-16 border-t border-line/50">
           {artist.exhibitions?.length > 0 && (
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
@@ -123,12 +103,23 @@ export default function ArtistDetailPage() {
                     key={i}
                     className="flex items-start justify-between gap-6 py-4 border-t border-line/50 last:border-b"
                   >
-                    <div>
-                      <p className="text-sm text-ink-primary font-sans">
-                        {sale.title} <span className="text-ink-muted">&middot; {sale.year}</span>
-                      </p>
-                      <p className="text-sm text-ink-muted font-sans font-light">{sale.medium}</p>
-                      <p className="text-xs text-ink-muted font-sans font-light mt-0.5">{sale.note}</p>
+                    <div className="flex items-start gap-4">
+                      {sale.image && (
+                        <div className="artwork-tilt w-16 h-16 flex-shrink-0 overflow-hidden bg-[#EBE7DF]">
+                          <img
+                            src={sale.image}
+                            alt={sale.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-sm text-ink-primary font-sans">
+                          {sale.title} <span className="text-ink-muted">&middot; {sale.year}</span>
+                        </p>
+                        <p className="text-sm text-ink-muted font-sans font-light">{sale.medium}</p>
+                        <p className="text-xs text-ink-muted font-sans font-light mt-0.5">{sale.note}</p>
+                      </div>
                     </div>
                     <p className="text-sm text-ink-secondary font-sans tabular-nums whitespace-nowrap">
                       &euro;{sale.price.toLocaleString()}
@@ -137,6 +128,26 @@ export default function ArtistDetailPage() {
                 ))}
               </div>
             </div>
+          )}
+        </div>
+
+        <div className="pt-16 mt-20 border-t border-line/50">
+          <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
+            Available Now
+          </p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-light text-ink-primary tracking-tight mb-10">
+            Works By {artist.name}
+          </h2>
+          {works.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+              {works.map((art, i) => (
+                <ArtworkCard art={art} key={art.id} index={i} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-ink-muted font-sans">
+              No pieces currently listed &mdash; check back soon.
+            </p>
           )}
         </div>
       </div>
