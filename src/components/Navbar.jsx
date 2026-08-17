@@ -1,18 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Search, ShoppingBag } from "lucide-react";
+import { Menu, X, Search, ShoppingBag, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { href: "/artworks", label: "Artworks" },
   { href: "/collections", label: "Collections" },
-  { href: "/artists", label: "Artists" },
+  {
+    label: "Artists",
+    href: "/artists",
+    children: [
+      { href: "/artists", label: "All Artists" },
+      { href: "/founder", label: "Founder" },
+      { href: "/reviews", label: "Artist Reviews" },
+      { href: "/sold-works", label: "Sold Works" },
+    ],
+  },
+  {
+    label: "Journal",
+    href: "/blog",
+    children: [
+      { href: "/blog", label: "The Journal" },
+      { href: "/news", label: "In The News" },
+    ],
+  },
   { href: "/for-artists", label: "For Artists" },
   { href: "/about", label: "About" },
 ];
 
+function NavDropdown({ link }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const onClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
+        aria-expanded={open}
+      >
+        {link.label}
+        <ChevronDown size={13} strokeWidth={1.5} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4">
+          <div className="bg-bg border border-line/60 shadow-lg py-2 min-w-[180px]">
+            {link.children.map((child) => (
+              <Link
+                key={child.href}
+                to={child.href}
+                onClick={() => setOpen(false)}
+                className="block px-5 py-2.5 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent hover:bg-bg-alt transition-colors font-sans whitespace-nowrap"
+              >
+                {child.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState(null);
   const { itemCount } = useCart();
 
   return (
@@ -26,16 +92,20 @@ export default function Navbar() {
             INDIA CONTEMPORARY
           </Link>
 
-          <div className="hidden md:flex items-center gap-10">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) =>
+              link.children ? (
+                <NavDropdown link={link} key={link.label} />
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </div>
 
           <div className="flex items-center gap-5">
@@ -68,17 +138,49 @@ export default function Navbar() {
         </div>
 
         {open && (
-          <div className="md:hidden flex flex-col gap-6 pb-8 pt-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                onClick={() => setOpen(false)}
-                className="text-sm uppercase tracking-widest text-ink-secondary font-sans"
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="md:hidden flex flex-col gap-1 pb-8 pt-2">
+            {navLinks.map((link) =>
+              link.children ? (
+                <div key={link.label} className="border-b border-line/30 last:border-b-0">
+                  <button
+                    onClick={() =>
+                      setMobileExpanded((v) => (v === link.label ? null : link.label))
+                    }
+                    className="w-full flex items-center justify-between py-3 text-sm uppercase tracking-widest text-ink-secondary font-sans"
+                  >
+                    {link.label}
+                    <ChevronDown
+                      size={15}
+                      strokeWidth={1.5}
+                      className={`transition-transform ${mobileExpanded === link.label ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {mobileExpanded === link.label && (
+                    <div className="flex flex-col gap-4 pb-4 pl-4">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          to={child.href}
+                          onClick={() => setOpen(false)}
+                          className="text-sm uppercase tracking-widest text-ink-muted font-sans"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setOpen(false)}
+                  className="py-3 text-sm uppercase tracking-widest text-ink-secondary font-sans border-b border-line/30 last:border-b-0"
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </div>
         )}
       </div>
