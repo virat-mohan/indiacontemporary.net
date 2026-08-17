@@ -48,7 +48,7 @@ export default function SoldWorksPage() {
                 {sale.linkedArtist ? (
                   <Link
                     to={`/artists/${sale.linkedArtist.id}`}
-                    className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors font-sans mb-2 block w-fit"
+                    className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent underline underline-offset-4 decoration-line hover:decoration-accent transition-colors font-sans mb-2 block w-fit"
                   >
                     {sale.artistName}
                   </Link>
