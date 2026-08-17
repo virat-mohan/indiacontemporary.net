@@ -18,6 +18,7 @@ import BlogPage from "@/pages/BlogPage";
 import BlogPostPage from "@/pages/BlogPostPage";
 import NewsPage from "@/pages/NewsPage";
 import ArtistReviewsPage from "@/pages/ArtistReviewsPage";
+import SoldWorksPage from "@/pages/SoldWorksPage";
 import CartPage from "@/pages/CartPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import CheckoutSuccessPage from "@/pages/CheckoutSuccessPage";
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/reviews" element={<ArtistReviewsPage />} />
+          <Route path="/sold-works" element={<SoldWorksPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/checkout/success" element={<CheckoutSuccessPage />} />

@@ -95,7 +95,8 @@ export default function ArtistDetailPage() {
                 Previously Sold
               </h2>
               <p className="text-xs text-ink-muted font-sans font-light mb-6">
-                A sample of past sales, shared for pricing context.
+                Prior sales through other galleries and auctions, shared for pricing
+                context — not sold through India Contemporary.
               </p>
               <div className="flex flex-col">
                 {artist.pastSales.map((sale, i) => (

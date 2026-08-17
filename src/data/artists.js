@@ -1,7 +1,9 @@
 // NOTE: `exhibitions` and `pastSales` below are placeholder content for
 // design/layout purposes only. Replace with each artist's real exhibition
 // history and verified sales records before this goes live to real buyers —
-// published prices need to be accurate, not illustrative.
+// published prices need to be accurate, not illustrative. `pastSales` is
+// market history from OTHER galleries/auctions, not sales made through
+// India Contemporary — for genuine platform sales, see platformSales.js.
 
 export const artists = [
   {
