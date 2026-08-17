@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { artists } from "@/data/artists";
 import { artworks } from "@/data/artworks";
+import { platformSales } from "@/data/platformSales";
 import ArtworkCard from "@/components/ArtworkCard";
 import { ArrowLeft } from "lucide-react";
 
@@ -9,6 +10,7 @@ export default function ArtistDetailPage() {
   const { id } = useParams();
   const artist = artists.find((a) => a.id === id);
   const works = artworks.filter((a) => a.artistId === id);
+  const soldThroughPlatform = platformSales.filter((s) => s.artistId === id && s.image);
 
   if (!artist) {
     return (
@@ -31,14 +33,26 @@ export default function ArtistDetailPage() {
           <ArrowLeft size={14} /> All Artists
         </Link>
 
+        {artist.profileNote && (
+          <p className="text-xs text-ink-muted font-sans font-light italic mb-8 max-w-2xl">
+            {artist.profileNote}
+          </p>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-16 mb-20">
           <div>
-            <div className="bevel-shadow aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
-              <img
-                src={artist.image}
-                alt={artist.name}
-                className="w-full h-full object-cover"
-              />
+            <div className="bevel-shadow aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6 flex items-center justify-center">
+              {artist.image ? (
+                <img
+                  src={artist.image}
+                  alt={artist.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans px-6 text-center">
+                  Portrait to be added
+                </p>
+              )}
             </div>
             <h1 className="font-serif text-3xl font-light text-ink-primary mb-1">
               {artist.name}
@@ -55,6 +69,18 @@ export default function ArtistDetailPage() {
             <p className="text-base text-ink-secondary font-sans font-light leading-relaxed">
               {artist.philosophy}
             </p>
+            {artist.awards?.length > 0 && (
+              <div className="pt-2">
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
+                  Awards &amp; Recognition
+                </p>
+                <ul className="text-sm text-ink-secondary font-sans font-light">
+                  {artist.awards.map((a, i) => (
+                    <li key={i}>{a}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
 
@@ -74,7 +100,7 @@ export default function ArtistDetailPage() {
                     className="flex gap-6 py-4 border-t border-line/50 last:border-b"
                   >
                     <span className="text-sm text-ink-muted font-sans tabular-nums w-12 flex-shrink-0">
-                      {ex.year}
+                      {ex.year || "—"}
                     </span>
                     <div>
                       <p className="text-sm text-ink-primary font-sans">{ex.title}</p>
@@ -151,6 +177,33 @@ export default function ArtistDetailPage() {
             </p>
           )}
         </div>
+
+        {soldThroughPlatform.length > 0 && (
+          <div className="pt-16 mt-20 border-t border-line/50">
+            <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
+              Provenance
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl font-light text-ink-primary tracking-tight mb-10">
+              Sold Through India Contemporary
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+              {soldThroughPlatform.map((sale, i) => (
+                <div key={i}>
+                  <div className="artwork-tilt aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-4">
+                    <img
+                      src={sale.image}
+                      alt={sale.title || artist.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  {sale.title && (
+                    <p className="text-sm text-ink-primary font-sans">{sale.title}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@
 // wire it up once real artist profiles exist to link to.
 export const platformSales = [
   {
-    artistId: null,
+    artistId: "rajnish-chhanesh",
     artistName: "Rajnish Chhanesh",
     title: null,
     year: null,
@@ -20,7 +20,7 @@ export const platformSales = [
     image: "/sold-works/rajnish-chhanesh-terraced-landscape.jpg",
   },
   {
-    artistId: null,
+    artistId: "rajnish-chhanesh",
     artistName: "Rajnish Chhanesh",
     title: null,
     year: null,
@@ -30,7 +30,7 @@ export const platformSales = [
     image: "/sold-works/rajnish-chhanesh-stepwell-horse.jpg",
   },
   {
-    artistId: null,
+    artistId: "rajnish-chhanesh",
     artistName: "Rajnish Chhanesh",
     title: null,
     year: null,
@@ -40,8 +40,8 @@ export const platformSales = [
     image: "/sold-works/rajnish-chhanesh-spiral-staircase.jpg",
   },
   {
-    artistId: null,
-    artistName: "Shaji Appukutan",
+    artistId: "shaji-appukuttan",
+    artistName: "Shaji Appukuttan",
     title: null,
     year: null,
     medium: null,
@@ -60,7 +60,7 @@ export const platformSales = [
     image: "/sold-works/s-raghu-boy-on-bike.jpg",
   },
   {
-    artistId: null,
+    artistId: "shekh-hifzul-kabeer",
     artistName: "Shekh Hifzul Kabeer",
     title: null,
     year: null,
@@ -80,7 +80,7 @@ export const platformSales = [
     image: "/sold-works/kr-subbana-goat.jpg",
   },
   {
-    artistId: null,
+    artistId: "gopal-samantray",
     artistName: "Gopal Samantray",
     title: null,
     year: null,
@@ -100,7 +100,7 @@ export const platformSales = [
     image: "/sold-works/jitendra-kumar-sharma-seated-figure.jpg",
   },
   {
-    artistId: null,
+    artistId: "anoop-kamath",
     artistName: "Anoop Kamath",
     title: null,
     year: null,
