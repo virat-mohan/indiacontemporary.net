@@ -10,6 +10,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=900&q=80",
     status: "available",
+    stock: 1,
   },
   {
     id: "terracotta-memory",
@@ -22,6 +23,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1554188248-986adbb73be4?auto=format&fit=crop&w=900&q=80",
     status: "available",
+    stock: 1,
   },
   {
     id: "delta-of-voices",
@@ -34,6 +36,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=900&q=80",
     status: "sold_out",
+    stock: 0,
   },
   {
     id: "woven-horizon",
@@ -46,6 +49,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1579762593175-20226054cad0?auto=format&fit=crop&w=900&q=80",
     status: "available",
+    stock: 1,
   },
   {
     id: "silent-quarter",
@@ -58,6 +62,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?auto=format&fit=crop&w=900&q=80",
     status: "available",
+    stock: 1,
   },
   {
     id: "riverine",
@@ -70,6 +75,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&w=900&q=80",
     status: "available",
+    stock: 1,
   },
   {
     id: "kolkata-nocturne",
@@ -82,6 +88,7 @@ export const artworks = [
     image:
       "https://images.unsplash.com/photo-1549289524-06cf8837ace5?auto=format&fit=crop&w=900&q=80",
     status: "available",
+    stock: 5,
   },
 ];
 

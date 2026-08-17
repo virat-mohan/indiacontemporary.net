@@ -1,13 +1,17 @@
-import React from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { artworks } from "@/data/artworks";
 import { artists } from "@/data/artists";
+import { useCart } from "@/context/CartContext";
 import { ArrowLeft } from "lucide-react";
 
 export default function ArtworkPage() {
   const { id } = useParams();
   const art = artworks.find((a) => a.id === id);
   const artist = art ? artists.find((p) => p.id === art.artistId) : null;
+  const { addItem } = useCart();
+  const navigate = useNavigate();
+  const [added, setAdded] = useState(false);
 
   if (!art) {
     return (
@@ -61,9 +65,25 @@ export default function ArtworkPage() {
                 Sold Out
               </span>
             ) : (
-              <button className="inline-flex w-fit bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300">
-                Enquire to Purchase
-              </button>
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => {
+                    addItem(art.id, 1);
+                    setAdded(true);
+                  }}
+                  className="inline-flex w-fit bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
+                >
+                  {added ? "Added" : "Add to Cart"}
+                </button>
+                {added && (
+                  <button
+                    onClick={() => navigate("/cart")}
+                    className="inline-flex w-fit border border-accent text-accent px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent hover:text-white transition-colors duration-300"
+                  >
+                    View Cart
+                  </button>
+                )}
+              </div>
             )}
 
             <p className="text-xs text-ink-muted font-sans mt-8 leading-relaxed max-w-sm">

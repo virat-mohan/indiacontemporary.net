@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { href: "/collection", label: "Collection" },
   { href: "/collections", label: "Collections" },
   { href: "/artists", label: "Artists" },
+  { href: "/for-artists", label: "For Artists" },
   { href: "/about", label: "About" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { itemCount } = useCart();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-line/50">
@@ -42,6 +45,18 @@ export default function Navbar() {
             >
               <Search size={18} strokeWidth={1.5} />
             </button>
+            <Link
+              to="/cart"
+              aria-label="Cart"
+              className="relative text-ink-secondary hover:text-accent transition-colors"
+            >
+              <ShoppingBag size={18} strokeWidth={1.5} />
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 w-4 h-4 bg-accent text-white text-[10px] flex items-center justify-center rounded-full font-sans">
+                  {itemCount}
+                </span>
+              )}
+            </Link>
             <button
               className="md:hidden text-ink-secondary"
               onClick={() => setOpen((v) => !v)}
