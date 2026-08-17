@@ -50,12 +50,20 @@ export default function SplashScreen() {
             Sourced In India &middot; Placed In Europe
           </p>
 
-          <Link
-            to="/for-artists"
-            className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm text-white border border-white/30 px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-white hover:text-[#1A1A1A] transition-all duration-500"
-          >
-            Call To Artists <ArrowRight size={16} strokeWidth={1.5} />
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-6">
+            <Link
+              to="/for-artists"
+              className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm text-white border border-white/30 px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-white hover:text-[#1A1A1A] transition-all duration-500"
+            >
+              Call To Artists <ArrowRight size={16} strokeWidth={1.5} />
+            </Link>
+            <button
+              onClick={() => setDismissed(true)}
+              className="text-sm tracking-widest uppercase font-sans text-white/70 hover:text-white underline underline-offset-4 transition-colors"
+            >
+              See Home Page
+            </button>
+          </div>
         </div>
       </div>
     </div>
