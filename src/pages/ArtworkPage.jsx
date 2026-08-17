@@ -3,12 +3,16 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { artworks } from "@/data/artworks";
 import { artists } from "@/data/artists";
 import { useCart } from "@/context/CartContext";
+import ArtworkCard from "@/components/ArtworkCard";
 import { ArrowLeft } from "lucide-react";
 
 export default function ArtworkPage() {
   const { id } = useParams();
   const art = artworks.find((a) => a.id === id);
   const artist = art ? artists.find((p) => p.id === art.artistId) : null;
+  const moreFromArtist = art
+    ? artworks.filter((a) => a.artistId === art.artistId && a.id !== art.id)
+    : [];
   const { addItem } = useCart();
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
@@ -40,14 +44,19 @@ export default function ArtworkPage() {
           </div>
 
           <div className="flex flex-col justify-center">
-            <p className="text-xs uppercase tracking-widest text-ink-muted mb-3 font-sans">
-              {artist?.name}
-            </p>
+            {artist && (
+              <Link
+                to={`/artists/${artist.id}`}
+                className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors mb-3 font-sans w-fit"
+              >
+                {artist.name}
+              </Link>
+            )}
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-ink-primary tracking-tight mb-6">
               {art.title}
             </h1>
             <p className="text-sm text-ink-secondary font-sans font-light mb-1">
-              {art.medium}
+              {art.medium}{art.year ? `, ${art.year}` : ""}
             </p>
             <p className="text-sm text-ink-muted font-sans font-light mb-8">
               {art.dimensions}
@@ -90,8 +99,45 @@ export default function ArtworkPage() {
               Shipped insured from the artist's studio in India to anywhere in the EU.
               Certificate of authenticity included.
             </p>
+
+            {art.description && (
+              <div className="mt-12 pt-8 border-t border-line/50">
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-3">
+                  About This Piece
+                </p>
+                <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed max-w-md">
+                  {art.description}
+                </p>
+              </div>
+            )}
           </div>
         </div>
+
+        {moreFromArtist.length > 0 && artist && (
+          <div className="mt-24 pt-16 border-t border-line/50">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
+                  Same Studio
+                </p>
+                <h2 className="font-serif text-2xl sm:text-3xl font-light text-ink-primary tracking-tight">
+                  More From {artist.name}
+                </h2>
+              </div>
+              <Link
+                to={`/artists/${artist.id}`}
+                className="hidden md:block text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
+              >
+                View Profile
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+              {moreFromArtist.map((a, i) => (
+                <ArtworkCard art={a} key={a.id} index={i} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

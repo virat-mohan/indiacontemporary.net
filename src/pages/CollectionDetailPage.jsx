@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 export default function CollectionDetailPage() {
   const { id } = useParams();
   const collection = collections.find((c) => c.id === id);
-  const items = artworks.slice(0, 4);
+  const items = artworks.filter((a) => a.collectionId === id);
 
   if (!collection) {
     return (

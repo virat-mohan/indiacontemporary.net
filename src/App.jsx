@@ -9,6 +9,7 @@ import ArtworkPage from "@/pages/ArtworkPage";
 import CollectionsListPage from "@/pages/CollectionsListPage";
 import CollectionDetailPage from "@/pages/CollectionDetailPage";
 import ArtistsPage from "@/pages/ArtistsPage";
+import ArtistDetailPage from "@/pages/ArtistDetailPage";
 import ForArtistsPage from "@/pages/ForArtistsPage";
 import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/collections/:id" element={<CollectionDetailPage />} />
           <Route path="/artwork/:id" element={<ArtworkPage />} />
           <Route path="/artists" element={<ArtistsPage />} />
+          <Route path="/artists/:id" element={<ArtistDetailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/cart" element={<CartPage />} />

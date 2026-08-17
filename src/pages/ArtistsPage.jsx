@@ -1,7 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { artists } from "@/data/artists";
-import { artworks } from "@/data/artworks";
-import ArtworkCard from "@/components/ArtworkCard";
 
 export default function ArtistsPage() {
   return (
@@ -20,41 +19,32 @@ export default function ArtistsPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-24 md:gap-32">
-          {artists.map((artist, i) => {
-            const works = artworks.filter((a) => a.artistId === artist.id);
-            return (
-              <div
-                key={artist.id}
-                className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-16"
-              >
-                <div>
-                  <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
-                    <img
-                      src={artist.image}
-                      alt={artist.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h2 className="font-serif text-2xl font-light text-ink-primary mb-1">
-                    {artist.name}
-                  </h2>
-                  <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-4">
-                    {artist.role} &middot; {artist.city}
-                  </p>
-                  <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-                    {artist.bio}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 content-start">
-                  {works.map((art, j) => (
-                    <ArtworkCard art={art} key={art.id} index={j} />
-                  ))}
-                </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
+          {artists.map((artist, i) => (
+            <Link
+              to={`/artists/${artist.id}`}
+              key={artist.id}
+              className="group opacity-0 animate-fade-up"
+              style={{ animationDelay: `${i * 0.1}s`, animationFillMode: "forwards" }}
+            >
+              <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-5">
+                <img
+                  src={artist.image}
+                  alt={artist.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
               </div>
-            );
-          })}
+              <h2 className="font-serif text-xl font-light text-ink-primary mb-1">
+                {artist.name}
+              </h2>
+              <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-3">
+                {artist.role} &middot; {artist.city}
+              </p>
+              <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
+                {artist.bio}
+              </p>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
