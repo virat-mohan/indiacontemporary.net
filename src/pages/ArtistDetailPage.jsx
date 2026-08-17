@@ -77,6 +77,68 @@ export default function ArtistDetailPage() {
             </p>
           )}
         </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mt-20 pt-16 border-t border-line/50">
+          {artist.exhibitions?.length > 0 && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
+                Track Record
+              </p>
+              <h2 className="font-serif text-2xl font-light text-ink-primary tracking-tight mb-8">
+                Exhibitions
+              </h2>
+              <div className="flex flex-col">
+                {artist.exhibitions.map((ex, i) => (
+                  <div
+                    key={i}
+                    className="flex gap-6 py-4 border-t border-line/50 last:border-b"
+                  >
+                    <span className="text-sm text-ink-muted font-sans tabular-nums w-12 flex-shrink-0">
+                      {ex.year}
+                    </span>
+                    <div>
+                      <p className="text-sm text-ink-primary font-sans">{ex.title}</p>
+                      <p className="text-sm text-ink-muted font-sans font-light">{ex.venue}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {artist.pastSales?.length > 0 && (
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
+                Market History
+              </p>
+              <h2 className="font-serif text-2xl font-light text-ink-primary tracking-tight mb-2">
+                Previously Sold
+              </h2>
+              <p className="text-xs text-ink-muted font-sans font-light mb-6">
+                A sample of past sales, shared for pricing context.
+              </p>
+              <div className="flex flex-col">
+                {artist.pastSales.map((sale, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start justify-between gap-6 py-4 border-t border-line/50 last:border-b"
+                  >
+                    <div>
+                      <p className="text-sm text-ink-primary font-sans">
+                        {sale.title} <span className="text-ink-muted">&middot; {sale.year}</span>
+                      </p>
+                      <p className="text-sm text-ink-muted font-sans font-light">{sale.medium}</p>
+                      <p className="text-xs text-ink-muted font-sans font-light mt-0.5">{sale.note}</p>
+                    </div>
+                    <p className="text-sm text-ink-secondary font-sans tabular-nums whitespace-nowrap">
+                      &euro;{sale.price.toLocaleString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
