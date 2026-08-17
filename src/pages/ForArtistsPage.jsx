@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowRight, Landmark, Gem, TrendingUp } from "lucide-react";
+import { ArrowRight, Landmark, Gem, TrendingUp, ShieldCheck } from "lucide-react";
 
 const WHATSAPP_NUMBER = "919811165111";
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
@@ -109,7 +109,7 @@ export default function ForArtistsPage() {
 
       {/* Value props */}
       <section className="py-20 md:py-28 px-6 md:px-12 lg:px-24 bg-bg-alt border-y border-line/50">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 text-center">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-12 text-center">
           <div>
             <Landmark className="mx-auto mb-5 text-accent" size={28} strokeWidth={1.25} />
             <h3 className="font-serif text-xl font-light text-ink-primary mb-3">
@@ -138,6 +138,16 @@ export default function ForArtistsPage() {
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               Numerous artworks by Indian contemporary artists have already been
               successfully auctioned to collectors across Europe.
+            </p>
+          </div>
+          <div>
+            <ShieldCheck className="mx-auto mb-5 text-accent" size={28} strokeWidth={1.25} />
+            <h3 className="font-serif text-xl font-light text-ink-primary mb-3">
+              Transparency &amp; Prompt Payments
+            </h3>
+            <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
+              Clear terms on commission and pricing from the start, and payment
+              reaches you promptly once a piece sells — no chasing, no surprises.
             </p>
           </div>
         </div>
