@@ -8,8 +8,10 @@ import { platformSales } from "@/data/platformSales";
 // India Contemporary — sourced from platformSales.js, not artists.js.
 const soldWorks = platformSales
   .filter((sale) => sale.image)
-  .map((sale) => ({ ...sale, artist: artists.find((a) => a.id === sale.artistId) }))
-  .filter((sale) => sale.artist);
+  .map((sale) => ({
+    ...sale,
+    linkedArtist: sale.artistId ? artists.find((a) => a.id === sale.artistId) : null,
+  }));
 
 export default function SoldWorksPage() {
   return (
@@ -39,24 +41,36 @@ export default function SoldWorksPage() {
                 <div className="artwork-tilt aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-5">
                   <img
                     src={sale.image}
-                    alt={sale.title}
+                    alt={sale.title || `Work by ${sale.artistName}`}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <Link
-                  to={`/artists/${sale.artist.id}`}
-                  className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors font-sans mb-2 block w-fit"
-                >
-                  {sale.artist.name}
-                </Link>
-                <h3 className="font-serif text-lg font-light text-ink-primary mb-1">
-                  {sale.title} <span className="text-ink-muted">&middot; {sale.year}</span>
-                </h3>
-                <p className="text-sm text-ink-muted font-sans font-light">{sale.medium}</p>
-                <p className="text-sm text-ink-secondary font-sans tabular-nums mt-1">
-                  &euro;{sale.price.toLocaleString()}
-                  {sale.note && <span className="text-ink-muted"> &middot; {sale.note}</span>}
-                </p>
+                {sale.linkedArtist ? (
+                  <Link
+                    to={`/artists/${sale.linkedArtist.id}`}
+                    className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors font-sans mb-2 block w-fit"
+                  >
+                    {sale.artistName}
+                  </Link>
+                ) : (
+                  <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
+                    {sale.artistName}
+                  </p>
+                )}
+                {sale.title && (
+                  <h3 className="font-serif text-lg font-light text-ink-primary mb-1">
+                    {sale.title} {sale.year && <span className="text-ink-muted">&middot; {sale.year}</span>}
+                  </h3>
+                )}
+                {sale.medium && (
+                  <p className="text-sm text-ink-muted font-sans font-light">{sale.medium}</p>
+                )}
+                {sale.price && (
+                  <p className="text-sm text-ink-secondary font-sans tabular-nums mt-1">
+                    &euro;{sale.price.toLocaleString()}
+                    {sale.note && <span className="text-ink-muted"> &middot; {sale.note}</span>}
+                  </p>
+                )}
               </div>
             ))}
           </div>

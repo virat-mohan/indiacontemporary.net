@@ -1,9 +1,6 @@
 import React from "react";
 
-// Photo pending — swap the placeholder box below for Vijit's actual
-// portrait once it's provided (source page for bio + photo was
-// artbyhooda.com/about-6, blocked from automated fetch here).
-const FOUNDER_IMAGE = null;
+const FOUNDER_IMAGE = "/founder/vijit-veer-hooda.jpeg";
 
 const exhibitions = [
   { year: 2025, title: "Gallery Steiner", venue: "Vienna" },

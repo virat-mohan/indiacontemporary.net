@@ -2,8 +2,111 @@
 // artist's `pastSales` in artists.js, which is market history from other
 // galleries/auctions, shown for pricing context only.
 //
-// Add real entries here once photos are available:
-// { artistId: "meera-krishnan", title: "...", year: 2026, medium: "...",
-//   price: 0, image: "/sold-works/filename.jpg", note: "Sold to a
-//   collector in ..." }
-export const platformSales = [];
+// These 10 entries use real sold-artwork photos, but price, medium, and
+// sale details are NOT yet known — those fields are left null on purpose
+// rather than guessed. Fill them in once confirmed. None of these artists
+// are in artists.js yet (that roster is placeholder/fictional); artistId
+// is left null so the name shows as plain text instead of a broken link —
+// wire it up once real artist profiles exist to link to.
+export const platformSales = [
+  {
+    artistId: null,
+    artistName: "Rajnish Chhanesh",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/rajnish-chhanesh-terraced-landscape.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Rajnish Chhanesh",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/rajnish-chhanesh-stepwell-horse.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Rajnish Chhanesh",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/rajnish-chhanesh-spiral-staircase.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Shaji Appukutan",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/shaji-appukutan-forest-boat.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "S Raghu",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/s-raghu-boy-on-bike.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Shekh Hifzul Kabeer",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/shekh-hifzul-kabeer-chair-tree.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "KR Subbana",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/kr-subbana-goat.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Gopal Samantray",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/gopal-samantray-tiger-rooftop.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Jitendra Kumar Sharma",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/jitendra-kumar-sharma-seated-figure.jpg",
+  },
+  {
+    artistId: null,
+    artistName: "Anoop Kamath",
+    title: null,
+    year: null,
+    medium: null,
+    price: null,
+    note: null,
+    image: "/sold-works/anoop-kamath-portrait-hat.jpg",
+  },
+];
