@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
+import AdminManualArtistForm from "@/components/AdminManualArtistForm";
 
 const STATUS_LABEL = {
   draft: "Draft (not yet submitted)",
@@ -18,6 +19,8 @@ export default function AdminPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [expanded, setExpanded] = useState(null);
   const [commissionDraft, setCommissionDraft] = useState({});
+  const [editingArtwork, setEditingArtwork] = useState(null);
+  const [artworkDraft, setArtworkDraft] = useState({});
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState("");
 
@@ -144,6 +147,40 @@ export default function AdminPage() {
     else await loadData();
   };
 
+  const startEditArtwork = (artwork) => {
+    setEditingArtwork(artwork.id);
+    setArtworkDraft({
+      title: artwork.title || "",
+      medium: artwork.medium || "",
+      size: artwork.size || "",
+      year: artwork.year || "",
+      reserve_price: artwork.reserve_price ?? "",
+      currency: artwork.currency || "EUR",
+    });
+  };
+
+  const handleSaveArtwork = async (artworkId) => {
+    setBusy(artworkId);
+    const { error: err } = await supabase
+      .from("artworks")
+      .update({
+        title: artworkDraft.title || null,
+        medium: artworkDraft.medium || null,
+        size: artworkDraft.size || null,
+        year: artworkDraft.year ? Number(artworkDraft.year) : null,
+        reserve_price: artworkDraft.reserve_price !== "" ? Number(artworkDraft.reserve_price) : null,
+        currency: artworkDraft.currency || "EUR",
+      })
+      .eq("id", artworkId);
+    setBusy(null);
+    if (err) {
+      setError(err.message);
+    } else {
+      setEditingArtwork(null);
+      await loadData();
+    }
+  };
+
   return (
     <div className="pt-32 pb-24 px-6 md:px-12 lg:px-24">
       <div className="max-w-[1400px] mx-auto">
@@ -151,6 +188,8 @@ export default function AdminPage() {
           Artist Applications
         </h1>
         <p className="text-sm text-ink-muted font-sans mb-10">Signed in as {user?.email}</p>
+
+        <AdminManualArtistForm session={session} onCreated={loadData} />
 
         {error && <p className="text-sm text-red-700 font-sans mb-6">{error}</p>}
 
@@ -193,24 +232,101 @@ export default function AdminPage() {
                       {artist.bio && <p className="text-sm text-ink-secondary font-sans leading-relaxed">{artist.bio}</p>}
 
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        {works.map((w) => (
-                          <div key={w.id}>
-                            {w.image_url && (
-                              <img src={w.image_url} alt="" className="aspect-square object-cover mb-2" />
-                            )}
-                            <p className="text-xs text-ink-primary font-sans">{w.title || "Untitled"}</p>
-                            <p className="text-xs text-ink-muted font-sans">
-                              {[w.medium, w.size, w.year].filter(Boolean).join(" · ")}
-                            </p>
-                            <button
-                              onClick={() => togglePublishArtwork(w)}
-                              disabled={busy === w.id}
-                              className="text-[10px] uppercase tracking-widest mt-1 underline underline-offset-2 text-ink-muted hover:text-accent"
-                            >
-                              {w.published ? "Unpublish" : "Publish"}
-                            </button>
-                          </div>
-                        ))}
+                        {works.map((w) =>
+                          editingArtwork === w.id ? (
+                            <div key={w.id} className="border border-line/50 p-3 flex flex-col gap-2 col-span-2">
+                              {w.image_url && (
+                                <img src={w.image_url} alt="" className="aspect-square object-cover mb-1" />
+                              )}
+                              <input
+                                placeholder="Title"
+                                value={artworkDraft.title}
+                                onChange={(e) => setArtworkDraft((d) => ({ ...d, title: e.target.value }))}
+                                className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                              />
+                              <input
+                                placeholder="Medium"
+                                value={artworkDraft.medium}
+                                onChange={(e) => setArtworkDraft((d) => ({ ...d, medium: e.target.value }))}
+                                className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                              />
+                              <div className="grid grid-cols-2 gap-2">
+                                <input
+                                  placeholder="Size"
+                                  value={artworkDraft.size}
+                                  onChange={(e) => setArtworkDraft((d) => ({ ...d, size: e.target.value }))}
+                                  className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                                />
+                                <input
+                                  placeholder="Year"
+                                  value={artworkDraft.year}
+                                  onChange={(e) => setArtworkDraft((d) => ({ ...d, year: e.target.value }))}
+                                  className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                                />
+                              </div>
+                              <div className="grid grid-cols-2 gap-2">
+                                <input
+                                  placeholder="Reserve price"
+                                  value={artworkDraft.reserve_price}
+                                  onChange={(e) =>
+                                    setArtworkDraft((d) => ({ ...d, reserve_price: e.target.value }))
+                                  }
+                                  className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                                />
+                                <select
+                                  value={artworkDraft.currency}
+                                  onChange={(e) => setArtworkDraft((d) => ({ ...d, currency: e.target.value }))}
+                                  className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                                >
+                                  <option value="EUR">EUR</option>
+                                  <option value="INR">INR</option>
+                                </select>
+                              </div>
+                              <div className="flex gap-2 mt-1">
+                                <button
+                                  type="button"
+                                  onClick={() => handleSaveArtwork(w.id)}
+                                  disabled={busy === w.id}
+                                  className="bg-accent text-white px-3 py-1.5 text-[10px] uppercase tracking-widest font-sans"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setEditingArtwork(null)}
+                                  className="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest font-sans"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div key={w.id}>
+                              {w.image_url && (
+                                <img src={w.image_url} alt="" className="aspect-square object-cover mb-2" />
+                              )}
+                              <p className="text-xs text-ink-primary font-sans">{w.title || "Untitled"}</p>
+                              <p className="text-xs text-ink-muted font-sans">
+                                {[w.medium, w.size, w.year].filter(Boolean).join(" · ")}
+                              </p>
+                              <div className="flex gap-3 mt-1">
+                                <button
+                                  onClick={() => startEditArtwork(w)}
+                                  className="text-[10px] uppercase tracking-widest underline underline-offset-2 text-ink-muted hover:text-accent"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => togglePublishArtwork(w)}
+                                  disabled={busy === w.id}
+                                  className="text-[10px] uppercase tracking-widest underline underline-offset-2 text-ink-muted hover:text-accent"
+                                >
+                                  {w.published ? "Unpublish" : "Publish"}
+                                </button>
+                              </div>
+                            </div>
+                          )
+                        )}
                       </div>
 
                       <div className="flex flex-wrap items-end gap-4 pt-4 border-t border-line/40">

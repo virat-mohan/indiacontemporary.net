@@ -207,3 +207,18 @@ create policy "artist reads own contract pdf" on storage.objects
   for select using (
     bucket_id = 'contracts' and (storage.foldername(name))[1] = auth.uid()::text
   );
+
+-- Admins can upload into ANY artist's folder in these two public buckets —
+-- needed so an admin can manually create an artist profile (with photo and
+-- artwork images) on someone's behalf, not just review self-submitted ones.
+drop policy if exists "admins upload any artist photo" on storage.objects;
+create policy "admins upload any artist photo" on storage.objects
+  for insert with check (
+    bucket_id = 'artist-photos' and auth.jwt() ->> 'email' in (select email from admins)
+  );
+
+drop policy if exists "admins upload any artwork image" on storage.objects;
+create policy "admins upload any artwork image" on storage.objects
+  for insert with check (
+    bucket_id = 'artwork-images' and auth.jwt() ->> 'email' in (select email from admins)
+  );

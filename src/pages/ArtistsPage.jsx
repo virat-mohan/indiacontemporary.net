@@ -1,6 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { artists } from "@/data/artists";
+import { artworks } from "@/data/artworks";
+
+const EXCERPT_LENGTH = 130;
+
+function excerpt(text) {
+  if (!text || text.length <= EXCERPT_LENGTH) return text;
+  const cut = text.slice(0, EXCERPT_LENGTH);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "…";
+}
 
 export default function ArtistsPage() {
   return (
@@ -20,24 +29,36 @@ export default function ArtistsPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12">
-          {artists.map((artist, i) => (
-            <Link
-              to={`/artists/${artist.id}`}
-              key={artist.id}
-              className="group opacity-0 animate-fade-up"
-              style={{ animationDelay: `${i * 0.1}s`, animationFillMode: "forwards" }}
-            >
-              <h2 className="font-serif text-xl font-light text-ink-primary mb-1 group-hover:text-accent transition-colors">
-                {artist.name}
-              </h2>
-              <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-3">
-                {[artist.role, artist.city].filter(Boolean).join(" · ")}
-              </p>
-              <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-                {artist.bio}
-              </p>
-            </Link>
-          ))}
+          {artists.map((artist, i) => {
+            const sampleWork = artworks.find((a) => a.artistId === artist.id);
+            return (
+              <Link
+                to={`/artists/${artist.id}`}
+                key={artist.id}
+                className="group opacity-0 animate-fade-up"
+                style={{ animationDelay: `${i * 0.1}s`, animationFillMode: "forwards" }}
+              >
+                {sampleWork?.image && (
+                  <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-5">
+                    <img
+                      src={sampleWork.image}
+                      alt={sampleWork.title || artist.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
+                <h2 className="font-serif text-xl font-light text-ink-primary mb-1 group-hover:text-accent transition-colors">
+                  {artist.name}
+                </h2>
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-3">
+                  {[artist.role, artist.city].filter(Boolean).join(" · ")}
+                </p>
+                <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
+                  {excerpt(artist.bio)}
+                </p>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
