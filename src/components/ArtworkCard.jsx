@@ -1,7 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+const CURRENCY_SYMBOLS = { EUR: "€", INR: "₹" };
+
 export default function ArtworkCard({ art, index = 0 }) {
+  const symbol = CURRENCY_SYMBOLS[art.currency] || "€";
+  const priceText = art.price != null ? `${symbol}${art.price.toLocaleString()}` : "Price on request";
+  const details = [art.medium, priceText].filter(Boolean).join(" · ");
   return (
     <Link
       to={`/artwork/${art.id}`}
@@ -32,7 +37,7 @@ export default function ArtworkCard({ art, index = 0 }) {
           art.status === "sold_out" ? "text-ink-muted line-through" : "text-ink-secondary"
         }`}
       >
-        {art.medium} &middot; &euro;{art.price.toLocaleString()}
+        {details}
       </p>
     </Link>
   );

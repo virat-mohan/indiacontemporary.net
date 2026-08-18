@@ -4,7 +4,8 @@ import { Instagram } from "lucide-react";
 const PARTNERS = [
   {
     name: "NIV Art Centre",
-    note: "A creative space in Delhi for art and film, and a partner we work with in bringing artists' work to India Contemporary.",
+    logo: "/partners/niv-art-centre-logo.jpg",
+    note: "The collaboration between Vijit Veer Hooda and the NIV Art Centre acts as a strategic cultural conduit — the partnership identifies visionary Indian artists within NIV's extensive network and positions their work for high-profile exposure to international collectors, institutions, and buyers.",
     instagram: "https://www.instagram.com/nivartcentre/",
     handle: "@nivartcentre",
   },
@@ -83,15 +84,24 @@ export default function PartnershipsPage() {
         {PARTNERS.map((p) => (
           <div
             key={p.name}
-            className="border border-line/60 p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+            className="border border-line/60 p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
           >
-            <div>
-              <h2 className="font-serif text-2xl font-light text-ink-primary mb-2">
-                {p.name}
-              </h2>
-              <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-                {p.note}
-              </p>
+            <div className="flex items-start gap-6">
+              {p.logo && (
+                <img
+                  src={p.logo}
+                  alt={`${p.name} logo`}
+                  className="w-16 h-16 object-contain flex-shrink-0"
+                />
+              )}
+              <div>
+                <h2 className="font-serif text-2xl font-light text-ink-primary mb-2">
+                  {p.name}
+                </h2>
+                <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
+                  {p.note}
+                </p>
+              </div>
             </div>
             <a
               href={p.instagram}

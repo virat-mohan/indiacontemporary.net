@@ -6,6 +6,8 @@ import { useCart } from "@/context/CartContext";
 import ArtworkCard from "@/components/ArtworkCard";
 import { ArrowLeft } from "lucide-react";
 
+const CURRENCY_SYMBOLS = { EUR: "€", INR: "₹" };
+
 export default function ArtworkPage() {
   const { id } = useParams();
   const art = artworks.find((a) => a.id === id);
@@ -55,25 +57,31 @@ export default function ArtworkPage() {
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-ink-primary tracking-tight mb-6">
               {art.title}
             </h1>
-            <p className="text-sm text-ink-secondary font-sans font-light mb-1">
-              {art.medium}{art.year ? `, ${art.year}` : ""}
-            </p>
-            <p className="text-sm text-ink-muted font-sans font-light mb-8">
-              {art.dimensions}
-            </p>
+            {(art.medium || art.year) && (
+              <p className="text-sm text-ink-secondary font-sans font-light mb-1">
+                {art.medium}{art.medium && art.year ? `, ${art.year}` : art.year}
+              </p>
+            )}
+            {art.dimensions && (
+              <p className="text-sm text-ink-muted font-sans font-light mb-8">
+                {art.dimensions}
+              </p>
+            )}
             <p
               className={`text-2xl font-serif font-light mb-10 ${
                 art.status === "sold_out" ? "text-ink-muted line-through" : "text-ink-primary"
               }`}
             >
-              &euro;{art.price.toLocaleString()}
+              {art.price != null
+                ? `${CURRENCY_SYMBOLS[art.currency] || "€"}${art.price.toLocaleString()}`
+                : "Price on request"}
             </p>
 
             {art.status === "sold_out" ? (
               <span className="inline-flex w-fit bg-ink-muted/20 text-ink-secondary px-8 py-4 text-sm tracking-widest uppercase font-sans">
                 Sold Out
               </span>
-            ) : (
+            ) : art.price != null ? (
               <div className="flex flex-wrap gap-4">
                 <button
                   onClick={() => {
@@ -93,11 +101,18 @@ export default function ArtworkPage() {
                   </button>
                 )}
               </div>
+            ) : (
+              <Link
+                to="/contact"
+                className="inline-flex w-fit bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
+              >
+                Enquire
+              </Link>
             )}
 
             <p className="text-xs text-ink-muted font-sans mt-8 leading-relaxed max-w-sm">
-              Shipped insured from the artist's studio in India to anywhere in the EU.
-              Certificate of authenticity included.
+              Shipped insured from the artist's studio in India to anywhere in Europe &
+              beyond. Certificate of authenticity included.
             </p>
 
             {art.description && (

@@ -1,7 +1,181 @@
-// Fictional placeholder artworks and collections have been removed — real
-// artists don't have for-sale inventory listed here yet (their confirmed
-// genuine sale lives in platformSales.js instead). Add real, available
-// artworks here once an artist has work ready to list for purchase.
-export const artworks = [];
+// Real, available-for-purchase artworks from artists directly onboarded
+// through the India Contemporary / NIV Art Centre partnership. Fields not
+// supplied by the artist/curator (medium, year, dimensions, price) are left
+// null rather than guessed — the artwork detail page and cards render
+// "Price on request" and hide missing fields gracefully. `price` defaults
+// to EUR display; set `currency: "INR"` for the two pieces priced in
+// rupees by the artist.
+export const artworks = [
+  // Karam Singh — untitled underwater swimmer series, oil paintings.
+  // No individual titles, mediums, or prices were supplied for these.
+  {
+    id: "karam-singh-untitled-i",
+    artistId: "karam-singh",
+    artist: "Karam Singh",
+    title: "Untitled I",
+    medium: null,
+    year: null,
+    dimensions: null,
+    price: null,
+    status: "available",
+    image: "/artworks/karam-singh-swimmer-dive.jpg",
+  },
+  {
+    id: "karam-singh-untitled-ii",
+    artistId: "karam-singh",
+    artist: "Karam Singh",
+    title: "Untitled II",
+    medium: null,
+    year: null,
+    dimensions: null,
+    price: null,
+    status: "available",
+    image: "/artworks/karam-singh-swimmer-sunlit.jpg",
+  },
+  {
+    id: "karam-singh-untitled-iii",
+    artistId: "karam-singh",
+    artist: "Karam Singh",
+    title: "Untitled III",
+    medium: null,
+    year: null,
+    dimensions: null,
+    price: null,
+    status: "available",
+    image: "/artworks/karam-singh-swimmer-speedo.jpg",
+  },
+  {
+    id: "karam-singh-untitled-iv",
+    artistId: "karam-singh",
+    artist: "Karam Singh",
+    title: "Untitled IV",
+    medium: null,
+    year: null,
+    dimensions: null,
+    price: null,
+    status: "available",
+    image: "/artworks/karam-singh-swimmer-shoreline.jpg",
+  },
+  {
+    id: "karam-singh-untitled-v",
+    artistId: "karam-singh",
+    artist: "Karam Singh",
+    title: "Untitled V",
+    medium: null,
+    year: null,
+    dimensions: null,
+    price: null,
+    status: "available",
+    image: "/artworks/karam-singh-swimmer-sunburst.jpg",
+  },
+
+  // Guruvinayak
+  {
+    id: "guruvinayak-vyakul",
+    artistId: "guruvinayak",
+    artist: "Guruvinayak",
+    title: "Vyakul",
+    medium: "Oil on canvas",
+    year: 2025,
+    dimensions: "96 x 72 cm",
+    price: null,
+    status: "available",
+    image: "/artworks/guruvinayak-vyakul.jpg",
+  },
+  {
+    id: "guruvinayak-cruel-shrewed-fates",
+    artistId: "guruvinayak",
+    artist: "Guruvinayak",
+    title: "Cruel-Shrewed-Cunning-Honest-Annoying Fates",
+    medium: "Oil and alkyd on canvas",
+    year: 2023,
+    dimensions: "127 x 172 cm",
+    price: null,
+    status: "available",
+    image: "/artworks/guruvinayak-cruel-shrewed-fates.jpg",
+  },
+  {
+    id: "guruvinayak-van-gayatri",
+    artistId: "guruvinayak",
+    artist: "Guruvinayak",
+    title: "Van Gayatri",
+    medium: "Oil on canvas, digital print brocade",
+    year: 2021,
+    dimensions: "85 x 115 cm (33.5 x 45 in + 12 in frame)",
+    price: 320100,
+    currency: "INR",
+    status: "available",
+    description:
+      "This painting shows the goddess of the forest — she takes care of the forest as the giant there, and is followed by the wolves with antlers. The modern clothing is a take on the era-appropriate gods.",
+    image: "/artworks/guruvinayak-van-gayatri.jpg",
+  },
+  {
+    id: "guruvinayak-divine-masculine",
+    artistId: "guruvinayak",
+    artist: "Guruvinayak",
+    title: "The Divine Masculine",
+    medium: "Oil and mica on canvas",
+    year: 2020,
+    dimensions: "74 x 45 cm (30 x 17 in), triptych",
+    price: 202000,
+    currency: "INR",
+    status: "available",
+    description:
+      "This painting shows the divine masculine form, with the three outer planets — Jupiter, Saturn, and Uranus — aligned in the opposite manner of the natural order, as the mirror of what the planets near the sun represent. An extension of the artist's own androgyny and personal power. This painting employs iridescent colours which cannot be properly captured by camera.",
+    image: "/artworks/guruvinayak-divine-masculine.jpg",
+  },
+
+  // Manoj Paswan
+  {
+    id: "manoj-paswan-dream-house",
+    artistId: "manoj-paswan",
+    artist: "Manoj Paswan",
+    title: "Dream House",
+    medium: "Acrylic on canvas",
+    year: null,
+    dimensions: "36 x 36 in (3 x 3 ft)",
+    price: null,
+    status: "available",
+    image: "/artworks/manoj-paswan-dream-house.jpg",
+  },
+  {
+    id: "manoj-paswan-karmveer",
+    artistId: "manoj-paswan",
+    artist: "Manoj Paswan",
+    title: "Karmveer",
+    medium: "Acrylic on canvas",
+    year: null,
+    dimensions: "36 x 36 in (3 x 3 ft)",
+    price: null,
+    status: "available",
+    image: "/artworks/manoj-paswan-karmveer.jpg",
+  },
+  {
+    id: "manoj-paswan-son-of-soil-ii",
+    artistId: "manoj-paswan",
+    artist: "Manoj Paswan",
+    title: "The Son of Soil - II",
+    medium: "Acrylic on canvas",
+    year: null,
+    dimensions: "50 x 50 in (4.2 x 4.2 ft)",
+    price: null,
+    status: "available",
+    image: "/artworks/manoj-paswan-son-of-soil-ii.jpg",
+  },
+
+  // Neeraj Rawal
+  {
+    id: "neeraj-rawal-cyclist",
+    artistId: "neeraj-rawal",
+    artist: "Neeraj Rawal",
+    title: "Untitled",
+    medium: "Metal sculpture",
+    year: null,
+    dimensions: null,
+    price: null,
+    status: "available",
+    image: "/artworks/neeraj-rawal-bicycle-figure.jpg",
+  },
+];
 
 export const collections = [];

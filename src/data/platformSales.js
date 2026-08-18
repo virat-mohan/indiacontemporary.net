@@ -2,12 +2,10 @@
 // artist's `pastSales` in artists.js, which is market history from other
 // galleries/auctions, shown for pricing context only.
 //
-// These 10 entries use real sold-artwork photos. Price and sale note are
-// still unknown and left null on purpose rather than guessed. None of
-// these artists are in artists.js yet (that roster is placeholder/
-// fictional); artistId is left null so the name shows as plain text
-// instead of a broken link — wire it up once real artist profiles exist
-// to link to.
+// Price and sale note are unknown for all entries and left null on purpose
+// rather than guessed. artistId is null for artists without a confirmed
+// profile match in artists.js (their name shows as plain text instead of a
+// broken link) and set for the artists who do have a profile there.
 export const platformSales = [
   {
     artistId: "rajnish-chhanesh",
@@ -120,14 +118,25 @@ export const platformSales = [
     image: "/sold-works/jitendra-kumar-sharma-samsara-ii.jpg",
   },
   {
-    artistId: "anoop-kamath",
-    artistName: "Anoop Kamath",
+    artistId: "karam-singh",
+    artistName: "Karam Singh",
     title: null,
     year: null,
     medium: null,
     size: null,
     price: null,
     note: null,
-    image: "/sold-works/anoop-kamath-portrait-hat.jpg",
+    image: "/sold-works/karam-singh-submerged.jpg",
+  },
+  {
+    artistId: "neeraj-rawal",
+    artistName: "Neeraj Rawal",
+    title: null,
+    year: null,
+    medium: "Sculpture",
+    size: null,
+    price: null,
+    note: null,
+    image: "/sold-works/neeraj-rawal-embrace.jpg",
   },
 ];

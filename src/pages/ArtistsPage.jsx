@@ -40,7 +40,7 @@ export default function ArtistsPage() {
                 {artist.name}
               </h2>
               <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-3">
-                {artist.role} &middot; {artist.city}
+                {[artist.role, artist.city].filter(Boolean).join(" · ")}
               </p>
               <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
                 {artist.bio}

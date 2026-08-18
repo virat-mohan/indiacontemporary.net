@@ -57,7 +57,7 @@ export default function ArtistDetailPage() {
                 {artist.name}
               </h1>
               <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
-                {artist.role} &middot; {artist.city}
+                {[artist.role, artist.city].filter(Boolean).join(" · ")}
               </p>
             </div>
           )}
@@ -90,6 +90,28 @@ export default function ArtistDetailPage() {
                   ))}
                 </ul>
               </div>
+            )}
+            {artist.installations?.length > 0 && (
+              <div className="pt-2">
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
+                  Public &amp; Institutional Installations
+                </p>
+                <ul className="text-sm text-ink-secondary font-sans font-light space-y-1">
+                  {artist.installations.map((a, i) => (
+                    <li key={i}>{a}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {artist.instagram && (
+              <a
+                href={artist.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent transition-colors font-sans w-fit underline underline-offset-4"
+              >
+                Instagram
+              </a>
             )}
           </div>
         </div>
