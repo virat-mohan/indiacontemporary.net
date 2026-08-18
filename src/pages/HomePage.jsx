@@ -94,24 +94,26 @@ export default function HomePage() {
                     {group.artistName}
                   </p>
                 )}
-                <div className="flex gap-6 md:gap-8 overflow-x-auto pb-4 -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-24 lg:px-24 snap-x snap-mandatory scroll-smooth">
+                <div className="flex gap-8 md:gap-10 overflow-x-auto pb-6 -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-24 lg:px-24 snap-x snap-mandatory scroll-smooth">
                   {group.items.map((sale, i) => (
                     <div
                       key={i}
-                      className="w-[65vw] xs:w-[45vw] sm:w-72 flex-shrink-0 snap-start"
+                      className="w-[82vw] xs:w-[60vw] sm:w-[26rem] lg:w-[30rem] flex-shrink-0 snap-start"
                     >
-                      <div className="artwork-tilt overflow-hidden bg-[#EBE7DF] aspect-[3/4] mb-4 relative">
-                        <img
-                          src={sale.image}
-                          alt={sale.title || group.artistName}
-                          className="w-full h-full object-cover"
-                        />
-                        <span className="absolute top-4 left-4 bg-[#3D372E] text-bg px-3 py-1 text-[10px] uppercase tracking-[0.15em] font-sans">
-                          Sold
-                        </span>
+                      <div className="sold-work-backdrop p-4 md:p-6">
+                        <div className="artwork-tilt overflow-hidden bg-[#EBE7DF] aspect-[3/4] relative">
+                          <img
+                            src={sale.image}
+                            alt={sale.title || group.artistName}
+                            className="w-full h-full object-cover"
+                          />
+                          <span className="absolute top-4 left-4 bg-[#3D372E] text-bg px-3 py-1 text-[10px] uppercase tracking-[0.15em] font-sans">
+                            Sold
+                          </span>
+                        </div>
                       </div>
                       {sale.title && (
-                        <h3 className="font-serif text-lg font-light text-ink-primary">
+                        <h3 className="font-serif text-lg font-light text-ink-primary mt-4">
                           {sale.title}
                         </h3>
                       )}

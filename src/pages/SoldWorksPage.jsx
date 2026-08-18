@@ -31,19 +31,21 @@ export default function SoldWorksPage() {
         </div>
 
         {soldWorks.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14">
             {soldWorks.map((sale, i) => (
               <div
                 key={i}
                 className="opacity-0 animate-fade-up"
                 style={{ animationDelay: `${i * 0.08}s`, animationFillMode: "forwards" }}
               >
-                <div className="artwork-tilt aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-5">
-                  <img
-                    src={sale.image}
-                    alt={sale.title || `Work by ${sale.artistName}`}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="sold-work-backdrop p-4 md:p-6 mb-5">
+                  <div className="artwork-tilt aspect-[4/5] overflow-hidden bg-[#EBE7DF]">
+                    <img
+                      src={sale.image}
+                      alt={sale.title || `Work by ${sale.artistName}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
                 {sale.linkedArtist ? (
                   <Link

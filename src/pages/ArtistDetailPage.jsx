@@ -196,15 +196,17 @@ export default function ArtistDetailPage() {
             <h2 className="font-serif text-2xl sm:text-3xl font-light text-ink-primary tracking-tight mb-10">
               Sold Through India Contemporary
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14">
               {soldThroughPlatform.map((sale, i) => (
                 <div key={i}>
-                  <div className="artwork-tilt aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-4">
-                    <img
-                      src={sale.image}
-                      alt={sale.title || artist.name}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="sold-work-backdrop p-4 md:p-6 mb-4">
+                    <div className="artwork-tilt aspect-[4/5] overflow-hidden bg-[#EBE7DF]">
+                      <img
+                        src={sale.image}
+                        alt={sale.title || artist.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
                   </div>
                   {sale.title && (
                     <p className="text-sm text-ink-primary font-sans">{sale.title}</p>
