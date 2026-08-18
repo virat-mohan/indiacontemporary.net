@@ -22,6 +22,10 @@ import SoldWorksPage from "@/pages/SoldWorksPage";
 import CartPage from "@/pages/CartPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import CheckoutSuccessPage from "@/pages/CheckoutSuccessPage";
+import PrivacyPage from "@/pages/PrivacyPage";
+import TermsPage from "@/pages/TermsPage";
+import ShippingPage from "@/pages/ShippingPage";
+import PartnershipsPage from "@/pages/PartnershipsPage";
 
 export default function App() {
   const location = useLocation();
@@ -55,6 +59,10 @@ export default function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/checkout/success" element={<CheckoutSuccessPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/shipping" element={<ShippingPage />} />
+          <Route path="/partnerships" element={<PartnershipsPage />} />
         </Routes>
       </main>
       <Footer />

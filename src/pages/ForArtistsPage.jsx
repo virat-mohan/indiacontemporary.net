@@ -18,7 +18,7 @@ function WhatsAppIcon(props) {
 // email to both addresses below. Once the Phase 2 admin review-queue backend
 // is live, swap this for a POST to our own API instead.
 const FORM_ENDPOINT = "https://formsubmit.co/ajax/viratmohan@gmail.com";
-const CC_EMAILS = "vijit.hooda@gmail.com,portfolio@indiacontemporary.net";
+const CC_EMAILS = "vijit.hooda@gmail.com,portfolio@indiacontemporary.net,udithooda@gmail.com";
 
 const emptyForm = {
   name: "",
@@ -99,13 +99,13 @@ export default function ForArtistsPage() {
         </p>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-ink-primary tracking-tight leading-tight max-w-3xl mx-auto mb-8">
           An initiative to bring Indian contemporary art to the European collector
-          and the rest of the world.
+          & beyond.
         </h1>
         <p className="text-base lg:text-lg text-ink-secondary font-sans font-light max-w-2xl mx-auto">
           Founded by renowned Indo-Austrian artist{" "}
           <span className="text-ink-primary">Vijit Veer Hooda</span>, with the goal of bringing
           exceptional Indian contemporary art to the thriving European market
-          and the rest of the world.
+          & beyond.
         </p>
       </section>
 
@@ -118,8 +118,8 @@ export default function ForArtistsPage() {
               Auction Houses &amp; Galleries
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-              We work with leading auction houses and galleries across Europe and
-              the rest of the world to place your work in front of serious collectors.
+              We work with leading auction houses and galleries across Europe
+              & beyond to place your work in front of serious collectors.
             </p>
           </div>
           <div>
@@ -129,7 +129,7 @@ export default function ForArtistsPage() {
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               We secure high visibility and top-tier valuations for your work, positioning
-              it appropriately for the European market and the rest of the world.
+              it appropriately for the European market & beyond.
             </p>
           </div>
           <div>
@@ -139,8 +139,7 @@ export default function ForArtistsPage() {
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               Numerous artworks by Indian contemporary artists have already been
-              successfully auctioned to collectors across Europe and the rest of
-              the world.
+              successfully auctioned to collectors across Europe & beyond.
             </p>
           </div>
           <div>

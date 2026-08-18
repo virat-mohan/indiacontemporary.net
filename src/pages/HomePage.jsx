@@ -44,8 +44,7 @@ export default function HomePage() {
           </h1>
           <p className="text-base lg:text-lg text-[#D3C5B3] font-sans font-light mb-12 max-w-lg mx-auto">
             Original work from India's leading contemporary artists, curated with
-            intention and delivered to collectors across Europe and the rest of
-            the world.
+            intention and delivered to collectors across Europe & beyond.
           </p>
           <Link
             to="/artworks"
@@ -62,7 +61,7 @@ export default function HomePage() {
           <div className="flex items-end justify-between mb-16">
             <div>
               <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
-                Genuine Sales, Through India Contemporary
+                Sold Through India Contemporary
               </p>
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-ink-primary tracking-tight">
                 Featured
@@ -172,7 +171,7 @@ export default function HomePage() {
           </h2>
           <p className="text-base text-ink-secondary font-sans font-light mb-10 max-w-md mx-auto">
             Every piece is curated directly from the artist's studio and shipped,
-            insured, to your door anywhere in Europe and the rest of the world.
+            insured, to your door anywhere in Europe & beyond.
           </p>
           <Link
             to="/artworks"
