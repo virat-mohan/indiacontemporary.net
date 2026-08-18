@@ -5,7 +5,6 @@ import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { href: "/artworks", label: "Artworks" },
-  { href: "/collections", label: "Collections" },
   {
     label: "Artists",
     href: "/artists",

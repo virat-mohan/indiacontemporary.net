@@ -33,27 +33,35 @@ export default function ArtworksPage() {
           </h1>
         </div>
 
-        <div className="flex flex-wrap gap-4 mb-12">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-6 py-2 border text-sm uppercase tracking-wider transition-colors font-sans ${
-                filter === f
-                  ? "border-accent text-accent"
-                  : "border-line text-ink-secondary hover:border-accent hover:text-accent"
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+        {artworks.length > 0 && (
+          <div className="flex flex-wrap gap-4 mb-12">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-6 py-2 border text-sm uppercase tracking-wider transition-colors font-sans ${
+                  filter === f
+                    ? "border-accent text-accent"
+                    : "border-line text-ink-secondary hover:border-accent hover:text-accent"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-          {filtered.map((art, i) => (
-            <ArtworkCard art={art} key={art.id} index={i} />
-          ))}
-        </div>
+        {filtered.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+            {filtered.map((art, i) => (
+              <ArtworkCard art={art} key={art.id} index={i} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-ink-muted font-sans">
+            No pieces currently listed &mdash; check back soon.
+          </p>
+        )}
       </div>
     </div>
   );

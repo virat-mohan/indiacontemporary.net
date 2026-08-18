@@ -15,25 +15,31 @@ export default function CollectionsListPage() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          {collections.map((col) => (
-            <Link to={`/collections/${col.id}`} key={col.id} className="group">
-              <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
-                <img
-                  src={col.cover}
-                  alt={col.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <h3 className="font-serif text-2xl font-light text-ink-primary mb-2">
-                {col.name}
-              </h3>
-              <p className="text-sm text-ink-secondary font-sans font-light">
-                {col.description}
-              </p>
-            </Link>
-          ))}
-        </div>
+        {collections.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            {collections.map((col) => (
+              <Link to={`/collections/${col.id}`} key={col.id} className="group">
+                <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
+                  <img
+                    src={col.cover}
+                    alt={col.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+                <h3 className="font-serif text-2xl font-light text-ink-primary mb-2">
+                  {col.name}
+                </h3>
+                <p className="text-sm text-ink-secondary font-sans font-light">
+                  {col.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-ink-muted font-sans">
+            No collections currently curated &mdash; check back soon.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -39,30 +39,40 @@ export default function ArtistDetailPage() {
           </p>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-10 lg:gap-16 mb-20">
-          <div>
-            <div className="bevel-shadow aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6 flex items-center justify-center">
-              {artist.image ? (
+        <div
+          className={`grid grid-cols-1 ${
+            artist.image ? "lg:grid-cols-[320px_1fr]" : ""
+          } gap-10 lg:gap-16 mb-20`}
+        >
+          {artist.image && (
+            <div>
+              <div className="bevel-shadow aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-6">
                 <img
                   src={artist.image}
                   alt={artist.name}
                   className="w-full h-full object-cover"
                 />
-              ) : (
-                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans px-6 text-center">
-                  Portrait to be added
-                </p>
-              )}
+              </div>
+              <h1 className="font-serif text-3xl font-light text-ink-primary mb-1">
+                {artist.name}
+              </h1>
+              <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
+                {artist.role} &middot; {artist.city}
+              </p>
             </div>
-            <h1 className="font-serif text-3xl font-light text-ink-primary mb-1">
-              {artist.name}
-            </h1>
-            <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
-              {artist.role} &middot; {artist.city}
-            </p>
-          </div>
+          )}
 
           <div className="flex flex-col justify-center gap-5 max-w-2xl">
+            {!artist.image && (
+              <div className="mb-2">
+                <h1 className="font-serif text-3xl font-light text-ink-primary mb-1">
+                  {artist.name}
+                </h1>
+                <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
+                  {artist.role} &middot; {artist.city}
+                </p>
+              </div>
+            )}
             <p className="text-base text-ink-secondary font-sans font-light leading-relaxed">
               {artist.bio}
             </p>

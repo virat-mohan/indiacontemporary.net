@@ -1,13 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
-import { artworks, collections } from "@/data/artworks";
 import { artists } from "@/data/artists";
 import { platformSales } from "@/data/platformSales";
 
 export default function HomePage() {
-  const recent = artworks.slice(3, 7);
-
   // Every genuine sold work, grouped by artist (linked-profile artists
   // first) — an artist with several pieces gets one row with all of them
   // in a horizontal scroller, instead of picking just one.
@@ -147,91 +144,18 @@ export default function HomePage() {
                 style={{ animationDelay: `${i * 0.1}s`, animationFillMode: "forwards" }}
               >
                 <div className="w-28 h-28 mx-auto mb-6 rounded-full overflow-hidden bg-[#5D574E]/30">
-                  <img
-                    src={a.image}
-                    alt={a.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  {a.image && (
+                    <img
+                      src={a.image}
+                      alt={a.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  )}
                 </div>
                 <h4 className="font-serif text-xl text-bg font-light mb-1">{a.name}</h4>
                 <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
                   {a.city}
                 </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Recent additions */}
-      <section className="py-24 md:py-32 lg:py-48 px-6 md:px-12 lg:px-24">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="mb-16">
-            <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
-              New Arrivals
-            </p>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-ink-primary tracking-tight">
-              Recently Added
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {recent.map((art, i) => (
-              <Link to={`/artwork/${art.id}`} key={art.id} className="group">
-                <div className="overflow-hidden bg-[#EBE7DF] aspect-square mb-4">
-                  <img
-                    src={art.image}
-                    alt={art.title}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <h4 className="font-serif text-lg font-light text-ink-primary mb-1">
-                  {art.title}
-                </h4>
-                <p className="text-sm text-ink-muted font-sans font-light">
-                  &euro;{art.price.toLocaleString()}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Collections */}
-      <section className="py-24 md:py-32 px-6 md:px-12 lg:px-24 border-t border-line/50">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
-                Curated Selections
-              </p>
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-ink-primary tracking-tight">
-                Explore Collections
-              </h2>
-            </div>
-            <Link
-              to="/collections"
-              className="hidden md:flex items-center gap-2 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
-            >
-              View All <ChevronRight size={14} />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {collections.map((col) => (
-              <Link to={`/collections/${col.id}`} key={col.id} className="group">
-                <div className="aspect-square overflow-hidden bg-[#EBE7DF] relative">
-                  <img
-                    src={col.cover}
-                    alt={col.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-[#2A2825]/30 group-hover:bg-[#2A2825]/20 transition-colors duration-500" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                    <h3 className="font-serif text-base md:text-lg text-white font-light">
-                      {col.name}
-                    </h3>
-                  </div>
-                </div>
               </Link>
             ))}
           </div>

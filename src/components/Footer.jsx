@@ -22,7 +22,6 @@ export default function Footer() {
           </p>
           <div className="flex flex-col gap-3 font-sans text-sm text-[#D3C5B3]">
             <Link to="/artworks" className="hover:text-white transition-colors">Artworks</Link>
-            <Link to="/collections" className="hover:text-white transition-colors">Collections</Link>
             <Link to="/artists" className="hover:text-white transition-colors">Artists</Link>
             <Link to="/for-artists" className="hover:text-white transition-colors">For Artists</Link>
           </div>
