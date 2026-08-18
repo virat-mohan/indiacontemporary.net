@@ -109,6 +109,17 @@ export const platformSales = [
     image: "/sold-works/jitendra-kumar-sharma-seated-figure.jpg",
   },
   {
+    artistId: null,
+    artistName: "Jitendra Kumar Sharma",
+    title: "Samsara II",
+    year: 2011,
+    medium: "Acrylic on canvas",
+    size: "160 x 120 cm",
+    price: null,
+    note: null,
+    image: "/sold-works/jitendra-kumar-sharma-samsara-ii.jpg",
+  },
+  {
     artistId: "anoop-kamath",
     artistName: "Anoop Kamath",
     title: null,
