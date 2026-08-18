@@ -30,13 +30,6 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // /for-artists is the only URL currently being shared (offline, direct link
-  // to potential artists) — it renders standalone with no nav/footer/splash
-  // and no links out to the rest of the site, which isn't live yet.
-  if (location.pathname === "/for-artists") {
-    return <ForArtistsPage />;
-  }
-
   return (
     <>
       {location.pathname === "/" && <SplashScreen />}
@@ -50,6 +43,7 @@ export default function App() {
           <Route path="/artwork/:id" element={<ArtworkPage />} />
           <Route path="/artists" element={<ArtistsPage />} />
           <Route path="/artists/:id" element={<ArtistDetailPage />} />
+          <Route path="/for-artists" element={<ForArtistsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/founder" element={<FounderPage />} />
           <Route path="/contact" element={<ContactPage />} />

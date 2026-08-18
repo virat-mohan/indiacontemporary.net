@@ -8,23 +8,23 @@ import { platformSales } from "@/data/platformSales";
 export default function HomePage() {
   const recent = artworks.slice(3, 7);
 
+  // Every genuine sold work, grouped by artist (linked-profile artists
+  // first) — an artist with several pieces gets one row with all of them
+  // in a horizontal scroller, instead of picking just one.
   const withArtist = platformSales
     .filter((s) => s.image)
     .map((s) => ({ ...s, linkedArtist: s.artistId ? artists.find((a) => a.id === s.artistId) : null }));
-  // One piece per artist, linked-profile artists first, so Featured shows
-  // variety instead of one artist's whole run of sold works.
-  const seenArtists = new Set();
-  const featuredSold = [
-    ...withArtist.filter((s) => s.linkedArtist),
-    ...withArtist.filter((s) => !s.linkedArtist),
-  ]
-    .filter((s) => {
-      const key = s.artistId || s.artistName;
-      if (seenArtists.has(key)) return false;
-      seenArtists.add(key);
-      return true;
-    })
-    .slice(0, 3);
+  const groupsByKey = new Map();
+  withArtist.forEach((s) => {
+    const key = s.artistId || s.artistName;
+    if (!groupsByKey.has(key)) {
+      groupsByKey.set(key, { key, artistName: s.artistName, linkedArtist: s.linkedArtist, items: [] });
+    }
+    groupsByKey.get(key).items.push(s);
+  });
+  const soldGroups = Array.from(groupsByKey.values()).sort(
+    (a, b) => (a.linkedArtist ? 0 : 1) - (b.linkedArtist ? 0 : 1)
+  );
 
   return (
     <div>
@@ -77,38 +77,49 @@ export default function HomePage() {
               View All <ChevronRight size={14} />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {featuredSold.map((sale, i) => (
+          <div className="flex flex-col gap-16">
+            {soldGroups.map((group, gi) => (
               <div
-                key={i}
+                key={group.key}
                 className="opacity-0 animate-fade-up"
-                style={{ animationDelay: `${i * 0.15}s`, animationFillMode: "forwards" }}
+                style={{ animationDelay: `${gi * 0.1}s`, animationFillMode: "forwards" }}
               >
-                <div className="artwork-tilt overflow-hidden bg-[#EBE7DF] aspect-[3/4] mb-6 relative">
-                  <img
-                    src={sale.image}
-                    alt={sale.title || sale.artistName}
-                    className="w-full h-full object-cover"
-                  />
-                  <span className="absolute top-4 left-4 bg-[#3D372E] text-bg px-3 py-1 text-[10px] uppercase tracking-[0.15em] font-sans">
-                    Sold
-                  </span>
-                </div>
-                {sale.linkedArtist ? (
+                {group.linkedArtist ? (
                   <Link
-                    to={`/artists/${sale.linkedArtist.id}`}
-                    className="text-xs uppercase tracking-widest text-ink-muted hover:text-accent underline underline-offset-4 decoration-line hover:decoration-accent transition-colors font-sans mb-2 block w-fit"
+                    to={`/artists/${group.linkedArtist.id}`}
+                    className="text-sm uppercase tracking-widest text-ink-primary hover:text-accent underline underline-offset-4 decoration-line hover:decoration-accent transition-colors font-sans mb-5 block w-fit"
                   >
-                    {sale.artistName}
+                    {group.artistName}
                   </Link>
                 ) : (
-                  <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
-                    {sale.artistName}
+                  <p className="text-sm uppercase tracking-widest text-ink-primary font-sans mb-5">
+                    {group.artistName}
                   </p>
                 )}
-                {sale.title && (
-                  <h3 className="font-serif text-xl font-light text-ink-primary">{sale.title}</h3>
-                )}
+                <div className="flex gap-6 md:gap-8 overflow-x-auto pb-4 -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-24 lg:px-24 snap-x snap-mandatory scroll-smooth">
+                  {group.items.map((sale, i) => (
+                    <div
+                      key={i}
+                      className="w-[65vw] xs:w-[45vw] sm:w-72 flex-shrink-0 snap-start"
+                    >
+                      <div className="artwork-tilt overflow-hidden bg-[#EBE7DF] aspect-[3/4] mb-4 relative">
+                        <img
+                          src={sale.image}
+                          alt={sale.title || group.artistName}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute top-4 left-4 bg-[#3D372E] text-bg px-3 py-1 text-[10px] uppercase tracking-[0.15em] font-sans">
+                          Sold
+                        </span>
+                      </div>
+                      {sale.title && (
+                        <h3 className="font-serif text-lg font-light text-ink-primary">
+                          {sale.title}
+                        </h3>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
