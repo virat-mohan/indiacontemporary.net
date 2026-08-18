@@ -151,16 +151,9 @@ export default function HomePage() {
                 className="group text-center opacity-0 animate-fade-up"
                 style={{ animationDelay: `${i * 0.1}s`, animationFillMode: "forwards" }}
               >
-                <div className="w-28 h-28 mx-auto mb-6 rounded-full overflow-hidden bg-[#5D574E]/30">
-                  {a.image && (
-                    <img
-                      src={a.image}
-                      alt={a.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  )}
-                </div>
-                <h4 className="font-serif text-xl text-bg font-light mb-1">{a.name}</h4>
+                <h4 className="font-serif text-xl text-bg font-light mb-1 group-hover:text-white transition-colors">
+                  {a.name}
+                </h4>
                 <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
                   {a.city}
                 </p>

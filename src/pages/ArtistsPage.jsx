@@ -27,16 +27,7 @@ export default function ArtistsPage() {
               className="group opacity-0 animate-fade-up"
               style={{ animationDelay: `${i * 0.1}s`, animationFillMode: "forwards" }}
             >
-              {artist.image && (
-                <div className="aspect-[4/5] overflow-hidden bg-[#EBE7DF] mb-5">
-                  <img
-                    src={artist.image}
-                    alt={artist.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-              )}
-              <h2 className="font-serif text-xl font-light text-ink-primary mb-1">
+              <h2 className="font-serif text-xl font-light text-ink-primary mb-1 group-hover:text-accent transition-colors">
                 {artist.name}
               </h2>
               <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-3">

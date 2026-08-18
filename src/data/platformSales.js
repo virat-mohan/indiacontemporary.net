@@ -8,7 +8,7 @@
 // broken link) and set for the artists who do have a profile there.
 export const platformSales = [
   {
-    artistId: "rajnish-chhanesh",
+    artistId: null,
     artistName: "Rajnish Chhanesh",
     title: "Tangled I",
     year: 2013,
@@ -19,7 +19,7 @@ export const platformSales = [
     image: "/sold-works/rajnish-chhanesh-terraced-landscape.jpg",
   },
   {
-    artistId: "rajnish-chhanesh",
+    artistId: null,
     artistName: "Rajnish Chhanesh",
     title: "Door to Door",
     year: 2012,
@@ -30,7 +30,7 @@ export const platformSales = [
     image: "/sold-works/rajnish-chhanesh-stepwell-horse.jpg",
   },
   {
-    artistId: "rajnish-chhanesh",
+    artistId: null,
     artistName: "Rajnish Chhanesh",
     title: "The Architecture of Choice",
     year: 2012,
@@ -41,7 +41,7 @@ export const platformSales = [
     image: "/sold-works/rajnish-chhanesh-spiral-staircase.jpg",
   },
   {
-    artistId: "shaji-appukuttan",
+    artistId: null,
     artistName: "Shaji Appukuttan",
     title: "From Here to the Other Side",
     year: null,
@@ -63,7 +63,7 @@ export const platformSales = [
     image: "/sold-works/s-raghu-boy-on-bike.jpg",
   },
   {
-    artistId: "shekh-hifzul-kabeer",
+    artistId: null,
     artistName: "Shekh Hifzul Kabeer",
     title: "Encroachment",
     year: 2011,
@@ -85,7 +85,7 @@ export const platformSales = [
     image: "/sold-works/kr-subbana-goat.jpg",
   },
   {
-    artistId: "gopal-samantray",
+    artistId: null,
     artistName: "Gopal Samantray",
     title: "Extended Horizon",
     year: 2010,
