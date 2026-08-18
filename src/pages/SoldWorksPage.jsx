@@ -64,8 +64,12 @@ export default function SoldWorksPage() {
                     {sale.title} {sale.year && <span className="text-ink-muted">&middot; {sale.year}</span>}
                   </h3>
                 )}
-                {sale.medium && (
-                  <p className="text-sm text-ink-muted font-sans font-light">{sale.medium}</p>
+                {(sale.medium || sale.size) && (
+                  <p className="text-sm text-ink-muted font-sans font-light">
+                    {sale.medium}
+                    {sale.medium && sale.size && " · "}
+                    {sale.size}
+                  </p>
                 )}
                 {sale.price && (
                   <p className="text-sm text-ink-secondary font-sans tabular-nums mt-1">

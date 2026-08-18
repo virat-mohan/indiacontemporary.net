@@ -209,7 +209,16 @@ export default function ArtistDetailPage() {
                     </div>
                   </div>
                   {sale.title && (
-                    <p className="text-sm text-ink-primary font-sans">{sale.title}</p>
+                    <p className="text-sm text-ink-primary font-sans">
+                      {sale.title} {sale.year && <span className="text-ink-muted">&middot; {sale.year}</span>}
+                    </p>
+                  )}
+                  {(sale.medium || sale.size) && (
+                    <p className="text-sm text-ink-muted font-sans font-light">
+                      {sale.medium}
+                      {sale.medium && sale.size && " · "}
+                      {sale.size}
+                    </p>
                   )}
                 </div>
               ))}

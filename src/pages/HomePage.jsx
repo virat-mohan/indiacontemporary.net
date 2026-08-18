@@ -113,8 +113,15 @@ export default function HomePage() {
                       </div>
                       {sale.title && (
                         <h3 className="font-serif text-lg font-light text-ink-primary mt-4">
-                          {sale.title}
+                          {sale.title} {sale.year && <span className="text-ink-muted">&middot; {sale.year}</span>}
                         </h3>
+                      )}
+                      {(sale.medium || sale.size) && (
+                        <p className="text-sm text-ink-muted font-sans font-light mt-1">
+                          {sale.medium}
+                          {sale.medium && sale.size && " · "}
+                          {sale.size}
+                        </p>
                       )}
                     </div>
                   ))}

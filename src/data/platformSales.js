@@ -2,19 +2,20 @@
 // artist's `pastSales` in artists.js, which is market history from other
 // galleries/auctions, shown for pricing context only.
 //
-// These 10 entries use real sold-artwork photos, but price, medium, and
-// sale details are NOT yet known — those fields are left null on purpose
-// rather than guessed. Fill them in once confirmed. None of these artists
-// are in artists.js yet (that roster is placeholder/fictional); artistId
-// is left null so the name shows as plain text instead of a broken link —
-// wire it up once real artist profiles exist to link to.
+// These 10 entries use real sold-artwork photos. Price and sale note are
+// still unknown and left null on purpose rather than guessed. None of
+// these artists are in artists.js yet (that roster is placeholder/
+// fictional); artistId is left null so the name shows as plain text
+// instead of a broken link — wire it up once real artist profiles exist
+// to link to.
 export const platformSales = [
   {
     artistId: "rajnish-chhanesh",
     artistName: "Rajnish Chhanesh",
-    title: null,
-    year: null,
-    medium: null,
+    title: "Tangled I",
+    year: 2013,
+    medium: "Acrylic on canvas",
+    size: "152 x 122 cm",
     price: null,
     note: null,
     image: "/sold-works/rajnish-chhanesh-terraced-landscape.jpg",
@@ -22,9 +23,10 @@ export const platformSales = [
   {
     artistId: "rajnish-chhanesh",
     artistName: "Rajnish Chhanesh",
-    title: null,
-    year: null,
-    medium: null,
+    title: "Door to Door",
+    year: 2012,
+    medium: "Acrylic on canvas",
+    size: "122 x 122 cm",
     price: null,
     note: null,
     image: "/sold-works/rajnish-chhanesh-stepwell-horse.jpg",
@@ -32,9 +34,10 @@ export const platformSales = [
   {
     artistId: "rajnish-chhanesh",
     artistName: "Rajnish Chhanesh",
-    title: null,
-    year: null,
-    medium: null,
+    title: "The Architecture of Choice",
+    year: 2012,
+    medium: "Acrylic on canvas",
+    size: "122 x 122 cm",
     price: null,
     note: null,
     image: "/sold-works/rajnish-chhanesh-spiral-staircase.jpg",
@@ -45,6 +48,7 @@ export const platformSales = [
     title: null,
     year: null,
     medium: null,
+    size: null,
     price: null,
     note: null,
     image: "/sold-works/shaji-appukutan-forest-boat.jpg",
@@ -55,6 +59,7 @@ export const platformSales = [
     title: null,
     year: null,
     medium: null,
+    size: null,
     price: null,
     note: null,
     image: "/sold-works/s-raghu-boy-on-bike.jpg",
@@ -65,6 +70,7 @@ export const platformSales = [
     title: null,
     year: null,
     medium: null,
+    size: null,
     price: null,
     note: null,
     image: "/sold-works/shekh-hifzul-kabeer-chair-tree.jpg",
@@ -75,6 +81,7 @@ export const platformSales = [
     title: null,
     year: null,
     medium: null,
+    size: null,
     price: null,
     note: null,
     image: "/sold-works/kr-subbana-goat.jpg",
@@ -85,6 +92,7 @@ export const platformSales = [
     title: null,
     year: null,
     medium: null,
+    size: null,
     price: null,
     note: null,
     image: "/sold-works/gopal-samantray-tiger-rooftop.jpg",
@@ -92,9 +100,10 @@ export const platformSales = [
   {
     artistId: null,
     artistName: "Jitendra Kumar Sharma",
-    title: null,
-    year: null,
-    medium: null,
+    title: "Samsara",
+    year: 2011,
+    medium: "Acrylic on canvas",
+    size: "160 x 120 cm",
     price: null,
     note: null,
     image: "/sold-works/jitendra-kumar-sharma-seated-figure.jpg",
@@ -105,6 +114,7 @@ export const platformSales = [
     title: null,
     year: null,
     medium: null,
+    size: null,
     price: null,
     note: null,
     image: "/sold-works/anoop-kamath-portrait-hat.jpg",
