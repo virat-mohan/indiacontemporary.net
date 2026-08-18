@@ -26,6 +26,9 @@ import PrivacyPage from "@/pages/PrivacyPage";
 import TermsPage from "@/pages/TermsPage";
 import ShippingPage from "@/pages/ShippingPage";
 import PartnershipsPage from "@/pages/PartnershipsPage";
+import ApplyPage from "@/pages/ApplyPage";
+import ArtistOnboardingPage from "@/pages/ArtistOnboardingPage";
+import AdminPage from "@/pages/AdminPage";
 
 export default function App() {
   const location = useLocation();
@@ -63,6 +66,9 @@ export default function App() {
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/shipping" element={<ShippingPage />} />
           <Route path="/partnerships" element={<PartnershipsPage />} />
+          <Route path="/apply" element={<ApplyPage />} />
+          <Route path="/apply/onboarding" element={<ArtistOnboardingPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </main>
       <Footer />

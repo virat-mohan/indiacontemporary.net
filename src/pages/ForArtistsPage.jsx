@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Landmark, Gem, TrendingUp, ShieldCheck } from "lucide-react";
 
 const WHATSAPP_NUMBER = "919811165111";
@@ -173,8 +174,15 @@ export default function ForArtistsPage() {
         </div>
 
         <div className="max-w-xl mx-auto">
+          <Link
+            to="/apply"
+            className="flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300 mb-10"
+          >
+            Apply As An Artist <ArrowRight size={16} strokeWidth={1.5} />
+          </Link>
+
           <h3 className="text-center font-sans font-bold uppercase tracking-[0.15em] text-sm text-ink-primary mb-4">
-            Connect With Us
+            Or Send A Quick Inquiry
           </h3>
           <a
             href={WHATSAPP_LINK}
