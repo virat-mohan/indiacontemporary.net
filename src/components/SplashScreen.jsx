@@ -31,7 +31,7 @@ export default function SplashScreen() {
           <p className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.2em] text-[#D3C5B3] mb-8">
             An Initiative To Bring Indian Contemporary Art
             <br />
-            To The European Collector
+            To The European Collector And The Rest Of The World
           </p>
 
           <h1 className="leading-[0.9] mb-10">
@@ -47,7 +47,7 @@ export default function SplashScreen() {
             Founded by Vijit Veer Hooda
           </p>
           <p className="text-xs sm:text-sm font-sans tracking-widest uppercase text-[#8A847A] mb-12">
-            Sourced In India &middot; Placed In Europe
+            Sourced In India &middot; Placed In Europe And The Rest Of The World
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6">

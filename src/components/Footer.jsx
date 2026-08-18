@@ -12,7 +12,7 @@ export default function Footer() {
           </p>
           <p className="text-sm text-[#B8B0A2] font-sans font-light leading-relaxed">
             Original work from India's contemporary artists, sourced with care and
-            delivered to collectors across Europe.
+            delivered to collectors across Europe and the rest of the world.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ export default function Footer() {
             <Link to="/reviews" className="hover:text-white transition-colors">Artist Reviews</Link>
             <Link to="/sold-works" className="hover:text-white transition-colors">Sold Works</Link>
             <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
-            <Link to="/shipping" className="hover:text-white transition-colors">Shipping to Europe</Link>
+            <Link to="/shipping" className="hover:text-white transition-colors">Shipping to Europe & Beyond</Link>
           </div>
         </div>
 

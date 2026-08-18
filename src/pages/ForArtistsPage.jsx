@@ -98,12 +98,14 @@ export default function ForArtistsPage() {
           Call To Artists
         </p>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-ink-primary tracking-tight leading-tight max-w-3xl mx-auto mb-8">
-          An initiative to bring Indian contemporary art to the European collector.
+          An initiative to bring Indian contemporary art to the European collector
+          and the rest of the world.
         </h1>
         <p className="text-base lg:text-lg text-ink-secondary font-sans font-light max-w-2xl mx-auto">
           Founded by renowned Indo-Austrian artist{" "}
           <span className="text-ink-primary">Vijit Veer Hooda</span>, with the goal of bringing
-          exceptional Indian contemporary art to the thriving European market.
+          exceptional Indian contemporary art to the thriving European market
+          and the rest of the world.
         </p>
       </section>
 
@@ -116,8 +118,8 @@ export default function ForArtistsPage() {
               Auction Houses &amp; Galleries
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-              We work with Europe's leading auction houses and galleries to place your
-              work in front of serious collectors.
+              We work with leading auction houses and galleries across Europe and
+              the rest of the world to place your work in front of serious collectors.
             </p>
           </div>
           <div>
@@ -127,7 +129,7 @@ export default function ForArtistsPage() {
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               We secure high visibility and top-tier valuations for your work, positioning
-              it appropriately for the European market.
+              it appropriately for the European market and the rest of the world.
             </p>
           </div>
           <div>
@@ -137,7 +139,8 @@ export default function ForArtistsPage() {
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               Numerous artworks by Indian contemporary artists have already been
-              successfully auctioned to collectors across Europe.
+              successfully auctioned to collectors across Europe and the rest of
+              the world.
             </p>
           </div>
           <div>

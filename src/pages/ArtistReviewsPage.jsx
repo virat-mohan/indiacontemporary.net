@@ -42,7 +42,8 @@ export default function ArtistReviewsPage() {
             No lengthy back-and-forth, no vague commission terms, no guessing where
             your work stands. Every artist works directly with Vijit — someone who
             has spent years in both India and Europe, and understands exactly how to
-            position Indian contemporary work for a European collector.
+            position Indian contemporary work for a European collector — or a
+            collector anywhere else in the world.
           </p>
           <Link
             to="/for-artists"

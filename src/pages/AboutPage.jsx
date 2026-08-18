@@ -10,15 +10,16 @@ export default function AboutPage() {
           Our Story
         </p>
         <h1 className="font-serif text-4xl sm:text-5xl font-light text-ink-primary tracking-tight mb-8">
-          Bridging India's Studios and Europe's Collectors
+          Bridging India's Studios and the World's Collectors
         </h1>
         <p className="text-base text-ink-secondary font-sans font-light leading-relaxed">
           India Contemporary was founded to close the distance between India's most
-          exciting working artists and collectors in Europe who rarely get to see
-          their work in person. We travel to studios across the country, work
-          directly with each artist, and handle every step of authentication,
-          insurance, and shipping — so a piece made in a Mumbai studio can hang on a
-          wall in Paris, Berlin, or Amsterdam with nothing lost in translation.
+          exciting working artists and collectors in Europe and the rest of the
+          world who rarely get to see their work in person. We travel to studios
+          across the country, work directly with each artist, and handle every
+          step of authentication, insurance, and shipping — so a piece made in a
+          Mumbai studio can hang on a wall in Paris, Berlin, Amsterdam, or beyond
+          with nothing lost in translation.
         </p>
       </div>
 
@@ -43,11 +44,11 @@ export default function AboutPage() {
         </div>
         <div>
           <h3 className="font-serif text-2xl font-light text-ink-primary mb-3">
-            Delivered Across Europe
+            Delivered Across Europe And The Rest Of The World
           </h3>
           <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-            Customs, framing, and white-glove delivery handled end to end for
-            every EU destination.
+            Customs, framing, and white-glove delivery handled end to end,
+            wherever the destination.
           </p>
         </div>
       </div>

@@ -47,7 +47,8 @@ export default function HomePage() {
           </h1>
           <p className="text-base lg:text-lg text-[#D3C5B3] font-sans font-light mb-12 max-w-lg mx-auto">
             Original work from India's leading contemporary artists, sourced with
-            intention and delivered to collectors across Europe.
+            intention and delivered to collectors across Europe and the rest of
+            the world.
           </p>
           <Link
             to="/artworks"
@@ -245,7 +246,7 @@ export default function HomePage() {
           </h2>
           <p className="text-base text-ink-secondary font-sans font-light mb-10 max-w-md mx-auto">
             Every piece is sourced directly from the artist's studio and shipped,
-            insured, to your door anywhere in Europe.
+            insured, to your door anywhere in Europe and the rest of the world.
           </p>
           <Link
             to="/artworks"
