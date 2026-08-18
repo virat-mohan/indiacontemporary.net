@@ -43,11 +43,8 @@ export default function SplashScreen() {
             </span>
           </h1>
 
-          <p className="text-sm sm:text-base font-sans font-light text-[#D3C5B3] mb-3">
+          <p className="text-sm sm:text-base font-sans font-light text-[#D3C5B3] mb-12">
             Founded by Vijit Veer Hooda
-          </p>
-          <p className="text-xs sm:text-sm font-sans tracking-widest uppercase text-[#8A847A] mb-12">
-            Sourced In India &middot; Placed In Europe And The Rest Of The World
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6">

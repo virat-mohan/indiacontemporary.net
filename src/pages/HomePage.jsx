@@ -43,7 +43,7 @@ export default function HomePage() {
             India Contemporary
           </h1>
           <p className="text-base lg:text-lg text-[#D3C5B3] font-sans font-light mb-12 max-w-lg mx-auto">
-            Original work from India's leading contemporary artists, sourced with
+            Original work from India's leading contemporary artists, curated with
             intention and delivered to collectors across Europe and the rest of
             the world.
           </p>
@@ -171,7 +171,7 @@ export default function HomePage() {
             Begin Your Collection
           </h2>
           <p className="text-base text-ink-secondary font-sans font-light mb-10 max-w-md mx-auto">
-            Every piece is sourced directly from the artist's studio and shipped,
+            Every piece is curated directly from the artist's studio and shipped,
             insured, to your door anywhere in Europe and the rest of the world.
           </p>
           <Link

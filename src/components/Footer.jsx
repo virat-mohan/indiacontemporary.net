@@ -11,7 +11,7 @@ export default function Footer() {
             INDIA CONTEMPORARY
           </p>
           <p className="text-sm text-[#B8B0A2] font-sans font-light leading-relaxed">
-            Original work from India's contemporary artists, sourced with care and
+            Original work from India's contemporary artists, curated with care and
             delivered to collectors across Europe and the rest of the world.
           </p>
         </div>
