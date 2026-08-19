@@ -3,6 +3,7 @@ import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import AdminLayout from "@/components/AdminLayout";
 import useAdminArtists from "@/hooks/useAdminArtists";
+import { X } from "lucide-react";
 
 const STATUS_LABEL = {
   draft: "Draft (not yet submitted)",
@@ -31,6 +32,7 @@ function ArtistCard({
   onReject,
   onTogglePublishArtist,
   onDelete,
+  onZoom,
 }) {
   return (
     <div className="border border-line/60">
@@ -61,7 +63,14 @@ function ArtistCard({
               editingArtwork === w.id ? (
                 <div key={w.id} className="border border-line/50 p-3 flex flex-col gap-2 col-span-2">
                   {w.image_url && (
-                    <img src={w.image_url} alt="" className="aspect-square object-cover mb-1" />
+                    <button
+                      type="button"
+                      onClick={() => onZoom(w.image_url)}
+                      className="block aspect-square mb-1 cursor-zoom-in"
+                      aria-label="View larger image"
+                    >
+                      <img src={w.image_url} alt="" className="w-full h-full object-cover" />
+                    </button>
                   )}
                   <input
                     placeholder="Title"
@@ -126,7 +135,14 @@ function ArtistCard({
               ) : (
                 <div key={w.id}>
                   {w.image_url && (
-                    <img src={w.image_url} alt="" className="aspect-square object-cover mb-2" />
+                    <button
+                      type="button"
+                      onClick={() => onZoom(w.image_url)}
+                      className="block aspect-square mb-2 cursor-zoom-in"
+                      aria-label="View larger image"
+                    >
+                      <img src={w.image_url} alt="" className="w-full h-full object-cover" />
+                    </button>
                   )}
                   <p className="text-xs text-ink-primary font-sans">{w.title || "Untitled"}</p>
                   <p className="text-xs text-ink-muted font-sans">
@@ -229,6 +245,7 @@ export default function AdminPage() {
   const [artworkDraft, setArtworkDraft] = useState({});
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState("");
+  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   const callApi = async (path, body) => {
     const res = await fetch(path, {
@@ -376,6 +393,7 @@ export default function AdminPage() {
     onReject: handleReject,
     onTogglePublishArtist: togglePublishArtist,
     onDelete: handleDelete,
+    onZoom: setLightboxSrc,
   };
 
   return (
@@ -433,6 +451,27 @@ export default function AdminPage() {
             )}
           </section>
         </>
+      )}
+
+      {lightboxSrc && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/85 flex items-center justify-center p-8 cursor-zoom-out"
+          onClick={() => setLightboxSrc(null)}
+        >
+          <button
+            className="absolute top-6 right-6 text-white hover:text-white/70"
+            onClick={() => setLightboxSrc(null)}
+            aria-label="Close"
+          >
+            <X size={28} strokeWidth={1.5} />
+          </button>
+          <img
+            src={lightboxSrc}
+            alt=""
+            className="max-w-full max-h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       )}
     </AdminLayout>
   );
