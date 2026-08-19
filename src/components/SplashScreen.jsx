@@ -11,7 +11,7 @@ export default function SplashScreen() {
     <div className="fixed inset-0 z-[100] overflow-y-auto">
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1577720580479-7d839d829c73?auto=format&fit=crop&w=1800&q=80"
+          src="/hero/homepage-hero.jpg"
           alt=""
           className="w-full h-full object-cover"
         />
