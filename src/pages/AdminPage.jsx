@@ -14,6 +14,21 @@ async function uploadFile(bucket, folderHint, file) {
   return data.publicUrl;
 }
 
+function emptyNewArtwork() {
+  return {
+    title: "",
+    medium: "",
+    size: "",
+    year: "",
+    reserve_price: "",
+    currency: "EUR",
+    description: "",
+    image_url: "",
+    published: false,
+    sold: false,
+  };
+}
+
 const STATUS_LABEL = {
   draft: "Draft (not yet submitted)",
   submitted: "Awaiting Review",
@@ -36,6 +51,7 @@ function ArtistCard({
   onCancelEditArtwork,
   onSaveArtwork,
   onTogglePublishArtwork,
+  onToggleSoldArtwork,
   onSaveCommission,
   onApprove,
   onReject,
@@ -44,6 +60,14 @@ function ArtistCard({
   onZoom,
   uploadingPhoto,
   onUploadPhoto,
+  addingArtwork,
+  newArtworkDraft,
+  setNewArtworkDraft,
+  uploadingNewArtworkImage,
+  onUploadNewArtworkImage,
+  onStartAddArtwork,
+  onCancelAddArtwork,
+  onCreateArtwork,
 }) {
   return (
     <div className="border border-line/60">
@@ -176,25 +200,150 @@ function ArtistCard({
                   <p className="text-xs text-ink-muted font-sans">
                     {[w.medium, w.size, w.year].filter(Boolean).join(" · ")}
                   </p>
-                  <div className="flex gap-3 mt-1">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
                     <button
                       onClick={() => onStartEditArtwork(w)}
                       className="text-[10px] uppercase tracking-widest underline underline-offset-2 text-ink-muted hover:text-accent"
                     >
                       Edit
                     </button>
-                    <button
-                      onClick={() => onTogglePublishArtwork(w)}
-                      disabled={busy === w.id}
-                      className="text-[10px] uppercase tracking-widest underline underline-offset-2 text-ink-muted hover:text-accent"
-                    >
-                      {w.published ? "Unpublish" : "Publish"}
-                    </button>
+                    <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-sans text-ink-muted cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!!w.published}
+                        disabled={busy === w.id}
+                        onChange={() => onTogglePublishArtwork(w)}
+                      />
+                      On Website
+                    </label>
+                    <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-sans text-ink-muted cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!!w.sold}
+                        disabled={busy === w.id}
+                        onChange={() => onToggleSoldArtwork(w)}
+                      />
+                      Sold
+                    </label>
                   </div>
                 </div>
               )
             )}
           </div>
+
+          {addingArtwork ? (
+            <div className="border border-line/50 p-4 flex flex-col gap-3">
+              <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">New Artwork</p>
+              <div className="flex items-start gap-4">
+                <div className="flex flex-col gap-2 flex-shrink-0">
+                  {newArtworkDraft.image_url && (
+                    <button
+                      type="button"
+                      onClick={() => onZoom(newArtworkDraft.image_url)}
+                      className="block w-20 h-20 cursor-zoom-in"
+                      aria-label="View larger image"
+                    >
+                      <img src={newArtworkDraft.image_url} alt="" className="w-full h-full object-cover" />
+                    </button>
+                  )}
+                  <label className="inline-flex items-center gap-1.5 border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
+                    <Upload size={11} /> {uploadingNewArtworkImage ? "Uploading..." : "Upload Image"}
+                    <input type="file" accept="image/*" className="hidden" onChange={onUploadNewArtworkImage} />
+                  </label>
+                </div>
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    placeholder="Title"
+                    value={newArtworkDraft.title}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, title: e.target.value }))}
+                    className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                  />
+                  <input
+                    placeholder="Medium"
+                    value={newArtworkDraft.medium}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, medium: e.target.value }))}
+                    className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                  />
+                  <input
+                    placeholder="Size"
+                    value={newArtworkDraft.size}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, size: e.target.value }))}
+                    className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                  />
+                  <input
+                    placeholder="Year"
+                    value={newArtworkDraft.year}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, year: e.target.value }))}
+                    className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                  />
+                  <input
+                    placeholder="Reserve price"
+                    value={newArtworkDraft.reserve_price}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, reserve_price: e.target.value }))}
+                    className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                  />
+                  <select
+                    value={newArtworkDraft.currency}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, currency: e.target.value }))}
+                    className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans"
+                  >
+                    <option value="EUR">EUR</option>
+                    <option value="INR">INR</option>
+                  </select>
+                </div>
+              </div>
+              <textarea
+                placeholder="Description"
+                rows={2}
+                value={newArtworkDraft.description}
+                onChange={(e) => setNewArtworkDraft((d) => ({ ...d, description: e.target.value }))}
+                className="border border-line bg-transparent px-2 py-1.5 text-xs font-sans resize-none"
+              />
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-sans text-ink-muted cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={newArtworkDraft.published}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, published: e.target.checked }))}
+                  />
+                  On Website
+                </label>
+                <label className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest font-sans text-ink-muted cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={newArtworkDraft.sold}
+                    onChange={(e) => setNewArtworkDraft((d) => ({ ...d, sold: e.target.checked }))}
+                  />
+                  Sold
+                </label>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => onCreateArtwork(artist.id)}
+                  disabled={busy === `new-${artist.id}`}
+                  className="bg-accent text-white px-4 py-2 text-[10px] uppercase tracking-widest font-sans"
+                >
+                  Add Artwork
+                </button>
+                <button
+                  type="button"
+                  onClick={onCancelAddArtwork}
+                  className="border border-line px-4 py-2 text-[10px] uppercase tracking-widest font-sans"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => onStartAddArtwork(artist.id)}
+              className="text-xs uppercase tracking-widest underline underline-offset-2 text-ink-secondary hover:text-accent font-sans w-fit"
+            >
+              + Add Artwork
+            </button>
+          )}
 
           <div className="flex flex-wrap items-end gap-4 pt-4 border-t border-line/40">
             <div>
@@ -275,6 +424,9 @@ export default function AdminPage() {
   const [error, setError] = useState("");
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [uploadingPhotoFor, setUploadingPhotoFor] = useState(null);
+  const [addingArtworkFor, setAddingArtworkFor] = useState(null);
+  const [newArtworkDraft, setNewArtworkDraft] = useState(emptyNewArtwork());
+  const [uploadingNewArtworkImageFor, setUploadingNewArtworkImageFor] = useState(null);
 
   const callApi = async (path, body) => {
     const res = await fetch(path, {
@@ -369,6 +521,63 @@ export default function AdminPage() {
     else await loadData();
   };
 
+  const toggleSoldArtwork = async (artwork) => {
+    setBusy(artwork.id);
+    const { error: err } = await supabase
+      .from("artworks")
+      .update({ sold: !artwork.sold })
+      .eq("id", artwork.id);
+    setBusy(null);
+    if (err) setError(err.message);
+    else await loadData();
+  };
+
+  const startAddArtwork = (artistId) => {
+    setAddingArtworkFor(artistId);
+    setNewArtworkDraft(emptyNewArtwork());
+  };
+
+  const handleUploadNewArtworkImage = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingNewArtworkImageFor(addingArtworkFor);
+    try {
+      const url = await uploadFile("artwork-images", addingArtworkFor, file);
+      setNewArtworkDraft((d) => ({ ...d, image_url: url }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingNewArtworkImageFor(null);
+    }
+  };
+
+  const handleCreateArtwork = async (artistId) => {
+    setBusy(`new-${artistId}`);
+    setError("");
+    const { error: err } = await supabase.from("artworks").insert({
+      artist_id: artistId,
+      title: newArtworkDraft.title || null,
+      medium: newArtworkDraft.medium || null,
+      size: newArtworkDraft.size || null,
+      year: newArtworkDraft.year ? Number(newArtworkDraft.year) : null,
+      description: newArtworkDraft.description || null,
+      reserve_price: newArtworkDraft.reserve_price !== "" ? Number(newArtworkDraft.reserve_price) : null,
+      currency: newArtworkDraft.currency || "EUR",
+      image_url: newArtworkDraft.image_url || null,
+      status: "approved",
+      published: newArtworkDraft.published,
+      sold: newArtworkDraft.sold,
+    });
+    setBusy(null);
+    if (err) {
+      setError(err.message);
+    } else {
+      setAddingArtworkFor(null);
+      setNewArtworkDraft(emptyNewArtwork());
+      await loadData();
+    }
+  };
+
   const startEditArtwork = (artwork) => {
     setEditingArtwork(artwork.id);
     setArtworkDraft({
@@ -437,12 +646,19 @@ export default function AdminPage() {
     onCancelEditArtwork: () => setEditingArtwork(null),
     onSaveArtwork: handleSaveArtwork,
     onTogglePublishArtwork: togglePublishArtwork,
+    onToggleSoldArtwork: toggleSoldArtwork,
     onSaveCommission: handleSaveCommission,
     onApprove: handleApprove,
     onReject: handleReject,
     onTogglePublishArtist: togglePublishArtist,
     onDelete: handleDelete,
     onZoom: setLightboxSrc,
+    newArtworkDraft,
+    setNewArtworkDraft,
+    onUploadNewArtworkImage: handleUploadNewArtworkImage,
+    onStartAddArtwork: startAddArtwork,
+    onCancelAddArtwork: () => setAddingArtworkFor(null),
+    onCreateArtwork: handleCreateArtwork,
   };
 
   return (
@@ -473,6 +689,8 @@ export default function AdminPage() {
                     onToggle={() => setExpanded(expanded === artist.id ? null : artist.id)}
                     uploadingPhoto={uploadingPhotoFor === artist.id}
                     onUploadPhoto={(e) => handleUploadPhoto(artist, e)}
+                    addingArtwork={addingArtworkFor === artist.id}
+                    uploadingNewArtworkImage={uploadingNewArtworkImageFor === artist.id}
                     {...cardProps}
                   />
                 ))}
@@ -497,6 +715,8 @@ export default function AdminPage() {
                     onToggle={() => setExpanded(expanded === artist.id ? null : artist.id)}
                     uploadingPhoto={uploadingPhotoFor === artist.id}
                     onUploadPhoto={(e) => handleUploadPhoto(artist, e)}
+                    addingArtwork={addingArtworkFor === artist.id}
+                    uploadingNewArtworkImage={uploadingNewArtworkImageFor === artist.id}
                     {...cardProps}
                   />
                 ))}
