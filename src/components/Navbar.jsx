@@ -93,20 +93,23 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden xl:flex items-center gap-2.5 2xl:gap-6">
-            {navLinks.map((link) =>
-              link.children ? (
-                <NavDropdown link={link} key={link.label} />
-              ) : (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="text-[13px] 2xl:text-sm uppercase tracking-wide 2xl:tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans whitespace-nowrap"
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
+          <div className="hidden xl:flex items-stretch divide-x divide-line/40">
+            {navLinks.map((link) => (
+              <div key={link.label} className="flex items-center px-3 2xl:px-5">
+                {link.children ? (
+                  <NavDropdown link={link} />
+                ) : (
+                  <Link
+                    to={link.href}
+                    className={`text-[13px] 2xl:text-sm uppercase tracking-wide 2xl:tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans text-center leading-tight ${
+                      link.label.includes(" ") ? "max-w-[76px] 2xl:max-w-none" : "whitespace-nowrap"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )}
+              </div>
+            ))}
           </div>
 
           <div className="flex items-center gap-5 flex-shrink-0">
