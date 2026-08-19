@@ -131,12 +131,12 @@ export const platformSales = [
   {
     artistId: "neeraj-rawal",
     artistName: "Neeraj Rawal",
-    title: null,
-    year: null,
-    medium: "Sculpture",
-    size: null,
+    title: "Mother's Love",
+    year: 2025,
+    medium: "Fibreglass, resin and chrome",
+    size: "122 x 64 x 64 cm",
     price: null,
     note: null,
-    image: "/sold-works/neeraj-rawal-embrace.jpg",
+    image: "/sold-works/neeraj-rawal-mothers-love.jpg",
   },
 ];

@@ -10,7 +10,6 @@ const navLinks = [
     href: "/artists",
     children: [
       { href: "/artists", label: "All Artists" },
-      { href: "/founder", label: "Founder" },
       { href: "/reviews", label: "Artist Reviews" },
       { href: "/sold-works", label: "Sold Works" },
     ],
@@ -24,6 +23,7 @@ const navLinks = [
     ],
   },
   { href: "/for-artists", label: "For Artists" },
+  { href: "/founder", label: "Founder" },
   { href: "/about", label: "About" },
 ];
 

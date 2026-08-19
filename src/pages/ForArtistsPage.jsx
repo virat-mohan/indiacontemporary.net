@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Landmark, Gem, TrendingUp, ShieldCheck } from "lucide-react";
 
-const WHATSAPP_NUMBER = "919811165111";
+const WHATSAPP_NUMBER = "919911165111";
 const WHATSAPP_LINK = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   "Hi, I'm an artist interested in India Contemporary."
 )}`;
@@ -174,12 +174,20 @@ export default function ForArtistsPage() {
         </div>
 
         <div className="max-w-xl mx-auto">
-          <Link
-            to="/apply"
-            className="flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300 mb-10"
-          >
-            Apply As An Artist <ArrowRight size={16} strokeWidth={1.5} />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 mb-10">
+            <Link
+              to="/#featured"
+              className="flex-1 flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
+            >
+              See Sold Works <ArrowRight size={16} strokeWidth={1.5} />
+            </Link>
+            <Link
+              to="/founder"
+              className="flex-1 flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
+            >
+              Meet The Curator <ArrowRight size={16} strokeWidth={1.5} />
+            </Link>
+          </div>
 
           <h3 className="text-center font-sans font-bold uppercase tracking-[0.15em] text-sm text-ink-primary mb-4">
             Or Send A Quick Inquiry
@@ -191,7 +199,7 @@ export default function ForArtistsPage() {
             className="flex items-center justify-center gap-2 text-sm text-ink-secondary hover:text-accent transition-colors font-sans mb-8"
           >
             <WhatsAppIcon className="w-4 h-4" />
-            +91 98111 65111
+            Udit Hooda, +91 99111 65111
           </a>
           {submitted ? (
             <div className="bg-bg-alt border border-line/60 p-10 text-center">

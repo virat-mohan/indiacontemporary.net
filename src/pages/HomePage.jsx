@@ -56,7 +56,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured: genuine sold works */}
-      <section className="py-24 md:py-32 lg:py-48 px-6 md:px-12 lg:px-24">
+      <section id="featured" className="py-24 md:py-32 lg:py-48 px-6 md:px-12 lg:px-24 scroll-mt-24">
         <div className="max-w-[1600px] mx-auto">
           <div className="flex items-end justify-between mb-16">
             <div>
