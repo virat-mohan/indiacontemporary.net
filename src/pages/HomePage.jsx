@@ -12,8 +12,8 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1577720580479-7d839d829c73?auto=format&fit=crop&w=1800&q=80"
-            alt="Gallery interior"
+            src="/hero/homepage-hero.jpg"
+            alt="India Contemporary"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-[#2A2825]/50" />
