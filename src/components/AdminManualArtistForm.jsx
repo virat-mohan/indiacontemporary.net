@@ -37,13 +37,21 @@ async function uploadFile(bucket, folderHint, file) {
   return data.publicUrl;
 }
 
-export default function AdminManualArtistForm({ session, onCreated }) {
+export default function AdminManualArtistForm({ session, onCreated, existingArtists = [] }) {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(emptyProfile);
   const [artworks, setArtworks] = useState([emptyArtwork()]);
   const [publishNow, setPublishNow] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [duplicateChoice, setDuplicateChoice] = useState(null); // null | "existing" | "new"
+
+  const duplicateMatch = profile.full_name.trim()
+    ? existingArtists.find(
+        (a) => (a.full_name || "").trim().toLowerCase() === profile.full_name.trim().toLowerCase()
+      )
+    : null;
+  const addingToExisting = duplicateChoice === "existing" && !!duplicateMatch;
 
   const updateArtwork = (i, patch) =>
     setArtworks((prev) => prev.map((a, idx) => (idx === i ? { ...a, ...patch } : a)));
@@ -76,11 +84,48 @@ export default function AdminManualArtistForm({ session, onCreated }) {
     setProfile(emptyProfile);
     setArtworks([emptyArtwork()]);
     setPublishNow(false);
+    setDuplicateChoice(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (addingToExisting) {
+      const rows = artworks
+        .filter((a) => a.title || a.image_url)
+        .map((a) => ({
+          artist_id: duplicateMatch.id,
+          title: a.title || null,
+          medium: a.medium || null,
+          size: a.size || null,
+          year: a.year ? Number(a.year) : null,
+          description: a.description || null,
+          reserve_price: a.reserve_price !== "" && a.reserve_price != null ? Number(a.reserve_price) : null,
+          currency: a.currency || "EUR",
+          image_url: a.image_url || null,
+          status: "approved",
+          published: publishNow,
+        }));
+      if (rows.length === 0) {
+        setError("Add at least one artwork to add to the existing collection.");
+        return;
+      }
+      setSubmitting(true);
+      try {
+        const { error: err } = await supabase.from("artworks").insert(rows);
+        if (err) throw err;
+        reset();
+        setOpen(false);
+        onCreated?.();
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
     if (!profile.full_name || !profile.email) {
       setError("Name and email are required.");
       return;
@@ -127,8 +172,57 @@ export default function AdminManualArtistForm({ session, onCreated }) {
       {open && (
         <form onSubmit={handleSubmit} className="p-6 pt-0 border-t border-line/40 flex flex-col gap-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <TextField label="Full Name" value={profile.full_name} onChange={(v) => setProfile((p) => ({ ...p, full_name: v }))} required />
-            <TextField label="Email" type="email" value={profile.email} onChange={(v) => setProfile((p) => ({ ...p, email: v }))} required />
+            <div>
+              <TextField
+                label="Full Name"
+                value={profile.full_name}
+                onChange={(v) => {
+                  setProfile((p) => ({ ...p, full_name: v }));
+                  setDuplicateChoice(null);
+                }}
+                required={!addingToExisting}
+              />
+              {duplicateMatch && duplicateChoice === null && (
+                <div className="mt-2 border border-accent/50 bg-accent/5 p-3 flex flex-col gap-2">
+                  <p className="text-xs text-ink-secondary font-sans">
+                    An artist named <strong>{duplicateMatch.full_name}</strong> already exists. Add
+                    these artworks to their existing collection instead of creating a duplicate?
+                  </p>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setDuplicateChoice("existing")}
+                      className="text-[11px] uppercase tracking-widest underline underline-offset-2 text-accent"
+                    >
+                      Add To {duplicateMatch.full_name}'s Collection
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDuplicateChoice("new")}
+                      className="text-[11px] uppercase tracking-widest underline underline-offset-2 text-ink-muted"
+                    >
+                      Create As New Artist Anyway
+                    </button>
+                  </div>
+                </div>
+              )}
+              {addingToExisting && (
+                <div className="mt-2 border border-accent/50 bg-accent/5 p-3 flex items-center justify-between gap-3">
+                  <p className="text-xs text-ink-secondary font-sans">
+                    Adding artworks below to <strong>{duplicateMatch.full_name}</strong>'s existing
+                    collection — profile fields will be ignored.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setDuplicateChoice("new")}
+                    className="text-[11px] uppercase tracking-widest underline underline-offset-2 text-ink-muted flex-shrink-0"
+                  >
+                    Undo
+                  </button>
+                </div>
+              )}
+            </div>
+            <TextField label="Email" type="email" value={profile.email} onChange={(v) => setProfile((p) => ({ ...p, email: v }))} required={!addingToExisting} />
             <TextField label="Phone" value={profile.phone} onChange={(v) => setProfile((p) => ({ ...p, phone: v }))} />
             <TextField label="City" value={profile.city} onChange={(v) => setProfile((p) => ({ ...p, city: v }))} />
             <TextField label="Instagram" value={profile.instagram} onChange={(v) => setProfile((p) => ({ ...p, instagram: v }))} />
@@ -140,16 +234,20 @@ export default function AdminManualArtistForm({ session, onCreated }) {
               onChange={(v) => setProfile((p) => ({ ...p, commission_percent: v }))}
             />
           </div>
-          <TextArea label="Bio" value={profile.bio} onChange={(v) => setProfile((p) => ({ ...p, bio: v }))} />
-          <TextArea label="Artist Statement" value={profile.statement} onChange={(v) => setProfile((p) => ({ ...p, statement: v }))} />
-          <div>
-            <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">Photo</label>
-            {profile.photo_url && <img src={profile.photo_url} alt="" className="w-20 h-20 object-cover mb-2" />}
-            <label className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
-              <Upload size={14} /> Upload Photo
-              <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
-            </label>
-          </div>
+          {!addingToExisting && (
+            <>
+              <TextArea label="Bio" value={profile.bio} onChange={(v) => setProfile((p) => ({ ...p, bio: v }))} />
+              <TextArea label="Artist Statement" value={profile.statement} onChange={(v) => setProfile((p) => ({ ...p, statement: v }))} />
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">Photo</label>
+                {profile.photo_url && <img src={profile.photo_url} alt="" className="w-20 h-20 object-cover mb-2" />}
+                <label className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
+                  <Upload size={14} /> Upload Photo
+                  <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
+                </label>
+              </div>
+            </>
+          )}
 
           <p className="text-xs uppercase tracking-widest text-ink-muted font-sans pt-4 border-t border-line/40">
             Artworks
@@ -216,7 +314,13 @@ export default function AdminManualArtistForm({ session, onCreated }) {
             disabled={submitting}
             className="bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300 disabled:opacity-50 w-fit"
           >
-            {submitting ? "Creating..." : "Create Artist"}
+            {submitting
+              ? addingToExisting
+                ? "Adding..."
+                : "Creating..."
+              : addingToExisting
+              ? `Add To ${duplicateMatch.full_name}'s Collection`
+              : "Create Artist"}
           </button>
         </form>
       )}

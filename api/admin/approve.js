@@ -27,6 +27,27 @@ export default async function handler(req, res) {
     return;
   }
 
+  const { data: contract } = await admin
+    .from("contracts")
+    .select("pdf_path")
+    .eq("artist_id", artistId)
+    .order("signed_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  let contractAttachment = null;
+  if (contract?.pdf_path) {
+    const { data: pdfFile, error: downloadError } = await admin.storage
+      .from("contracts")
+      .download(contract.pdf_path);
+    if (downloadError) {
+      console.error("Failed to download signed contract for approval email:", downloadError);
+    } else {
+      const buffer = Buffer.from(await pdfFile.arrayBuffer());
+      contractAttachment = { filename: "India-Contemporary-Artist-Agreement.pdf", content: buffer };
+    }
+  }
+
   const { error: updateError } = await admin
     .from("artist_profiles")
     .update({
@@ -42,7 +63,7 @@ export default async function handler(req, res) {
   await admin.from("artworks").update({ status: "approved" }).eq("artist_id", artistId);
 
   try {
-    await sendApprovalEmail({ email: artist.email });
+    await sendApprovalEmail({ email: artist.email, contractAttachment });
   } catch (err) {
     console.error("Failed to send approval email:", err);
   }

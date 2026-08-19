@@ -214,6 +214,18 @@ export default function ArtistOnboardingPage() {
 
   const goNext = async () => {
     if (step === 0) {
+      if (!profile.full_name.trim()) {
+        setError("Full legal name is required.");
+        return;
+      }
+      if (!profile.phone.trim()) {
+        setError("Phone number is required.");
+        return;
+      }
+      if (!profile.bio.trim()) {
+        setError("Artist bio is required.");
+        return;
+      }
       const ok = await saveProfile();
       if (!ok) return;
     }
@@ -284,8 +296,9 @@ export default function ArtistOnboardingPage() {
         {step === 0 && (
           <div className="flex flex-col gap-6">
             <h1 className="font-serif text-2xl font-light text-ink-primary mb-2">Your Details</h1>
+            <Field label="Email" value={user?.email || ""} onChange={() => {}} required disabled />
             <Field label="Full Legal Name" value={profile.full_name} onChange={(v) => setProfile((p) => ({ ...p, full_name: v }))} required />
-            <Field label="Phone Number" value={profile.phone} onChange={(v) => setProfile((p) => ({ ...p, phone: v }))} />
+            <Field label="Phone Number" value={profile.phone} onChange={(v) => setProfile((p) => ({ ...p, phone: v }))} required />
             <Field label="Address" value={profile.address} onChange={(v) => setProfile((p) => ({ ...p, address: v }))} />
             <Field label="City" value={profile.city} onChange={(v) => setProfile((p) => ({ ...p, city: v }))} />
             <Field label="Instagram" value={profile.instagram} onChange={(v) => setProfile((p) => ({ ...p, instagram: v }))} />
@@ -394,35 +407,39 @@ export default function ArtistOnboardingPage() {
             <h1 className="font-serif text-2xl font-light text-ink-primary mb-2">Review &amp; Sign</h1>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               You're submitting {artworks.length} piece{artworks.length !== 1 ? "s" : ""} under the
-              name <strong>{profile.full_name}</strong>. By signing below, you agree to the
-              Artist-Curator Agreement with India Contemporary — the Curator's commission, the
-              submission and auction process, shipping responsibilities, and payout terms as
-              described when you applied. A copy including an annexure of your submitted works will
-              be generated and emailed to you once approved.
+              name <strong>{profile.full_name}</strong>. Read the full Artist-Curator Agreement
+              below, then type your name to sign it. A copy, including an annexure listing every
+              artwork you've submitted, will be generated as a PDF and emailed to you once approved.
             </p>
-            <div className="border border-line/60 p-6 max-h-64 overflow-y-auto text-xs text-ink-secondary font-sans leading-relaxed">
-              <p className="mb-2">
-                <strong>Curator:</strong> Vijit Veer Hooda, operating under "India Contemporary by
-                Vijit Veer Hooda". <strong>Artist:</strong> {profile.full_name || "[your name]"}.
+            <div className="border border-line/60 p-6 max-h-[32rem] overflow-y-auto text-xs text-ink-secondary font-sans leading-relaxed">
+              <p className="font-serif text-sm text-ink-primary mb-3">ARTIST-CURATOR AGREEMENT</p>
+              <p className="mb-3">
+                THIS ARTIST-CURATOR AGREEMENT (the "Agreement") is entered into by and between: (1)
+                THE CURATOR: Vijit Veer Hooda, operating under the initiative "India Contemporary by
+                Vijit Veer Hooda" (hereinafter referred to as the "Curator"), and (2) THE ARTIST:{" "}
+                {profile.full_name || "[your name]"} (hereinafter referred to as the "Artist"). The
+                Curator and the Artist may collectively be referred to as the "Parties" and
+                individually as a "Party."
               </p>
+
+              {AGREEMENT_SECTIONS.map((section) => (
+                <div key={section.heading} className="mb-3">
+                  <p className="font-medium text-ink-primary mb-1">{section.heading}</p>
+                  {section.paragraphs.map((p, i) => (
+                    <p key={i} className="mb-2">
+                      {p}
+                    </p>
+                  ))}
+                </div>
+              ))}
+
               <p className="mb-2">
-                The Curator will introduce the Artist and their artwork to premier online auction
-                platforms in Europe and their own networks. The Artist retains ownership until a
-                sale is legally completed. Once selected, the Artist may not offer that piece to
-                any other buyer while it's live for auction (typically 3-4 weeks). Within 24 hours
-                of a confirmed sale, the Artist ships to India Contemporary's New Delhi logistics
-                center, which handles international shipping, customs, and export.
-              </p>
-              <p className="mb-2">
-                The Curator retains a 30-40% commission on the gross final sale price (the exact
-                percentage confirmed for your account during review); the Artist receives the
-                remainder, paid out once the buyer confirms receipt and condition. This Agreement
-                runs for one year from signing, renewing automatically unless either party gives 30
-                days' written notice.
+                IN WITNESS WHEREOF, the Parties hereto have executed this Agreement by the Curator's
+                acceptance of the Artist's application and the Artist's signature below.
               </p>
               <p>
-                Full text of the Artist-Curator Agreement is generated as a signed PDF, including an
-                annexure listing every artwork above, once you sign below.
+                Full annexure listing every artwork submitted above forms an integral part of this
+                Agreement and is included in the signed PDF generated on submission.
               </p>
             </div>
 
@@ -434,34 +451,24 @@ export default function ArtistOnboardingPage() {
                 onChange={(e) => setAgreed(e.target.checked)}
                 className="mt-1"
               />
-              I have read and agree to the Artist-Curator Agreement, and confirm the name above is
-              my legal signature.
+              I have read and agree to the Artist-Curator Agreement above, and confirm the name I
+              typed is my legal signature.
             </label>
-
-            {error && <p className="text-sm text-red-700 font-sans">{error}</p>}
-
-            <button
-              onClick={handleSubmitApplication}
-              disabled={submitting}
-              className="bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300 disabled:opacity-50 w-fit"
-            >
-              {submitting ? "Submitting..." : "Sign & Submit Application"}
-            </button>
           </div>
         )}
 
-        {step < 2 && (
-          <div className="flex items-center justify-between mt-10 pt-8 border-t border-line/50">
-            {error && <p className="text-sm text-red-700 font-sans">{error}</p>}
-            <div className="flex gap-4 ml-auto">
-              {step > 0 && (
-                <button
-                  onClick={() => setStep((s) => s - 1)}
-                  className="border border-line px-6 py-3 text-sm uppercase tracking-widest text-ink-secondary font-sans hover:border-accent transition-colors"
-                >
-                  Back
-                </button>
-              )}
+        <div className="flex items-center justify-between mt-10 pt-8 border-t border-line/50">
+          {error && <p className="text-sm text-red-700 font-sans">{error}</p>}
+          <div className="flex gap-4 ml-auto">
+            {step > 0 && (
+              <button
+                onClick={() => setStep((s) => s - 1)}
+                className="border border-line px-6 py-3 text-sm uppercase tracking-widest text-ink-secondary font-sans hover:border-accent transition-colors"
+              >
+                Back
+              </button>
+            )}
+            {step < STEPS.length - 1 ? (
               <button
                 onClick={goNext}
                 disabled={savingProfile}
@@ -469,26 +476,94 @@ export default function ArtistOnboardingPage() {
               >
                 {savingProfile ? "Saving..." : "Continue"}
               </button>
-            </div>
+            ) : (
+              <button
+                onClick={handleSubmitApplication}
+                disabled={submitting}
+                className="bg-accent text-white px-8 py-3 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300 disabled:opacity-50"
+              >
+                {submitting ? "Submitting..." : "Sign & Submit Application"}
+              </button>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
 }
 
-function Field({ label, value, onChange, required = false }) {
+const AGREEMENT_SECTIONS = [
+  {
+    heading: "1. Purpose & Scope of the Initiative",
+    paragraphs: [
+      `The primary purpose of "India Contemporary by Vijit Veer Hooda" is to introduce contemporary Indian artists to the European art market and to help them secure a strong sales pipeline of their artworks in one of the strongest art markets in the world.`,
+      `The Curator will introduce the Artist and their artwork to premier online auction platforms in Europe and their own networks and online platforms. The Artist retains ownership of the artwork until a sale is legally completed, while the Curator acts as the exclusive representative for the selected pieces on these digital platforms.`,
+      `The purpose of this agreement is to set out the terms between the Curator and Artist in the process of sales of their artwork through the India Contemporary initiative.`,
+    ],
+  },
+  {
+    heading: "2. Artwork Submission and Curation Process",
+    paragraphs: [
+      `Selection: The Curator retains sole discretion to curate and select which submitted artworks/artists will be marketed. After the submission of the portfolio and available works by the Artist, the Curator will select the works and artists to add to the portfolio of India Contemporary. Once the Artist and Curator have agreed to the works to be marketed and the details of minimum reserve price have been agreed to, the artwork(s) will move to the stage of submission.`,
+      `Information Provision: The Artist must provide high-resolution photographs, accurate dimensions, medium details, and a minimum reserve price for each artwork they wish to submit to the auction. The Artist must guarantee the authenticity of the artwork by way of an authenticity certificate.`,
+      `Exclusivity Lockdown: Once an artwork is officially selected by the Curator, the Artist is strictly prohibited from offering that specific piece to any other buyer, gallery, or third party. This exclusivity remains active until the final auction process for that piece is fully completed and closed. The typical timeline is between 3-4 weeks.`,
+    ],
+  },
+  {
+    heading: "3. Auction Period Constraints & Inventory Management",
+    paragraphs: [
+      `Advance Notification: The Curator will inform the Artist in advance of the exact time period the selected artwork will be live on the online auction platform.`,
+      `Possession & Care: The artwork will remain in physical possession of the Artist during the active auction window.`,
+      `Sales Freeze: The Artist may not sell, offer, or promote the active artwork to any other prospective buyer while the auction is live. The Artist is legally bound to preserve the artwork in pristine condition during this timeframe.`,
+    ],
+  },
+  {
+    heading: "4. Logistics and Shipping Compliance",
+    paragraphs: [
+      `24-Hour Dispatch: Within 24 hours of receiving a confirmed sale notice and verification of the buyer's funds, the Artist must dispatch the artwork to the designated India Contemporary logistics center in New Delhi.`,
+      `Packaging Standards: The Artist is fully responsible for securely rolling the artwork in a heavy-duty protective shipping tube, ensuring it arrives at the logistics center ready for international transit without damage.`,
+      `Export & Transit: The India Contemporary logistics center in New Delhi will assume control of, manage, and execute all international shipping arrangements, customs declarations, and legal export formalities required to deliver the artwork to the European buyer.`,
+    ],
+  },
+  {
+    heading: "5. Financial Terms and Revenue Split",
+    paragraphs: [
+      `Curator Commission: The Curator will retain a 30-40% commission on the gross final bid or final sales price achieved for any artwork sold under this agreement — the exact percentage confirmed for your account during review.`,
+      `Artist Share: The Artist is entitled to receive the remainder of the gross final sales price, minus any mutually agreed-upon transaction or bank transfer fees.`,
+      `Payout Triggers: The Artist's payment will be released only after the India Contemporary logistics center has successfully shipped the artwork and the European buyer has formally received the delivery and confirmed the quality and condition of the artwork. If there are any complaints of quality or discrepancy in the description of the works, the Artist will be solely responsible for the replacement or resolution as advised by the Curator.`,
+    ],
+  },
+  {
+    heading: "6. Marketing and Intellectual Property Rights",
+    paragraphs: [
+      `Promotional Consent: The Artist grants India Contemporary a non-exclusive license to utilize their name, biography, and images of the curated artworks for marketing initiatives.`,
+      `Channel Distribution: Marketing materials include, but are not limited to, social media posts, website listings, digital newsletters, print catalogs, and press releases designed to promote the "India Contemporary by Vijit Veer Hooda" initiative.`,
+    ],
+  },
+  {
+    heading: "7. Term, Termination, and Jurisdiction",
+    paragraphs: [
+      `Duration: This Agreement governs all individual artwork submissions made by the Artist to the Curator for a period of one (1) year from the Effective Date, automatically renewing unless terminated in writing by either party with thirty (30) days' notice.`,
+      `Breach: If the Artist sells a locked artwork outside of the platform during an active auction window, they will immediately cease to be a part of the initiative and all their future sales cancelled.`,
+      `Governing Law: This Agreement shall be governed by and construed in accordance with the laws of India. Any legal disputes arising from this contract will fall under the exclusive jurisdiction of the courts in New Delhi.`,
+    ],
+  },
+];
+
+function Field({ label, value, onChange, required = false, disabled = false }) {
   return (
     <div>
       <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
         {label}
+        {required && <span className="text-accent"> *</span>}
       </label>
       <input
         type="text"
         required={required}
+        disabled={disabled}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
       />
     </div>
   );
@@ -499,6 +574,7 @@ function TextArea({ label, value, onChange, required = false }) {
     <div>
       <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
         {label}
+        {required && <span className="text-accent"> *</span>}
       </label>
       <textarea
         required={required}

@@ -30,6 +30,8 @@ import PartnershipsPage from "@/pages/PartnershipsPage";
 import ApplyPage from "@/pages/ApplyPage";
 import ArtistOnboardingPage from "@/pages/ArtistOnboardingPage";
 import AdminPage from "@/pages/AdminPage";
+import AdminAddArtistPage from "@/pages/AdminAddArtistPage";
+import AdminImportPage from "@/pages/AdminImportPage";
 
 export default function App() {
   const location = useLocation();
@@ -72,6 +74,8 @@ export default function App() {
           <Route path="/apply" element={<ApplyPage />} />
           <Route path="/apply/onboarding" element={<ArtistOnboardingPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/add-artist" element={<AdminAddArtistPage />} />
+          <Route path="/admin/import" element={<AdminImportPage />} />
         </Routes>
       </main>
       <Footer />

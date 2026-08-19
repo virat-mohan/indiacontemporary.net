@@ -32,7 +32,7 @@ export async function sendAdminNotification({ artistName, email, phone, artworkC
   });
 }
 
-export async function sendApprovalEmail({ email }) {
+export async function sendApprovalEmail({ email, contractAttachment }) {
   const resend = getResend();
   await resend.emails.send({
     from: FROM,
@@ -44,12 +44,13 @@ export async function sendApprovalEmail({ email }) {
       `If you have received this document, you have been selected to be a part of the India Contemporary initiative. Congratulations!`,
       ``,
       `On behalf of our team, we look forward to working with you and bringing your work to the world.`,
-      ``,
+      contractAttachment ? `\nYour signed Artist-Curator Agreement is attached to this email for your records.\n` : ``,
       `Yours,`,
       `Vijit Veer Hooda`,
       `Founder`,
       `India Contemporary`,
     ].join("\n"),
+    attachments: contractAttachment ? [contractAttachment] : undefined,
   });
 }
 
