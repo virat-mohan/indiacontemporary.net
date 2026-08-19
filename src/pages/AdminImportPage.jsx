@@ -135,7 +135,7 @@ function RosterCard({ entry, alreadyImported, busy, result, onImport }) {
 export default function AdminImportPage() {
   const { session, isAdmin } = useAuth();
   const { artists: dbArtists, reload } = useAdminArtists(isAdmin);
-  const [publishNow, setPublishNow] = useState(false);
+  const [publishNow, setPublishNow] = useState(true);
   const [busyKey, setBusyKey] = useState(null);
   const [results, setResults] = useState({});
 
@@ -186,9 +186,8 @@ export default function AdminImportPage() {
       </h1>
       <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed mb-6 max-w-2xl">
         Brings the artists and artworks already live on the public site into the admin database as
-        records, matched by name against artists already imported. Imports are saved unpublished by
-        default — they won't change anything visitors see unless you publish them from the
-        dashboard, or check the box below first.
+        records, matched by name against artists already imported. Publishing is on by default so
+        imported records go live immediately — uncheck it to import as drafts instead.
       </p>
       <label className="flex items-center gap-3 text-sm text-ink-secondary font-sans mb-10">
         <input type="checkbox" checked={publishNow} onChange={(e) => setPublishNow(e.target.checked)} />

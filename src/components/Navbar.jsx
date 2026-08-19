@@ -48,7 +48,7 @@ function NavDropdown({ link }) {
     >
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
+        className="flex items-center gap-1 text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans whitespace-nowrap"
         aria-expanded={open}
       >
         {link.label}
@@ -93,7 +93,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {navLinks.map((link) =>
               link.children ? (
                 <NavDropdown link={link} key={link.label} />
@@ -101,7 +101,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans"
+                  className="text-sm uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans whitespace-nowrap"
                 >
                   {link.label}
                 </Link>
