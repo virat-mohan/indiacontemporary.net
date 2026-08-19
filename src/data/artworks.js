@@ -101,7 +101,7 @@ export const artworks = [
     medium: "Oil on canvas, digital print brocade",
     year: 2021,
     dimensions: "85 x 115 cm (33.5 x 45 in + 12 in frame)",
-    price: 320100,
+    price: null,
     currency: "INR",
     status: "available",
     description:
@@ -116,7 +116,7 @@ export const artworks = [
     medium: "Oil and mica on canvas",
     year: 2020,
     dimensions: "74 x 45 cm (30 x 17 in), triptych",
-    price: 202000,
+    price: null,
     currency: "INR",
     status: "available",
     description:
