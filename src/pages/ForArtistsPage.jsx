@@ -99,14 +99,13 @@ export default function ForArtistsPage() {
           Call To Artists
         </p>
         <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-light text-ink-primary tracking-tight leading-tight max-w-3xl mx-auto mb-8">
-          An initiative to bring Indian contemporary art to the European collector
-          & beyond.
+          An initiative to bring Indian contemporary art to the European
+          collector.
         </h1>
         <p className="text-base lg:text-lg text-ink-secondary font-sans font-light max-w-2xl mx-auto">
           Founded by renowned Indo-Austrian artist{" "}
           <span className="text-ink-primary">Vijit Veer Hooda</span>, with the goal of bringing
-          exceptional Indian contemporary art to the thriving European market
-          & beyond.
+          exceptional Indian contemporary art to the thriving European market.
         </p>
       </section>
 
@@ -116,11 +115,11 @@ export default function ForArtistsPage() {
           <div>
             <Landmark className="mx-auto mb-5 text-accent" size={28} strokeWidth={1.25} />
             <h3 className="font-serif text-xl font-light text-ink-primary mb-3">
-              Auction Houses &amp; Galleries
+              Leading Online Auction Houses
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-              We work with leading auction houses and galleries across Europe
-              & beyond to place your work in front of serious collectors.
+              We work with leading online auction houses and galleries across Europe
+              to place your work in front of serious collectors.
             </p>
           </div>
           <div>
@@ -130,7 +129,7 @@ export default function ForArtistsPage() {
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               We secure high visibility and top-tier valuations for your work, positioning
-              it appropriately for the European market & beyond.
+              it appropriately for the European market.
             </p>
           </div>
           <div>
@@ -140,17 +139,18 @@ export default function ForArtistsPage() {
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
               Numerous artworks by Indian contemporary artists have already been
-              successfully auctioned to collectors across Europe & beyond.
+              successfully auctioned to collectors across Europe.
             </p>
           </div>
           <div>
             <ShieldCheck className="mx-auto mb-5 text-accent" size={28} strokeWidth={1.25} />
             <h3 className="font-serif text-xl font-light text-ink-primary mb-3">
-              Transparency &amp; Prompt Payments
+              Transparency
             </h3>
             <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
-              Clear terms on commission and pricing from the start, and payment
-              reaches you promptly once a piece sells — no chasing, no surprises.
+              We take our artists through the entire process of the online auctions
+              with active participation and transparency for our artists. Clear
+              commission terms and prompt payments.
             </p>
           </div>
         </div>
@@ -167,8 +167,8 @@ export default function ForArtistsPage() {
           </h2>
           <p className="text-base text-ink-secondary font-sans font-light">
             We are actively looking for talented Indian contemporary artists. Join our
-            initiative to access an affluent global market and build a powerful,
-            sustainable international income — with complete control of your artist
+            initiative to access an affluent European market and build a powerful,
+            sustainable European income — with complete control of your artist
             practice and creative output.
           </p>
         </div>

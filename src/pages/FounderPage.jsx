@@ -1,6 +1,13 @@
 import React from "react";
+import { Instagram, ExternalLink } from "lucide-react";
 
 const FOUNDER_IMAGE = "/founder/vijit-veer-hooda-new.jpg";
+
+const founderLinks = [
+  { href: "https://www.artbyhooda.com/portfolio", label: "Portfolio", Icon: ExternalLink },
+  { href: "https://www.instagram.com/vi_hov", label: "@vi_hov", Icon: Instagram },
+  { href: "https://www.artsy.net/artist/vijit-hooda-1", label: "Artsy", Icon: ExternalLink },
+];
 
 const conduits = [
   {
@@ -51,9 +58,22 @@ export default function FounderPage() {
             <h1 className="font-serif text-3xl font-light text-ink-primary tracking-tight mb-1">
               Vijit Veer Hooda
             </h1>
-            <p className="text-xs uppercase tracking-widest text-ink-muted font-sans">
+            <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-4">
               Born 1985, India
             </p>
+            <div className="flex flex-col gap-2">
+              {founderLinks.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ink-secondary hover:text-accent transition-colors font-sans w-fit"
+                >
+                  <l.Icon size={13} strokeWidth={1.5} /> {l.label}
+                </a>
+              ))}
+            </div>
           </div>
 
           <div className="flex flex-col justify-center gap-5 max-w-2xl">

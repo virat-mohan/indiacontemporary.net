@@ -31,7 +31,7 @@ export default function SplashScreen() {
           <p className="text-xs sm:text-sm font-sans font-bold uppercase tracking-[0.2em] text-[#D3C5B3] mb-8">
             An Initiative To Bring Indian Contemporary Art
             <br />
-            To The European Collector &amp; Beyond
+            To The European Collector
           </p>
 
           <h1 className="leading-[0.9] mb-10">

@@ -84,11 +84,13 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-line/50">
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 lg:px-24">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link
-            to="/"
-            className="font-serif text-2xl md:text-3xl font-light tracking-[0.15em] text-ink-primary hover:text-accent transition-colors"
-          >
-            INDIA CONTEMPORARY
+          <Link to="/" className="group leading-tight">
+            <span className="block font-serif text-2xl md:text-3xl font-light tracking-[0.15em] text-ink-primary group-hover:text-accent transition-colors">
+              INDIA CONTEMPORARY
+            </span>
+            <span className="block font-serif italic text-[11px] md:text-xs text-ink-muted tracking-normal">
+              by Vijit Veer Hooda
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">

@@ -25,19 +25,17 @@ arrival, that record is what a claim is built on.`,
     title: "Customs, Duties & Import Taxes",
     body: `We handle export documentation from India, including the invoice and any
 certificates the piece needs to clear customs. Import duty and VAT in your country are
-set by your local authority, not by us — for European Union orders this is typically
-assessed at the border and, depending on the destination, either prepaid by us (DDP)
-or collected by the courier on delivery (DAP); we'll confirm which applies before you
-check out. For destinations outside the EU, we provide the paperwork needed and flag
-any duty you should expect so there are no surprises at your door.`,
+set by your local authority, not by us — this is typically assessed at the border and,
+depending on the destination, either prepaid by us (DDP) or collected by the courier
+on delivery (DAP); we'll confirm which applies before you check out.`,
   },
   {
     icon: Clock,
     title: "Timeline",
     body: `Custom crating typically adds 3–5 business days before a piece ships. From there,
-transit runs roughly 1–2 weeks to Europe and 2–4 weeks to the rest of the world by
-specialist art courier, depending on destination and customs processing. We'll send
-tracking as soon as the piece is collected from the studio.`,
+transit runs roughly 1–2 weeks to Europe by specialist art courier, depending on
+destination and customs processing. We'll send tracking as soon as the piece is
+collected from the studio.`,
   },
   {
     icon: Truck,
@@ -64,7 +62,7 @@ export default function ShippingPage() {
           protects delicate surfaces, insurance that actually pays out, and customs
           paperwork that gets a piece through without delay. We handle all of it, using
           the same standards specialist art shippers use worldwide, built around moving
-          work out of India to collectors in Europe and beyond.
+          work out of India to collectors across Europe.
         </p>
       </div>
 

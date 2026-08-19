@@ -14,11 +14,11 @@ export default function AboutPage() {
         </h1>
         <p className="text-base text-ink-secondary font-sans font-light leading-relaxed">
           India Contemporary was founded to close the distance between India's most
-          exciting working artists and collectors in Europe & beyond who rarely
+          exciting working artists and collectors in Europe who rarely
           get to see their work in person. We travel to studios
           across the country, work directly with each artist, and handle every
           step of authentication, insurance, and shipping — so a piece made in a
-          Mumbai studio can hang on a wall in Paris, Berlin, Amsterdam, or beyond
+          Mumbai studio can hang on a wall in Paris, Berlin, or Amsterdam
           with nothing lost in translation.
         </p>
       </div>
@@ -44,7 +44,7 @@ export default function AboutPage() {
         </div>
         <div>
           <h3 className="font-serif text-2xl font-light text-ink-primary mb-3">
-            Delivered Across Europe &amp; Beyond
+            Delivered Across Europe
           </h3>
           <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed">
             Customs, framing, and white-glove delivery handled end to end,

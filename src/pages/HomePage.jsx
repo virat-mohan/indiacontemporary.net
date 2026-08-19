@@ -19,8 +19,15 @@ export default function HomePage() {
     }
     groupsByKey.get(key).items.push(s);
   });
+  // Featured order: Neeraj Rawal and Shaji Appukuttan lead (bigger names),
+  // Karam Singh always last, everyone else in between.
+  const groupPriority = (group) => {
+    if (group.key === "neeraj-rawal" || group.artistName === "Shaji Appukuttan") return 0;
+    if (group.key === "karam-singh") return 2;
+    return 1;
+  };
   const soldGroups = Array.from(groupsByKey.values()).sort(
-    (a, b) => (a.linkedArtist ? 0 : 1) - (b.linkedArtist ? 0 : 1)
+    (a, b) => groupPriority(a) - groupPriority(b)
   );
 
   return (
@@ -39,12 +46,15 @@ export default function HomePage() {
           <p className="text-xs uppercase tracking-[0.3em] text-[#D3C5B3] mb-6 font-sans">
             Contemporary Art From India
           </p>
-          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-white tracking-tight leading-tight mb-8">
+          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-white tracking-tight leading-tight mb-2">
             India Contemporary
           </h1>
+          <p className="font-serif italic text-base sm:text-lg text-[#D3C5B3] mb-8">
+            by Vijit Veer Hooda
+          </p>
           <p className="text-base lg:text-lg text-[#D3C5B3] font-sans font-light mb-12 max-w-lg mx-auto">
             Original work from India's leading contemporary artists, curated with
-            intention and delivered to collectors across Europe & beyond.
+            intention and delivered to collectors across Europe.
           </p>
           <Link
             to="/artworks"
@@ -171,7 +181,7 @@ export default function HomePage() {
           </h2>
           <p className="text-base text-ink-secondary font-sans font-light mb-10 max-w-md mx-auto">
             Every piece is curated directly from the artist's studio and shipped,
-            insured, to your door anywhere in Europe & beyond.
+            insured, to your door anywhere in Europe.
           </p>
           <Link
             to="/artworks"

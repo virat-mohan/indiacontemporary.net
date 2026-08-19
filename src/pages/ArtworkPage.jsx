@@ -111,8 +111,8 @@ export default function ArtworkPage() {
             )}
 
             <p className="text-xs text-ink-muted font-sans mt-8 leading-relaxed max-w-sm">
-              Shipped insured from the artist's studio in India to anywhere in Europe &
-              beyond. Certificate of authenticity included.
+              Shipped insured from the artist's studio in India to anywhere in Europe.
+              Certificate of authenticity included.
             </p>
 
             {art.description && (

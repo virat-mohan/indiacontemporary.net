@@ -75,7 +75,7 @@ export default function PartnershipsPage() {
         </h1>
         <p className="text-base text-ink-secondary font-sans font-light leading-relaxed">
           We work with galleries, studios, and cultural spaces in India to bring
-          artists' work to collectors in Europe and beyond. Here's who we currently
+          artists' work to collectors in Europe. Here's who we currently
           partner with.
         </p>
       </div>

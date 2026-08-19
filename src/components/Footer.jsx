@@ -7,12 +7,15 @@ export default function Footer() {
     <footer className="bg-[#2A2825] text-ink-inverse px-6 md:px-12 lg:px-24 py-16 md:py-24">
       <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         <div>
-          <p className="font-serif text-2xl font-light tracking-[0.15em] mb-4">
+          <p className="font-serif text-2xl font-light tracking-[0.15em] mb-1">
             INDIA CONTEMPORARY
+          </p>
+          <p className="font-serif italic text-sm text-[#B8B0A2] mb-4">
+            by Vijit Veer Hooda
           </p>
           <p className="text-sm text-[#B8B0A2] font-sans font-light leading-relaxed">
             Original work from India's contemporary artists, curated with care and
-            delivered to collectors across Europe & beyond.
+            delivered to collectors across Europe.
           </p>
         </div>
 
@@ -40,7 +43,7 @@ export default function Footer() {
             <Link to="/sold-works" className="hover:text-white transition-colors">Sold Works</Link>
             <Link to="/partnerships" className="hover:text-white transition-colors">Partnerships</Link>
             <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
-            <Link to="/shipping" className="hover:text-white transition-colors">Shipping to Europe & Beyond</Link>
+            <Link to="/shipping" className="hover:text-white transition-colors">Shipping to Europe</Link>
           </div>
         </div>
 
