@@ -16,7 +16,6 @@
 // pastSales/pricing invented for real people.
 
 export const artists = [
-  ,
   {
     id: "guruvinayak",
     name: "Guruvinayak",
@@ -28,7 +27,6 @@ export const artists = [
     image: "/artist-portraits/guruvinayak.jpg",
     exhibitions: [],
   },
-,
   {
     id: "manoj-paswan",
     name: "Manoj Paswan",
@@ -44,7 +42,7 @@ export const artists = [
       { year: 2025, title: "Group Exhibition", venue: "Palm Court Gallery, India Habitat Centre, New Delhi" },
     ],
   },
-{
+  {
     id: "neeraj-rawal",
     name: "Neeraj Rawal",
     city: "New Delhi",
@@ -75,7 +73,6 @@ export const artists = [
       "15 ft. sculpture — Galatians University",
     ],
   },
-,
   {
     id: "karam-singh",
     name: "Karam Singh",
