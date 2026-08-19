@@ -54,6 +54,36 @@ export async function sendApprovalEmail({ email, contractAttachment }) {
   });
 }
 
+export async function sendEnquiryEmail({ name, email, artworkTitle, artistName, artworkUrl, message, subscribeNewsletter }) {
+  const resend = getResend();
+  const admins = (process.env.ADMIN_NOTIFICATION_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+  if (admins.length === 0) return;
+
+  await resend.emails.send({
+    from: FROM,
+    to: admins,
+    replyTo: email,
+    subject: `Enquiry — ${artworkTitle || "Artwork"}${artistName ? ` by ${artistName}` : ""}`,
+    text: [
+      `New enquiry received.`,
+      ``,
+      `Artwork: ${artworkTitle || "—"}`,
+      artistName ? `Artist: ${artistName}` : null,
+      artworkUrl ? `Link: ${artworkUrl}` : null,
+      ``,
+      `From: ${name}`,
+      `Email: ${email}`,
+      `Newsletter opt-in: ${subscribeNewsletter ? "Yes" : "No"}`,
+      message ? `\nMessage:\n${message}` : null,
+    ]
+      .filter((line) => line !== null)
+      .join("\n"),
+  });
+}
+
 export async function sendRejectionEmail({ email, note }) {
   const resend = getResend();
   await resend.emails.send({

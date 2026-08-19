@@ -94,6 +94,17 @@ create table if not exists contracts (
 );
 
 -- ============================================================
+-- 4b. Newsletter subscribers (from the artwork enquiry form's
+-- "subscribe to newsletter" checkbox — /api/enquiry.js writes here
+-- with the service role key, no public policies needed)
+-- ============================================================
+create table if not exists newsletter_subscribers (
+  email text primary key,
+  subscribed_at timestamptz not null default now()
+);
+alter table newsletter_subscribers enable row level security;
+
+-- ============================================================
 -- 5. Row Level Security
 -- ============================================================
 alter table artist_profiles enable row level security;

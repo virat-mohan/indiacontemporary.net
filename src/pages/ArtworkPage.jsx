@@ -18,6 +18,39 @@ export default function ArtworkPage() {
   const { addItem } = useCart();
   const navigate = useNavigate();
   const [added, setAdded] = useState(false);
+  const [enquiryOpen, setEnquiryOpen] = useState(false);
+  const [enquiryForm, setEnquiryForm] = useState({ name: "", email: "", message: "", subscribeNewsletter: true });
+  const [enquirySubmitting, setEnquirySubmitting] = useState(false);
+  const [enquirySubmitted, setEnquirySubmitted] = useState(false);
+  const [enquiryError, setEnquiryError] = useState("");
+
+  const handleEnquirySubmit = async (e) => {
+    e.preventDefault();
+    setEnquiryError("");
+    setEnquirySubmitting(true);
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: enquiryForm.name,
+          email: enquiryForm.email,
+          message: enquiryForm.message,
+          subscribeNewsletter: enquiryForm.subscribeNewsletter,
+          artworkTitle: art?.title,
+          artistName: artist?.name,
+          artworkUrl: typeof window !== "undefined" ? window.location.href : undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Could not send your enquiry.");
+      setEnquirySubmitted(true);
+    } catch (err) {
+      setEnquiryError(err.message);
+    } finally {
+      setEnquirySubmitting(false);
+    }
+  };
 
   if (!art) {
     return (
@@ -101,13 +134,70 @@ export default function ArtworkPage() {
                   </button>
                 )}
               </div>
+            ) : enquirySubmitted ? (
+              <p className="text-sm text-ink-secondary font-sans font-light max-w-sm">
+                Thank you — your enquiry has been sent. We'll be in touch shortly.
+              </p>
+            ) : enquiryOpen ? (
+              <form onSubmit={handleEnquirySubmit} className="flex flex-col gap-4 max-w-sm">
+                <input
+                  type="text"
+                  required
+                  placeholder="Your Name"
+                  value={enquiryForm.name}
+                  onChange={(e) => setEnquiryForm((f) => ({ ...f, name: e.target.value }))}
+                  className="border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors"
+                />
+                <input
+                  type="email"
+                  required
+                  placeholder="Your Email"
+                  value={enquiryForm.email}
+                  onChange={(e) => setEnquiryForm((f) => ({ ...f, email: e.target.value }))}
+                  className="border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors"
+                />
+                <textarea
+                  rows={3}
+                  placeholder="Message (optional)"
+                  value={enquiryForm.message}
+                  onChange={(e) => setEnquiryForm((f) => ({ ...f, message: e.target.value }))}
+                  className="border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors resize-none"
+                />
+                <label className="flex items-center gap-2 text-xs text-ink-secondary font-sans">
+                  <input
+                    type="checkbox"
+                    checked={enquiryForm.subscribeNewsletter}
+                    onChange={(e) =>
+                      setEnquiryForm((f) => ({ ...f, subscribeNewsletter: e.target.checked }))
+                    }
+                  />
+                  Subscribe to our newsletter
+                </label>
+                {enquiryError && <p className="text-xs text-red-700 font-sans">{enquiryError}</p>}
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={enquirySubmitting}
+                    className="bg-accent text-white px-6 py-3 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300 disabled:opacity-50"
+                  >
+                    {enquirySubmitting ? "Sending..." : "Send Enquiry"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEnquiryOpen(false)}
+                    className="border border-line px-6 py-3 text-sm tracking-widest uppercase font-sans text-ink-secondary hover:border-accent transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             ) : (
-              <Link
-                to="/contact"
+              <button
+                onClick={() => setEnquiryOpen(true)}
                 className="inline-flex w-fit bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
               >
                 Enquire
-              </Link>
+              </button>
             )}
 
             <p className="text-xs text-ink-muted font-sans mt-8 leading-relaxed max-w-sm">
