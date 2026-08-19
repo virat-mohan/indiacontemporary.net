@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import { supabase } from "@/lib/supabase";
+import React, { useState } from "react";
 import { Plus, Trash2, Upload } from "lucide-react";
 
 const STEPS = ["Your Details", "Your Artworks", "Review & Sign"];
 
 const emptyArtwork = () => ({
-  id: null,
   title: "",
   medium: "",
   size: "",
@@ -19,21 +15,32 @@ const emptyArtwork = () => ({
   _uploading: false,
 });
 
-async function uploadFile(bucket, userId, file) {
-  const ext = file.name.split(".").pop();
-  const path = `${userId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const { error } = await supabase.storage.from(bucket).upload(path, file);
-  if (error) throw error;
-  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-  return data.publicUrl;
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
-export default function ArtistOnboardingPage() {
-  const { user, session, loading, isSupabaseConfigured } = useAuth();
-  const navigate = useNavigate();
+async function uploadFile(bucket, file) {
+  const dataBase64 = await fileToBase64(file);
+  const res = await fetch("/api/artist/public-upload", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bucket, filename: file.name, contentType: file.type, dataBase64 }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Upload failed.");
+  return data.url;
+}
+
+export default function PublicApplyPage() {
   const [step, setStep] = useState(0);
   const [profile, setProfile] = useState({
     full_name: "",
+    email: "",
     phone: "",
     address: "",
     city: "",
@@ -44,130 +51,37 @@ export default function ArtistOnboardingPage() {
     photo_url: "",
   });
   const [artworks, setArtworks] = useState([emptyArtwork()]);
-  const [status, setStatus] = useState("draft");
-  const [loadingData, setLoadingData] = useState(true);
-  const [savingProfile, setSavingProfile] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const [signedName, setSignedName] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    if (!loading && !session) navigate("/apply");
-  }, [loading, session, navigate]);
-
-  useEffect(() => {
-    if (!user) return;
-    (async () => {
-      const { data: existingProfile } = await supabase
-        .from("artist_profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
-      if (existingProfile) {
-        setProfile({
-          full_name: existingProfile.full_name || "",
-          phone: existingProfile.phone || "",
-          address: existingProfile.address || "",
-          city: existingProfile.city || "",
-          bio: existingProfile.bio || "",
-          statement: existingProfile.statement || "",
-          instagram: existingProfile.instagram || "",
-          website: existingProfile.website || "",
-          photo_url: existingProfile.photo_url || "",
-        });
-        setStatus(existingProfile.status);
-        if (existingProfile.status !== "draft") setSubmitted(true);
-      } else {
-        await supabase
-          .from("artist_profiles")
-          .insert({ id: user.id, email: user.email });
-      }
-
-      const { data: existingArtworks } = await supabase
-        .from("artworks")
-        .select("*")
-        .eq("artist_id", user.id)
-        .order("created_at", { ascending: true });
-      if (existingArtworks && existingArtworks.length > 0) {
-        setArtworks(
-          existingArtworks.map((a) => ({
-            id: a.id,
-            title: a.title || "",
-            medium: a.medium || "",
-            size: a.size || "",
-            year: a.year || "",
-            description: a.description || "",
-            reserve_price: a.reserve_price ?? "",
-            currency: a.currency || "EUR",
-            image_url: a.image_url || "",
-          }))
-        );
-      }
-      setLoadingData(false);
-    })();
-  }, [user]);
-
-  if (!isSupabaseConfigured) {
-    return (
-      <div className="pt-40 pb-24 px-6 text-center">
-        <p className="font-sans text-ink-secondary">
-          Artist onboarding isn't connected yet — this page needs a Supabase
-          project configured before it can save applications.
-        </p>
-      </div>
-    );
-  }
-
-  if (loading || loadingData) {
-    return <div className="pt-40 pb-24 px-6 text-center font-sans text-ink-muted">Loading…</div>;
-  }
-
   if (submitted) {
     return (
       <div className="pt-40 pb-24 px-6 text-center max-w-lg mx-auto">
-        <h1 className="font-serif text-3xl font-light text-ink-primary mb-4">
-          {status === "approved"
-            ? "You're In"
-            : status === "rejected"
-            ? "Application Reviewed"
-            : "Application Submitted"}
-        </h1>
+        <h1 className="font-serif text-3xl font-light text-ink-primary mb-4">Application Submitted</h1>
         <p className="text-base text-ink-secondary font-sans font-light leading-relaxed">
-          {status === "approved"
-            ? "Congratulations — your profile and work are approved. We'll be in touch about next steps."
-            : status === "rejected"
-            ? "Thank you for applying. We're not able to move forward at this time — check your email for details."
-            : "Thanks — your application, artworks, and signed agreement are in. We'll review it and email you once there's a decision."}
+          Thanks — your details, artworks, and signed agreement are in. We'll review it and email you
+          once there's a decision.
         </p>
       </div>
     );
   }
-
-  const saveProfile = async () => {
-    setSavingProfile(true);
-    setError("");
-    const { error: err } = await supabase
-      .from("artist_profiles")
-      .update({ ...profile, email: user.email })
-      .eq("id", user.id);
-    setSavingProfile(false);
-    if (err) {
-      setError(err.message);
-      return false;
-    }
-    return true;
-  };
 
   const handlePhotoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setUploadingPhoto(true);
+    setError("");
     try {
-      const url = await uploadFile("artist-photos", user.id, file);
+      const url = await uploadFile("artist-photos", file);
       setProfile((p) => ({ ...p, photo_url: url }));
     } catch (err) {
       setError(err.message);
+    } finally {
+      setUploadingPhoto(false);
     }
   };
 
@@ -179,8 +93,9 @@ export default function ArtistOnboardingPage() {
     const file = e.target.files?.[0];
     if (!file) return;
     updateArtwork(index, { _uploading: true });
+    setError("");
     try {
-      const url = await uploadFile("artwork-images", user.id, file);
+      const url = await uploadFile("artwork-images", file);
       updateArtwork(index, { image_url: url, _uploading: false });
     } catch (err) {
       setError(err.message);
@@ -188,34 +103,15 @@ export default function ArtistOnboardingPage() {
     }
   };
 
-  const saveArtworks = async () => {
-    setError("");
-    for (const art of artworks) {
-      const payload = {
-        artist_id: user.id,
-        title: art.title || null,
-        medium: art.medium || null,
-        size: art.size || null,
-        year: art.year ? Number(art.year) : null,
-        description: art.description || null,
-        reserve_price: art.reserve_price !== "" ? Number(art.reserve_price) : null,
-        currency: art.currency || "EUR",
-        image_url: art.image_url || null,
-      };
-      if (art.id) {
-        await supabase.from("artworks").update(payload).eq("id", art.id);
-      } else {
-        const { data } = await supabase.from("artworks").insert(payload).select().single();
-        if (data) updateArtwork(artworks.indexOf(art), { id: data.id });
-      }
-    }
-    return true;
-  };
-
-  const goNext = async () => {
+  const goNext = () => {
     if (step === 0) {
       if (!profile.full_name.trim()) {
         setError("Full legal name is required.");
+        return;
+      }
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(profile.email.trim())) {
+        setError("A valid email address is required.");
         return;
       }
       if (!profile.phone.trim()) {
@@ -226,8 +122,6 @@ export default function ArtistOnboardingPage() {
         setError("Artist bio is required.");
         return;
       }
-      const ok = await saveProfile();
-      if (!ok) return;
     }
     if (step === 1) {
       const hasContent = artworks.some((a) => a.title || a.image_url);
@@ -235,7 +129,6 @@ export default function ArtistOnboardingPage() {
         setError("Add at least one artwork before continuing.");
         return;
       }
-      await saveArtworks();
     }
     setError("");
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
@@ -249,18 +142,14 @@ export default function ArtistOnboardingPage() {
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch("/api/artist/submit-application", {
+      const res = await fetch("/api/artist/public-submit", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({ signedName: signedName.trim() }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ profile, artworks, signedName: signedName.trim() }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Submission failed.");
       setSubmitted(true);
-      setStatus("submitted");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -296,8 +185,8 @@ export default function ArtistOnboardingPage() {
         {step === 0 && (
           <div className="flex flex-col gap-6">
             <h1 className="font-serif text-2xl font-light text-ink-primary mb-2">Your Details</h1>
-            <Field label="Email" value={user?.email || ""} onChange={() => {}} required disabled />
             <Field label="Full Legal Name" value={profile.full_name} onChange={(v) => setProfile((p) => ({ ...p, full_name: v }))} required />
+            <Field label="Email" type="email" value={profile.email} onChange={(v) => setProfile((p) => ({ ...p, email: v }))} required />
             <Field label="Phone Number" value={profile.phone} onChange={(v) => setProfile((p) => ({ ...p, phone: v }))} required />
             <Field label="Address" value={profile.address} onChange={(v) => setProfile((p) => ({ ...p, address: v }))} />
             <Field label="City" value={profile.city} onChange={(v) => setProfile((p) => ({ ...p, city: v }))} />
@@ -317,7 +206,7 @@ export default function ArtistOnboardingPage() {
                 <img src={profile.photo_url} alt="" className="w-24 h-24 object-cover mb-3" />
               )}
               <label className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
-                <Upload size={14} /> Upload Photo
+                <Upload size={14} /> {uploadingPhoto ? "Uploading..." : "Upload Photo"}
                 <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
               </label>
             </div>
@@ -471,10 +360,9 @@ export default function ArtistOnboardingPage() {
             {step < STEPS.length - 1 ? (
               <button
                 onClick={goNext}
-                disabled={savingProfile}
-                className="bg-accent text-white px-6 py-3 text-sm uppercase tracking-widest font-sans hover:bg-accent-hover transition-colors disabled:opacity-50"
+                className="bg-accent text-white px-6 py-3 text-sm uppercase tracking-widest font-sans hover:bg-accent-hover transition-colors"
               >
-                {savingProfile ? "Saving..." : "Continue"}
+                Continue
               </button>
             ) : (
               <button
@@ -550,7 +438,7 @@ const AGREEMENT_SECTIONS = [
   },
 ];
 
-function Field({ label, value, onChange, required = false, disabled = false }) {
+function Field({ label, value, onChange, required = false, type = "text" }) {
   return (
     <div>
       <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-2">
@@ -558,12 +446,11 @@ function Field({ label, value, onChange, required = false, disabled = false }) {
         {required && <span className="text-accent"> *</span>}
       </label>
       <input
-        type="text"
+        type={type}
         required={required}
-        disabled={disabled}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors"
       />
     </div>
   );

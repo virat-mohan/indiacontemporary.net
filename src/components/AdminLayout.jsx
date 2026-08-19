@@ -12,7 +12,7 @@ export default function AdminLayout({ children }) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!loading && !session) navigate("/apply");
+    if (!loading && !session) navigate("/admin/login");
   }, [loading, session, navigate]);
 
   if (!isSupabaseConfigured) {
