@@ -5,7 +5,6 @@ import { useAuth } from "@/context/AuthContext";
 const SIDEBAR_LINKS = [
   { to: "/admin", label: "Dashboard", end: true },
   { to: "/admin/add-artist", label: "Add Artist Manually" },
-  { to: "/admin/import", label: "Import Existing Roster" },
 ];
 
 export default function AdminLayout({ children }) {
