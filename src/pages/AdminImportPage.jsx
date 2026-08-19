@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import AdminLayout from "@/components/AdminLayout";
 import useAdminArtists from "@/hooks/useAdminArtists";
 import { artists as directArtists } from "@/data/artists";
 import { artworks as staticArtworks } from "@/data/artworks";
 import { platformSales } from "@/data/platformSales";
+import { Trash2 } from "lucide-react";
 
 function slugify(name) {
   return name
@@ -93,41 +94,189 @@ function buildNivRoster() {
   return Object.values(byKey);
 }
 
-function RosterCard({ entry, alreadyImported, busy, result, onImport }) {
+function TextField({ label, value, onChange }) {
   return (
-    <div className="border border-line/60 p-5 flex flex-col gap-3">
-      <div className="flex items-start justify-between gap-4">
+    <div>
+      <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-1.5">
+        {label}
+      </label>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full border border-line bg-transparent px-3 py-2 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors"
+      />
+    </div>
+  );
+}
+
+function TextArea({ label, value, onChange, rows = 3 }) {
+  return (
+    <div>
+      <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-1.5">
+        {label}
+      </label>
+      <textarea
+        rows={rows}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full border border-line bg-transparent px-3 py-2 text-sm font-sans text-ink-primary focus:outline-none focus:border-accent transition-colors resize-none"
+      />
+    </div>
+  );
+}
+
+function RosterCard({
+  entry,
+  alreadyImported,
+  busy,
+  result,
+  expanded,
+  onToggleExpand,
+  onImport,
+  onUpdateEntry,
+  onUpdateArtwork,
+  onRemoveArtwork,
+}) {
+  return (
+    <div className="border border-line/60">
+      <button
+        onClick={onToggleExpand}
+        className="w-full flex items-start justify-between gap-4 p-5 text-left"
+      >
         <div>
           <p className="font-serif text-lg text-ink-primary">{entry.full_name}</p>
           <p className="text-xs text-ink-muted font-sans mt-1">
-            {entry.artworks.length} artwork{entry.artworks.length !== 1 ? "s" : ""}
+            {entry.artworks.length} artwork{entry.artworks.length !== 1 ? "s" : ""} ·{" "}
+            {expanded ? "Hide details" : "View & edit details"}
           </p>
         </div>
-        {alreadyImported ? (
-          <span className="text-[11px] uppercase tracking-widest text-ink-muted font-sans flex-shrink-0 pt-1">
-            Already Imported
-          </span>
-        ) : (
-          <button
-            onClick={() => onImport(entry)}
-            disabled={busy}
-            className="border border-line px-4 py-2 text-[11px] uppercase tracking-widest font-sans hover:border-accent transition-colors disabled:opacity-50 flex-shrink-0"
-          >
-            {busy ? "Importing..." : "Import"}
-          </button>
-        )}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {entry.artworks.slice(0, 6).map((w, i) =>
-          w.image_url ? (
-            <img key={i} src={w.image_url} alt="" className="w-12 h-12 object-cover" />
-          ) : null
-        )}
-      </div>
-      {result && !result.ok && (
-        <p className="text-xs text-red-700 font-sans">{result.error}</p>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          {alreadyImported && (
+            <span className="text-[11px] uppercase tracking-widest text-ink-muted font-sans">
+              Already Imported
+            </span>
+          )}
+          <span className="text-ink-muted text-sm font-sans">{expanded ? "−" : "+"}</span>
+        </div>
+      </button>
+
+      {!expanded && (
+        <div className="px-5 pb-5 flex flex-wrap gap-2">
+          {entry.artworks.slice(0, 8).map((w, i) =>
+            w.image_url ? (
+              <img key={i} src={w.image_url} alt="" className="w-12 h-12 object-cover" />
+            ) : null
+          )}
+        </div>
       )}
-      {result?.ok && <p className="text-xs text-accent font-sans">Imported.</p>}
+
+      {expanded && (
+        <div className="p-5 pt-0 border-t border-line/40 flex flex-col gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-5">
+            <TextField
+              label="Full Name"
+              value={entry.full_name}
+              onChange={(v) => onUpdateEntry({ full_name: v })}
+            />
+            <TextField label="City" value={entry.city} onChange={(v) => onUpdateEntry({ city: v })} />
+          </div>
+          <TextArea label="Bio" value={entry.bio} onChange={(v) => onUpdateEntry({ bio: v })} />
+          <TextArea
+            label="Artist Statement"
+            value={entry.statement}
+            onChange={(v) => onUpdateEntry({ statement: v })}
+          />
+          {entry.photo_url && (
+            <img src={entry.photo_url} alt="" className="w-20 h-20 object-cover" />
+          )}
+
+          <p className="text-xs uppercase tracking-widest text-ink-muted font-sans pt-2 border-t border-line/40">
+            Artworks
+          </p>
+          {entry.artworks.map((w, i) => (
+            <div key={i} className="border border-line/50 p-4 flex flex-col gap-3">
+              <div className="flex items-start gap-4">
+                {w.image_url && (
+                  <img src={w.image_url} alt="" className="w-20 h-20 object-cover flex-shrink-0" />
+                )}
+                <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <TextField
+                    label="Title"
+                    value={w.title}
+                    onChange={(v) => onUpdateArtwork(i, { title: v })}
+                  />
+                  <TextField
+                    label="Medium"
+                    value={w.medium}
+                    onChange={(v) => onUpdateArtwork(i, { medium: v })}
+                  />
+                  <TextField
+                    label="Size"
+                    value={w.size}
+                    onChange={(v) => onUpdateArtwork(i, { size: v })}
+                  />
+                  <TextField
+                    label="Year"
+                    value={w.year}
+                    onChange={(v) => onUpdateArtwork(i, { year: v })}
+                  />
+                  <TextField
+                    label="Reserve Price"
+                    value={w.reserve_price}
+                    onChange={(v) => onUpdateArtwork(i, { reserve_price: v })}
+                  />
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-ink-muted font-sans mb-1.5">
+                      Currency
+                    </label>
+                    <select
+                      value={w.currency}
+                      onChange={(e) => onUpdateArtwork(i, { currency: e.target.value })}
+                      className="w-full border border-line bg-transparent px-3 py-2 text-sm font-sans"
+                    >
+                      <option value="EUR">EUR</option>
+                      <option value="INR">INR</option>
+                    </select>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onRemoveArtwork(i)}
+                  className="text-ink-muted hover:text-red-700 flex-shrink-0"
+                  aria-label="Remove artwork from import"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              <TextArea
+                label="Description"
+                rows={2}
+                value={w.description}
+                onChange={(v) => onUpdateArtwork(i, { description: v })}
+              />
+            </div>
+          ))}
+
+          <div className="flex items-center gap-4 pt-2">
+            {alreadyImported ? (
+              <span className="text-[11px] uppercase tracking-widest text-ink-muted font-sans">
+                Already Imported
+              </span>
+            ) : (
+              <button
+                onClick={() => onImport(entry)}
+                disabled={busy}
+                className="bg-accent text-white px-6 py-3 text-xs uppercase tracking-widest font-sans hover:bg-accent-hover transition-colors disabled:opacity-50"
+              >
+                {busy ? "Importing..." : "Import"}
+              </button>
+            )}
+            {result && !result.ok && <p className="text-xs text-red-700 font-sans">{result.error}</p>}
+            {result?.ok && <p className="text-xs text-accent font-sans">Imported.</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -138,12 +287,32 @@ export default function AdminImportPage() {
   const [publishNow, setPublishNow] = useState(true);
   const [busyKey, setBusyKey] = useState(null);
   const [results, setResults] = useState({});
+  const [expandedKey, setExpandedKey] = useState(null);
 
-  const directRoster = useMemo(buildDirectRelationRoster, []);
-  const nivRoster = useMemo(buildNivRoster, []);
+  const [directRoster, setDirectRoster] = useState(buildDirectRelationRoster);
+  const [nivRoster, setNivRoster] = useState(buildNivRoster);
 
   const isImported = (fullName) =>
     dbArtists.some((a) => (a.full_name || "").trim().toLowerCase() === fullName.trim().toLowerCase());
+
+  const updateEntry = (setRoster, key, patch) =>
+    setRoster((prev) => prev.map((e) => (e.key === key ? { ...e, ...patch } : e)));
+
+  const updateArtwork = (setRoster, key, index, patch) =>
+    setRoster((prev) =>
+      prev.map((e) =>
+        e.key === key
+          ? { ...e, artworks: e.artworks.map((a, i) => (i === index ? { ...a, ...patch } : a)) }
+          : e
+      )
+    );
+
+  const removeArtwork = (setRoster, key, index) =>
+    setRoster((prev) =>
+      prev.map((e) =>
+        e.key === key ? { ...e, artworks: e.artworks.filter((_, i) => i !== index) } : e
+      )
+    );
 
   const importEntry = async (entry) => {
     setBusyKey(entry.key);
@@ -179,6 +348,23 @@ export default function AdminImportPage() {
     }
   };
 
+  const renderSection = (roster, setRoster) =>
+    roster.map((entry) => (
+      <RosterCard
+        key={entry.key}
+        entry={entry}
+        alreadyImported={isImported(entry.full_name)}
+        busy={busyKey === entry.key}
+        result={results[entry.key]}
+        expanded={expandedKey === entry.key}
+        onToggleExpand={() => setExpandedKey((k) => (k === entry.key ? null : entry.key))}
+        onImport={importEntry}
+        onUpdateEntry={(patch) => updateEntry(setRoster, entry.key, patch)}
+        onUpdateArtwork={(i, patch) => updateArtwork(setRoster, entry.key, i, patch)}
+        onRemoveArtwork={(i) => removeArtwork(setRoster, entry.key, i)}
+      />
+    ));
+
   return (
     <AdminLayout>
       <h1 className="font-serif text-3xl font-light text-ink-primary tracking-tight mb-2">
@@ -186,8 +372,10 @@ export default function AdminImportPage() {
       </h1>
       <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed mb-6 max-w-2xl">
         Brings the artists and artworks already live on the public site into the admin database as
-        records, matched by name against artists already imported. Publishing is on by default so
-        imported records go live immediately — uncheck it to import as drafts instead.
+        records, matched by name against artists already imported. Click an artist to view and edit
+        every field — bio, statement, and each artwork's medium, size, year, price, and description —
+        before importing. Publishing is on by default so imported records go live immediately —
+        uncheck it to import as drafts instead.
       </p>
       <label className="flex items-center gap-3 text-sm text-ink-secondary font-sans mb-10">
         <input type="checkbox" checked={publishNow} onChange={(e) => setPublishNow(e.target.checked)} />
@@ -198,36 +386,14 @@ export default function AdminImportPage() {
         <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-4 pb-2 border-b border-line/40">
           Direct Relation — Full Profiles
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {directRoster.map((entry) => (
-            <RosterCard
-              key={entry.key}
-              entry={entry}
-              alreadyImported={isImported(entry.full_name)}
-              busy={busyKey === entry.key}
-              result={results[entry.key]}
-              onImport={importEntry}
-            />
-          ))}
-        </div>
+        <div className="flex flex-col gap-4">{renderSection(directRoster, setDirectRoster)}</div>
       </section>
 
       <section>
         <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-4 pb-2 border-b border-line/40">
           NIV Collaboration — Name Only
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {nivRoster.map((entry) => (
-            <RosterCard
-              key={entry.key}
-              entry={entry}
-              alreadyImported={isImported(entry.full_name)}
-              busy={busyKey === entry.key}
-              result={results[entry.key]}
-              onImport={importEntry}
-            />
-          ))}
-        </div>
+        <div className="flex flex-col gap-4">{renderSection(nivRoster, setNivRoster)}</div>
       </section>
     </AdminLayout>
   );
