@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <>
-      {location.pathname === "/" && <SplashScreen />}
+      {location.pathname === "/" && !location.hash && <SplashScreen />}
       <Navbar />
       <main className="min-h-screen">
         <Routes>
