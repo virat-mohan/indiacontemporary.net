@@ -34,7 +34,7 @@ export default function CartPage() {
           {items.map(({ artworkId, qty, art }) => (
             <div key={artworkId} className="flex gap-6 py-8 first:pt-0">
               <Link to={`/artwork/${art.id}`} className="w-28 h-32 flex-shrink-0 bg-[#EBE7DF] overflow-hidden">
-                <img src={art.image} alt={art.title} className="w-full h-full object-cover" />
+                <img src={art.image} alt={art.title} className="w-full h-full object-contain" />
               </Link>
               <div className="flex-1 flex flex-col justify-between">
                 <div className="flex items-start justify-between gap-4">

@@ -17,7 +17,7 @@ export default function ArtworkCard({ art, index = 0 }) {
         <img
           src={art.image}
           alt={art.title}
-          className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-500"
+          className="w-full h-full object-contain group-hover:opacity-80 transition-opacity duration-500"
           loading="lazy"
         />
         {art.status === "sold_out" && (

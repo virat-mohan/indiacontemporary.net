@@ -43,7 +43,7 @@ export default function SoldWorksPage() {
                     <img
                       src={sale.image}
                       alt={sale.title || `Work by ${sale.artistName}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                 </div>

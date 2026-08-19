@@ -168,7 +168,7 @@ export default function ArtistDetailPage() {
                           <img
                             src={sale.image}
                             alt={sale.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain"
                           />
                         </div>
                       )}
@@ -226,7 +226,7 @@ export default function ArtistDetailPage() {
                       <img
                         src={sale.image}
                         alt={sale.title || artist.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   </div>

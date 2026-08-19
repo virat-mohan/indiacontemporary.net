@@ -74,8 +74,12 @@ export default function ArtworkPage() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          <div className="artwork-tilt bg-[#EBE7DF] overflow-hidden aspect-[3/4]">
-            <img src={art.image} alt={art.title} className="w-full h-full object-cover" />
+          <div className="artwork-tilt bg-[#EBE7DF] overflow-hidden flex items-center justify-center">
+            <img
+              src={art.image}
+              alt={art.title}
+              className="w-full h-auto max-h-[80vh] object-contain"
+            />
           </div>
 
           <div className="flex flex-col justify-center">
