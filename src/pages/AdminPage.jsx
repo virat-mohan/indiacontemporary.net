@@ -3,7 +3,16 @@ import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import AdminLayout from "@/components/AdminLayout";
 import useAdminArtists from "@/hooks/useAdminArtists";
-import { X } from "lucide-react";
+import { X, Upload } from "lucide-react";
+
+async function uploadFile(bucket, folderHint, file) {
+  const ext = file.name.split(".").pop();
+  const path = `${folderHint}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, file);
+  if (error) throw error;
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
+}
 
 const STATUS_LABEL = {
   draft: "Draft (not yet submitted)",
@@ -33,6 +42,8 @@ function ArtistCard({
   onTogglePublishArtist,
   onDelete,
   onZoom,
+  uploadingPhoto,
+  onUploadPhoto,
 }) {
   return (
     <div className="border border-line/60">
@@ -50,6 +61,23 @@ function ArtistCard({
 
       {isOpen && (
         <div className="p-6 pt-0 flex flex-col gap-6 border-t border-line/40">
+          <div className="flex items-center gap-4">
+            {artist.photo_url && (
+              <button
+                type="button"
+                onClick={() => onZoom(artist.photo_url)}
+                className="block w-20 h-20 flex-shrink-0 cursor-zoom-in"
+                aria-label="View larger photo"
+              >
+                <img src={artist.photo_url} alt="" className="w-full h-full object-cover" />
+              </button>
+            )}
+            <label className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
+              <Upload size={14} /> {uploadingPhoto ? "Uploading..." : artist.photo_url ? "Replace Photo" : "Add Photo"}
+              <input type="file" accept="image/*" className="hidden" onChange={onUploadPhoto} />
+            </label>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm font-sans text-ink-secondary">
             <p>Email: {artist.email}</p>
             <p>Phone: {artist.phone || "—"}</p>
@@ -246,6 +274,7 @@ export default function AdminPage() {
   const [busy, setBusy] = useState(null);
   const [error, setError] = useState("");
   const [lightboxSrc, setLightboxSrc] = useState(null);
+  const [uploadingPhotoFor, setUploadingPhotoFor] = useState(null);
 
   const callApi = async (path, body) => {
     const res = await fetch(path, {
@@ -352,6 +381,26 @@ export default function AdminPage() {
     });
   };
 
+  const handleUploadPhoto = async (artist, e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhotoFor(artist.id);
+    setError("");
+    try {
+      const url = await uploadFile("artist-photos", artist.id, file);
+      const { error: err } = await supabase
+        .from("artist_profiles")
+        .update({ photo_url: url })
+        .eq("id", artist.id);
+      if (err) throw err;
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUploadingPhotoFor(null);
+    }
+  };
+
   const handleSaveArtwork = async (artworkId) => {
     setBusy(artworkId);
     const { error: err } = await supabase
@@ -422,6 +471,8 @@ export default function AdminPage() {
                     works={artworksByArtist[artist.id] || []}
                     isOpen={expanded === artist.id}
                     onToggle={() => setExpanded(expanded === artist.id ? null : artist.id)}
+                    uploadingPhoto={uploadingPhotoFor === artist.id}
+                    onUploadPhoto={(e) => handleUploadPhoto(artist, e)}
                     {...cardProps}
                   />
                 ))}
@@ -444,6 +495,8 @@ export default function AdminPage() {
                     works={artworksByArtist[artist.id] || []}
                     isOpen={expanded === artist.id}
                     onToggle={() => setExpanded(expanded === artist.id ? null : artist.id)}
+                    uploadingPhoto={uploadingPhotoFor === artist.id}
+                    onUploadPhoto={(e) => handleUploadPhoto(artist, e)}
                     {...cardProps}
                   />
                 ))}
