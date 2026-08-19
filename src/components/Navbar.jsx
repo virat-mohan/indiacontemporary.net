@@ -5,13 +5,13 @@ import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { href: "/artworks", label: "Artworks" },
+  { href: "/sold-works", label: "Sold Works" },
   {
     label: "Artists",
     href: "/artists",
     children: [
       { href: "/artists", label: "All Artists" },
       { href: "/reviews", label: "Artist Reviews" },
-      { href: "/sold-works", label: "Sold Works" },
     ],
   },
   {

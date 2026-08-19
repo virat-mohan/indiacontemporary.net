@@ -176,7 +176,7 @@ export default function ForArtistsPage() {
         <div className="max-w-xl mx-auto">
           <div className="flex flex-col sm:flex-row gap-4 mb-10">
             <Link
-              to="/#featured"
+              to="/sold-works"
               className="flex-1 flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 text-sm tracking-widest uppercase font-sans hover:bg-accent-hover transition-colors duration-300"
             >
               See Sold Works <ArrowRight size={16} strokeWidth={1.5} />
