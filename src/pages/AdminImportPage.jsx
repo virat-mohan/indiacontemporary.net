@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
 import AdminLayout from "@/components/AdminLayout";
 import useAdminArtists from "@/hooks/useAdminArtists";
 import { artists as directArtists } from "@/data/artists";
 import { artworks as staticArtworks } from "@/data/artworks";
 import { platformSales } from "@/data/platformSales";
-import { Trash2 } from "lucide-react";
+import { Trash2, Upload, X } from "lucide-react";
 
 function slugify(name) {
   return name
@@ -13,6 +14,15 @@ function slugify(name) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+async function uploadFile(bucket, folderHint, file) {
+  const ext = file.name.split(".").pop();
+  const path = `${folderHint}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+  const { error } = await supabase.storage.from(bucket).upload(path, file);
+  if (error) throw error;
+  const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+  return data.publicUrl;
 }
 
 // The 4 artists directly onboarded through India Contemporary / NIV Art
@@ -126,6 +136,20 @@ function TextArea({ label, value, onChange, rows = 3 }) {
   );
 }
 
+function ZoomableImage({ src, className, onZoom }) {
+  if (!src) return null;
+  return (
+    <button
+      type="button"
+      onClick={() => onZoom(src)}
+      className={`${className} block cursor-zoom-in`}
+      aria-label="View larger image"
+    >
+      <img src={src} alt="" className="w-full h-full object-cover" />
+    </button>
+  );
+}
+
 function RosterCard({
   entry,
   alreadyImported,
@@ -137,6 +161,11 @@ function RosterCard({
   onUpdateEntry,
   onUpdateArtwork,
   onRemoveArtwork,
+  onZoom,
+  uploadingPhoto,
+  onUploadPhoto,
+  uploadingArtwork,
+  onUploadArtworkImage,
 }) {
   return (
     <div className="border border-line/60">
@@ -165,7 +194,7 @@ function RosterCard({
         <div className="px-5 pb-5 flex flex-wrap gap-2">
           {entry.artworks.slice(0, 8).map((w, i) =>
             w.image_url ? (
-              <img key={i} src={w.image_url} alt="" className="w-12 h-12 object-cover" />
+              <ZoomableImage key={i} src={w.image_url} className="w-12 h-12" onZoom={onZoom} />
             ) : null
           )}
         </div>
@@ -187,9 +216,15 @@ function RosterCard({
             value={entry.statement}
             onChange={(v) => onUpdateEntry({ statement: v })}
           />
-          {entry.photo_url && (
-            <img src={entry.photo_url} alt="" className="w-20 h-20 object-cover" />
-          )}
+          <div className="flex items-center gap-4">
+            {entry.photo_url && (
+              <ZoomableImage src={entry.photo_url} className="w-20 h-20 flex-shrink-0" onZoom={onZoom} />
+            )}
+            <label className="inline-flex items-center gap-2 border border-line px-4 py-2 text-sm font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
+              <Upload size={14} /> {uploadingPhoto ? "Uploading..." : "Replace Photo"}
+              <input type="file" accept="image/*" className="hidden" onChange={onUploadPhoto} />
+            </label>
+          </div>
 
           <p className="text-xs uppercase tracking-widest text-ink-muted font-sans pt-2 border-t border-line/40">
             Artworks
@@ -197,9 +232,18 @@ function RosterCard({
           {entry.artworks.map((w, i) => (
             <div key={i} className="border border-line/50 p-4 flex flex-col gap-3">
               <div className="flex items-start gap-4">
-                {w.image_url && (
-                  <img src={w.image_url} alt="" className="w-20 h-20 object-cover flex-shrink-0" />
-                )}
+                <div className="flex flex-col gap-2 flex-shrink-0">
+                  {w.image_url && <ZoomableImage src={w.image_url} className="w-20 h-20" onZoom={onZoom} />}
+                  <label className="inline-flex items-center gap-1.5 border border-line px-2 py-1.5 text-[10px] uppercase tracking-widest font-sans text-ink-secondary cursor-pointer hover:border-accent transition-colors w-fit">
+                    <Upload size={11} /> {uploadingArtwork === i ? "Uploading..." : "Replace"}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => onUploadArtworkImage(i, e)}
+                    />
+                  </label>
+                </div>
                 <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <TextField
                     label="Title"
@@ -286,8 +330,11 @@ export default function AdminImportPage() {
   const { artists: dbArtists, reload } = useAdminArtists(isAdmin);
   const [publishNow, setPublishNow] = useState(true);
   const [busyKey, setBusyKey] = useState(null);
+  const [importingAll, setImportingAll] = useState(false);
   const [results, setResults] = useState({});
   const [expandedKey, setExpandedKey] = useState(null);
+  const [lightboxSrc, setLightboxSrc] = useState(null);
+  const [uploading, setUploading] = useState({}); // { [entryKey]: "photo" | artworkIndex }
 
   const [directRoster, setDirectRoster] = useState(buildDirectRelationRoster);
   const [nivRoster, setNivRoster] = useState(buildNivRoster);
@@ -313,6 +360,34 @@ export default function AdminImportPage() {
         e.key === key ? { ...e, artworks: e.artworks.filter((_, i) => i !== index) } : e
       )
     );
+
+  const uploadPhoto = async (setRoster, key, e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading((u) => ({ ...u, [key]: "photo" }));
+    try {
+      const url = await uploadFile("artist-photos", "roster-import", file);
+      updateEntry(setRoster, key, { photo_url: url });
+    } catch (err) {
+      window.alert(`Upload failed: ${err.message}`);
+    } finally {
+      setUploading((u) => ({ ...u, [key]: null }));
+    }
+  };
+
+  const uploadArtworkImage = async (setRoster, key, index, e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading((u) => ({ ...u, [key]: index }));
+    try {
+      const url = await uploadFile("artwork-images", "roster-import", file);
+      updateArtwork(setRoster, key, index, { image_url: url });
+    } catch (err) {
+      window.alert(`Upload failed: ${err.message}`);
+    } finally {
+      setUploading((u) => ({ ...u, [key]: null }));
+    }
+  };
 
   const importEntry = async (entry) => {
     setBusyKey(entry.key);
@@ -348,6 +423,20 @@ export default function AdminImportPage() {
     }
   };
 
+  const importAll = async () => {
+    const remaining = [...directRoster, ...nivRoster].filter((e) => !isImported(e.full_name));
+    if (remaining.length === 0) return;
+    setImportingAll(true);
+    for (const entry of remaining) {
+      await importEntry(entry);
+    }
+    setImportingAll(false);
+  };
+
+  const remainingCount = [...directRoster, ...nivRoster].filter(
+    (e) => !isImported(e.full_name)
+  ).length;
+
   const renderSection = (roster, setRoster) =>
     roster.map((entry) => (
       <RosterCard
@@ -362,6 +451,11 @@ export default function AdminImportPage() {
         onUpdateEntry={(patch) => updateEntry(setRoster, entry.key, patch)}
         onUpdateArtwork={(i, patch) => updateArtwork(setRoster, entry.key, i, patch)}
         onRemoveArtwork={(i) => removeArtwork(setRoster, entry.key, i)}
+        onZoom={setLightboxSrc}
+        uploadingPhoto={uploading[entry.key] === "photo"}
+        onUploadPhoto={(e) => uploadPhoto(setRoster, entry.key, e)}
+        uploadingArtwork={typeof uploading[entry.key] === "number" ? uploading[entry.key] : null}
+        onUploadArtworkImage={(i, e) => uploadArtworkImage(setRoster, entry.key, i, e)}
       />
     ));
 
@@ -373,14 +467,26 @@ export default function AdminImportPage() {
       <p className="text-sm text-ink-secondary font-sans font-light leading-relaxed mb-6 max-w-2xl">
         Brings the artists and artworks already live on the public site into the admin database as
         records, matched by name against artists already imported. Click an artist to view and edit
-        every field — bio, statement, and each artwork's medium, size, year, price, and description —
-        before importing. Publishing is on by default so imported records go live immediately —
-        uncheck it to import as drafts instead.
+        every field — bio, statement, photo, and each artwork's medium, size, year, price,
+        description, and image — before importing. Click any image to view it larger.
       </p>
-      <label className="flex items-center gap-3 text-sm text-ink-secondary font-sans mb-10">
-        <input type="checkbox" checked={publishNow} onChange={(e) => setPublishNow(e.target.checked)} />
-        Publish imported artists &amp; artworks to the live site immediately
-      </label>
+      <div className="flex flex-wrap items-center gap-6 mb-10">
+        <label className="flex items-center gap-3 text-sm text-ink-secondary font-sans">
+          <input type="checkbox" checked={publishNow} onChange={(e) => setPublishNow(e.target.checked)} />
+          Publish imported artists &amp; artworks to the live site immediately
+        </label>
+        <button
+          onClick={importAll}
+          disabled={importingAll || remainingCount === 0}
+          className="bg-accent text-white px-6 py-2.5 text-xs uppercase tracking-widest font-sans hover:bg-accent-hover transition-colors disabled:opacity-50"
+        >
+          {importingAll
+            ? "Importing All..."
+            : remainingCount === 0
+            ? "All Imported"
+            : `Import All (${remainingCount})`}
+        </button>
+      </div>
 
       <section className="mb-14">
         <p className="text-xs uppercase tracking-widest text-ink-muted font-sans mb-4 pb-2 border-b border-line/40">
@@ -395,6 +501,27 @@ export default function AdminImportPage() {
         </p>
         <div className="flex flex-col gap-4">{renderSection(nivRoster, setNivRoster)}</div>
       </section>
+
+      {lightboxSrc && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/85 flex items-center justify-center p-8 cursor-zoom-out"
+          onClick={() => setLightboxSrc(null)}
+        >
+          <button
+            className="absolute top-6 right-6 text-white hover:text-white/70"
+            onClick={() => setLightboxSrc(null)}
+            aria-label="Close"
+          >
+            <X size={28} strokeWidth={1.5} />
+          </button>
+          <img
+            src={lightboxSrc}
+            alt=""
+            className="max-w-full max-h-full object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </AdminLayout>
   );
 }
