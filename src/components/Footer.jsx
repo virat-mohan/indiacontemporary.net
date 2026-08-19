@@ -55,8 +55,13 @@ export default function Footer() {
             <a href="mailto:hello@indiacontemporary.net" className="flex items-center gap-2 hover:text-white transition-colors">
               <Mail size={14} strokeWidth={1.5} /> hello@indiacontemporary.net
             </a>
-            <a href="#" className="flex items-center gap-2 hover:text-white transition-colors">
-              <Instagram size={14} strokeWidth={1.5} /> @indiacontemporary
+            <a
+              href="https://www.instagram.com/indiacontemporary.art"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-white transition-colors"
+            >
+              <Instagram size={14} strokeWidth={1.5} /> @indiacontemporary.art
             </a>
           </div>
         </div>

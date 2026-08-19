@@ -55,8 +55,13 @@ export default function ContactPage() {
             >
               <WhatsAppIcon className="w-4 h-4" /> Udit Hooda, +91 99111 65111
             </a>
-            <a href="#" className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Instagram size={16} strokeWidth={1.5} /> @indiacontemporary
+            <a
+              href="https://www.instagram.com/indiacontemporary.art"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-accent transition-colors"
+            >
+              <Instagram size={16} strokeWidth={1.5} /> @indiacontemporary.art
             </a>
           </div>
         </div>
