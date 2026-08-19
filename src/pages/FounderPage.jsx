@@ -24,15 +24,6 @@ const conduits = [
   },
 ];
 
-const exhibitions = [
-  { year: 2025, title: "Gallery Steiner", venue: "Vienna" },
-  { year: 2024, title: "Kunsthof Vienna", venue: "Group Exhibition, Vienna" },
-  { year: 2024, title: "DAG India", venue: "Group Exhibition, India" },
-  { year: 2023, title: "Heritage Center India", venue: "Group Exhibition, India" },
-  { year: 2022, title: "MAK Vienna", venue: "Robert Kinsky Group Exhibition, Vienna" },
-  { year: 2022, title: "Galerie Krinzinger", venue: "Group Exhibition, Vienna" },
-];
-
 export default function FounderPage() {
   return (
     <div className="pt-28 pb-24 px-6 md:px-12 lg:px-24">
@@ -135,28 +126,6 @@ export default function FounderPage() {
               retains its soul, ultimately helping European collectors find pieces that
               intimately resonate with their own lives.
             </p>
-          </div>
-        </div>
-
-        <div className="pt-16 border-t border-line/50">
-          <p className="text-xs uppercase tracking-[0.25em] text-ink-muted mb-3 font-sans">
-            Track Record
-          </p>
-          <h2 className="font-serif text-2xl font-light text-ink-primary tracking-tight mb-8">
-            Exhibitions
-          </h2>
-          <div className="max-w-2xl flex flex-col">
-            {exhibitions.map((ex, i) => (
-              <div key={i} className="flex gap-6 py-4 border-t border-line/50 last:border-b">
-                <span className="text-sm text-ink-muted font-sans tabular-nums w-12 flex-shrink-0">
-                  {ex.year}
-                </span>
-                <div>
-                  <p className="text-sm text-ink-primary font-sans">{ex.title}</p>
-                  <p className="text-sm text-ink-muted font-sans font-light">{ex.venue}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

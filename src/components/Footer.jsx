@@ -10,7 +10,7 @@ export default function Footer() {
           <p className="font-serif text-2xl font-light tracking-[0.15em] mb-1">
             INDIA CONTEMPORARY
           </p>
-          <p className="font-serif italic text-sm text-[#B8B0A2] mb-4">
+          <p className="font-serif italic text-base text-[#B8B0A2] mb-4">
             by Vijit Veer Hooda
           </p>
           <p className="text-sm text-[#B8B0A2] font-sans font-light leading-relaxed">

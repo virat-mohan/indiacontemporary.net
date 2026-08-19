@@ -22,7 +22,7 @@ const navLinks = [
       { href: "/news", label: "In The News" },
     ],
   },
-  { href: "/for-artists", label: "For Artists" },
+  { href: "/for-artists", label: "Call To Artists" },
   { href: "/founder", label: "Founder" },
   { href: "/about", label: "About" },
 ];
@@ -88,7 +88,7 @@ export default function Navbar() {
             <span className="block font-serif text-xl sm:text-2xl md:text-3xl font-light tracking-[0.1em] sm:tracking-[0.15em] text-ink-primary group-hover:text-accent transition-colors whitespace-nowrap">
               INDIA CONTEMPORARY
             </span>
-            <span className="block font-serif italic text-[11px] md:text-xs text-ink-muted tracking-normal mt-0.5 whitespace-nowrap">
+            <span className="block font-serif italic text-sm md:text-base text-ink-muted tracking-normal mt-0.5 whitespace-nowrap">
               by Vijit Veer Hooda
             </span>
           </Link>

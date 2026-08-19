@@ -42,10 +42,10 @@ export default function ContactPage() {
 
           <div className="flex flex-col items-center gap-4 font-sans text-ink-secondary">
             <a
-              href="mailto:hello@indiacontemporary.net"
+              href="mailto:portfolio@indiacontemporary.net"
               className="flex items-center gap-2 hover:text-accent transition-colors"
             >
-              <Mail size={16} strokeWidth={1.5} /> hello@indiacontemporary.net
+              <Mail size={16} strokeWidth={1.5} /> portfolio@indiacontemporary.net
             </a>
             <a
               href={WHATSAPP_LINK}

@@ -16,7 +16,35 @@
 // pastSales/pricing invented for real people.
 
 export const artists = [
+  ,
   {
+    id: "guruvinayak",
+    name: "Guruvinayak",
+    city: null,
+    role: "Painter",
+    bio: "I call my practice 'magical realism' — a language that lets me move between the internal and external, where personal memory, mythology, and history collapse into a shared psychological space, a rebellion against 'the outsider's eye'. My paintings are constructed thresholds where the ephemeral is held, suspended, and made 'forever'. I often think of myself as an emotional hoarder: I collect fragments of feelings, stories, residues of lived and inherited experience, driven by a fear of their disappearance.",
+    philosophy:
+      "Painting becomes a way of holding on, of resisting the erosion of memory and meaning — even while I know that nothing is truly permanent, and that it is within this tension, between retention and inevitable loss, that my work thrives. I trace recurring emotional structures across history, paleo-geology, theology, and linguistics: echoes of a collective unconscious that surface across time and culture. I work primarily in oil, a medium chosen as much for its historical weight as for its resistance to time. For me, each work becomes an excavation, an attempt to hold what is always already slipping away — I hope they feel less like objects and more like invitations, worlds to step into, stay with, and be changed by.",
+    image: "/artist-portraits/guruvinayak.jpg",
+    exhibitions: [],
+  },
+,
+  {
+    id: "manoj-paswan",
+    name: "Manoj Paswan",
+    city: "New Delhi",
+    role: "Painter",
+    profileNote:
+      "Profile drawn from \"Complexities of Contemporary Life: The Art of Manoj Paswan\" by Dr. Ved Prakash Bhardwaj, Art News India, December 2025.",
+    bio: "Manoj Paswan (b. 1982) is a painter deeply engaged with the complexities of contemporary life. A postgraduate from Jamia Millia Islamia, New Delhi, he responds to the contradictions he encounters daily in the city, expressing them symbolically through a figurative visual language that foregrounds reality while remaining open to layered interpretation. Originally from Bihar, his understanding of displacement, construction, and destruction comes from personal experience as well as shared narratives.",
+    philosophy:
+      "For Manoj, a painting is not a scene or a report — it is an idea. His works encourage viewers to think beyond the visible and reflect on the social and political concerns embedded within them. Ants represent both a growing population and relentless systems of consumption, while motifs such as food boxes with wings, or buildings standing on human bones, point to disturbing paradoxes of survival and development. Through careful selection of themes, shapes, and colours, he transforms lived realities into evocative visual metaphors — in one striking work, multiple images of the Buddha confront a tank, suggesting with quiet force that peace remains humanity's most urgent need.",
+    image: "/artist-portraits/manoj-paswan.jpg",
+    exhibitions: [
+      { year: 2025, title: "Group Exhibition", venue: "Palm Court Gallery, India Habitat Centre, New Delhi" },
+    ],
+  },
+{
     id: "neeraj-rawal",
     name: "Neeraj Rawal",
     city: "New Delhi",
@@ -47,32 +75,7 @@ export const artists = [
       "15 ft. sculpture — Galatians University",
     ],
   },
-  {
-    id: "guruvinayak",
-    name: "Guruvinayak",
-    city: null,
-    role: "Painter",
-    bio: "I call my practice 'magical realism' — a language that lets me move between the internal and external, where personal memory, mythology, and history collapse into a shared psychological space, a rebellion against 'the outsider's eye'. My paintings are constructed thresholds where the ephemeral is held, suspended, and made 'forever'. I often think of myself as an emotional hoarder: I collect fragments of feelings, stories, residues of lived and inherited experience, driven by a fear of their disappearance.",
-    philosophy:
-      "Painting becomes a way of holding on, of resisting the erosion of memory and meaning — even while I know that nothing is truly permanent, and that it is within this tension, between retention and inevitable loss, that my work thrives. I trace recurring emotional structures across history, paleo-geology, theology, and linguistics: echoes of a collective unconscious that surface across time and culture. I work primarily in oil, a medium chosen as much for its historical weight as for its resistance to time. For me, each work becomes an excavation, an attempt to hold what is always already slipping away — I hope they feel less like objects and more like invitations, worlds to step into, stay with, and be changed by.",
-    image: "/artist-portraits/guruvinayak.jpg",
-    exhibitions: [],
-  },
-  {
-    id: "manoj-paswan",
-    name: "Manoj Paswan",
-    city: "New Delhi",
-    role: "Painter",
-    profileNote:
-      "Profile drawn from \"Complexities of Contemporary Life: The Art of Manoj Paswan\" by Dr. Ved Prakash Bhardwaj, Art News India, December 2025.",
-    bio: "Manoj Paswan (b. 1982) is a painter deeply engaged with the complexities of contemporary life. A postgraduate from Jamia Millia Islamia, New Delhi, he responds to the contradictions he encounters daily in the city, expressing them symbolically through a figurative visual language that foregrounds reality while remaining open to layered interpretation. Originally from Bihar, his understanding of displacement, construction, and destruction comes from personal experience as well as shared narratives.",
-    philosophy:
-      "For Manoj, a painting is not a scene or a report — it is an idea. His works encourage viewers to think beyond the visible and reflect on the social and political concerns embedded within them. Ants represent both a growing population and relentless systems of consumption, while motifs such as food boxes with wings, or buildings standing on human bones, point to disturbing paradoxes of survival and development. Through careful selection of themes, shapes, and colours, he transforms lived realities into evocative visual metaphors — in one striking work, multiple images of the Buddha confront a tank, suggesting with quiet force that peace remains humanity's most urgent need.",
-    image: "/artist-portraits/manoj-paswan.jpg",
-    exhibitions: [
-      { year: 2025, title: "Group Exhibition", venue: "Palm Court Gallery, India Habitat Centre, New Delhi" },
-    ],
-  },
+,
   {
     id: "karam-singh",
     name: "Karam Singh",
